@@ -28,7 +28,8 @@ const PALETTE = [
   "#E63946","#3a86ff","#06d6a0","#ffb703","#8338ec",
   "#fb5607","#2ec4b6","#f77f00","#4cc9f0","#80b918",
   "#e9c46a","#9d4edd","#f72585","#023e8a","#b5179e",
-  "#264653","#e76f51",
+  "#264653","#e76f51","#2d6a4f","#7209b7","#3c096c",
+  "#ff006e","#8ac926","#1982c4","#6a4c93","#f4a261",
 ];
 
 const gyms = [
@@ -81,6 +82,10 @@ const gyms = [
     id: 1, name: "Gym Royale", isAtc: false,
     schedule: [
       { day:"Ma", time:"07:00", end:"08:00", cls:"Hyrox" },
+      { day:"Ma", time:"08:00", end:"09:00", cls:"Full Body Strength and Conditioning" },
+      { day:"Ma", time:"09:00", end:"10:00", cls:"BJJ no Gi" },
+      { day:"Ma", time:"09:00", end:"10:00", cls:"Kickboksen zak" },
+      { day:"Ma", time:"12:00", end:"13:00", cls:"Kickboksen zak" },
       { day:"Ma", time:"16:00", end:"17:00", cls:"Kidsles Kickboksen" },
       { day:"Ma", time:"17:00", end:"18:00", cls:"Kickboks 13-17 jaar" },
       { day:"Ma", time:"18:00", end:"19:00", cls:"Full Body Strength" },
@@ -244,6 +249,20 @@ const gyms = [
       { day:"Zo", time:"14:30", end:"15:30", cls:"BJJ / Grappling - Open mat" },
     ],
   },
+  { id: 3, name: "Bensy Gym", isAtc: false, schedule: [] },
+  { id: 4, name: "El Otmani Gym", isAtc: false, schedule: [] },
+  { id: 5, name: "Elite Training Center", isAtc: false, schedule: [] },
+  { id: 6, name: "EttakiGym", isAtc: false, schedule: [] },
+  { id: 7, name: "FIGHT DISTRICT", isAtc: false, schedule: [] },
+  { id: 8, name: "Fight IQ", isAtc: false, schedule: [] },
+  { id: 9, name: "Gym Southpaw", isAtc: false, schedule: [] },
+  { id: 10, name: "Kops Gym", isAtc: false, schedule: [] },
+  { id: 11, name: "Martial Arts Center Amsterdam", isAtc: false, schedule: [] },
+  { id: 12, name: "MOUSID GYM", isAtc: false, schedule: [] },
+  { id: 13, name: "Patrick's Gym", isAtc: false, schedule: [] },
+  { id: 14, name: "Royal Gym Amsterdam", isAtc: false, schedule: [] },
+  { id: 15, name: "Sin City Boxing", isAtc: false, schedule: [] },
+  { id: 16, name: "Sport city", isAtc: false, schedule: [] },
 ];
 
 // ─── OPEN GYM TIJDEN ─────────────────────────────────────────────────────────
@@ -283,7 +302,30 @@ const openGymData = [
       { day:"Zo", slots:[{ from:"09:45", to:"15:30" }] },
     ],
   },
+  { id: 3, name: "Bensy Gym", isAtc: false, hours: [] },
+  { id: 4, name: "El Otmani Gym", isAtc: false, hours: [] },
+  { id: 5, name: "Elite Training Center", isAtc: false, hours: [] },
+  { id: 6, name: "EttakiGym", isAtc: false, hours: [] },
+  { id: 7, name: "FIGHT DISTRICT", isAtc: false, hours: [] },
+  { id: 8, name: "Fight IQ", isAtc: false, hours: [] },
+  { id: 9, name: "Gym Southpaw", isAtc: false, hours: [] },
+  { id: 10, name: "Kops Gym", isAtc: false, hours: [] },
+  { id: 11, name: "Martial Arts Center Amsterdam", isAtc: false, hours: [] },
+  { id: 12, name: "MOUSID GYM", isAtc: false, hours: [] },
+  { id: 13, name: "Patrick's Gym", isAtc: false, hours: [] },
+  { id: 14, name: "Royal Gym Amsterdam", isAtc: false, hours: [] },
+  { id: 15, name: "Sin City Boxing", isAtc: false, hours: [] },
+  { id: 16, name: "Sport city", isAtc: false, hours: [] },
 ];
+
+// Sort gyms alphabetically and reassign ids so colors stay consistent
+const gymsSorted = [...gyms].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
+const openGymDataSorted = [...openGymData].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
+
+const ETTaki_YELLOW = "#ffb703";
+const isEttaki = (gym) => gym?.name?.toLowerCase() === "ettakigym";
+const gymAccent = (gym, fallback) => (isEttaki(gym) ? ETTaki_YELLOW : fallback);
+const gymNameColor = (gym, fallback) => (gym.isAtc ? "#E63946" : (isEttaki(gym) ? ETTaki_YELLOW : fallback));
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
@@ -311,8 +353,12 @@ function GymTag({ gym }) {
 
 // ─── VIEW: PER DAG ────────────────────────────────────────────────────────────
 
-function DagView({ visibleGyms, day, setDay }) {
-  const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d && !isOpenGym(s.cls)).sort((a,b)=>tmin(a.time)-tmin(b.time));
+function DagView({ visibleGyms, day, setDay, activeCats }) {
+  const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const cfd = (gym,d) =>
+    gym.schedule
+      .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
+      .sort((a,b)=>tmin(a.time)-tmin(b.time));
   return <>
     <div style={{ display:"flex",gap:3,marginBottom:18,flexWrap:"wrap" }}>
       {DAYS.map(d => (
@@ -326,7 +372,7 @@ function DagView({ visibleGyms, day, setDay }) {
     </div>
     <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(255px,1fr))",gap:12 }}>
       {visibleGyms.map(gym => {
-        const col = PALETTE[gym.id]||"#888";
+        const col = gymAccent(gym, PALETTE[gym.id]||"#888");
         const cls = cfd(gym, day);
         return (
           <div key={gym.id} style={CARD}>
@@ -334,7 +380,7 @@ function DagView({ visibleGyms, day, setDay }) {
               display:"flex",alignItems:"center",gap:8 }}>
               <div style={{ width:3,height:28,borderRadius:2,background:col,flexShrink:0 }}/>
               <div style={{ flex:1 }}>
-                <div style={{ fontSize:12,fontWeight:700,color:gym.isAtc?"#E63946":"#c0c0cc" }}>
+                <div style={{ fontSize:12,fontWeight:700,color:gymNameColor(gym, "#c0c0cc") }}>
                   <GymTag gym={gym}/>
                 </div>
                 <div style={{ fontSize:10,color:"#404060",marginTop:1 }}>
@@ -375,24 +421,29 @@ function DagView({ visibleGyms, day, setDay }) {
 
 // ─── VIEW: WEEKOVERZICHT ─────────────────────────────────────────────────────
 
-function WeekView({ visibleGyms }) {
-  const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d && !isOpenGym(s.cls)).sort((a,b)=>tmin(a.time)-tmin(b.time));
+function WeekView({ visibleGyms, activeCats }) {
+  const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const cfd = (gym,d) =>
+    gym.schedule
+      .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
+      .sort((a,b)=>tmin(a.time)-tmin(b.time));
 
   const gymStats = useMemo(() => visibleGyms.map(gym => {
     const catMins = Object.fromEntries(CATEGORIES.map(c=>[c.key,0]));
     let totalMins = 0;
     for (const s of gym.schedule) {
       if (isOpenGym(s.cls)) continue;
+      if (!catOn(s.cls)) continue;
       const dur = tdur(s.time,s.end);
       catMins[getCat(s.cls).key] += dur;
       totalMins += dur;
     }
     return { gym, catMins, totalMins };
-  }), [visibleGyms]);
+  }), [visibleGyms, activeCats]);
 
   const maxPerDay = useMemo(() =>
     Math.max(...DAYS.map(d => Math.max(...visibleGyms.map(g => cfd(g,d).length),0)),1),
-  [visibleGyms]);
+  [visibleGyms, activeCats]);
 
   const maxMins = Math.max(...gymStats.map(s=>s.totalMins),1);
 
@@ -414,7 +465,7 @@ function WeekView({ visibleGyms }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, totalMins }) => {
-                const col = PALETTE[gym.id]||"#888";
+                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
                 return (
                   <tr key={gym.id} style={{ borderBottom:"1px solid #0c0c18" }}
                     onMouseEnter={e=>e.currentTarget.style.background="#0f0f1e"}
@@ -422,7 +473,7 @@ function WeekView({ visibleGyms }) {
                     <td style={{ padding:"10px 12px",whiteSpace:"nowrap" }}>
                       <div style={{ display:"flex",alignItems:"center",gap:7 }}>
                         <div style={{ width:3,height:24,borderRadius:2,background:col,flexShrink:0 }}/>
-                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gym.isAtc?"#E63946":"#c0c0cc" }}>
+                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, "#c0c0cc") }}>
                           <GymTag gym={gym}/>
                         </span>
                       </div>
@@ -441,7 +492,7 @@ function WeekView({ visibleGyms }) {
                       );
                     })}
                     <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:800,fontSize:14,color:col }}>
-                      {gym.schedule.filter(s=>!isOpenGym(s.cls)).length}
+                      {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length}
                     </td>
                     <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:700,color:"#c0c0cc" }}>
                       {fmtH(totalMins)}
@@ -463,7 +514,7 @@ function WeekView({ visibleGyms }) {
           <table style={{ width:"100%",borderCollapse:"collapse",minWidth:500 }}>
             <thead><tr>
               <th style={{ ...TH,textAlign:"left",minWidth:155 }}>Gym</th>
-              {CATEGORIES.map(cat=>(
+              {CATEGORIES.filter(cat => activeCats.includes(cat.key)).map(cat=>(
                 <th key={cat.key} style={{ ...TH,textAlign:"center",minWidth:80 }}>
                   <span style={{ color:cat.color }}>{cat.label}</span>
                 </th>
@@ -472,7 +523,7 @@ function WeekView({ visibleGyms }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, catMins, totalMins }) => {
-                const col = PALETTE[gym.id]||"#888";
+                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
                 return (
                   <tr key={gym.id} style={{ borderBottom:"1px solid #0c0c18" }}
                     onMouseEnter={e=>e.currentTarget.style.background="#0f0f1e"}
@@ -480,12 +531,12 @@ function WeekView({ visibleGyms }) {
                     <td style={{ padding:"10px 12px",whiteSpace:"nowrap" }}>
                       <div style={{ display:"flex",alignItems:"center",gap:7 }}>
                         <div style={{ width:3,height:24,borderRadius:2,background:col,flexShrink:0 }}/>
-                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gym.isAtc?"#E63946":"#c0c0cc" }}>
+                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, "#c0c0cc") }}>
                           <GymTag gym={gym}/>
                         </span>
                       </div>
                     </td>
-                    {CATEGORIES.map(cat => {
+                    {CATEGORIES.filter(cat => activeCats.includes(cat.key)).map(cat => {
                       const mins = catMins[cat.key]||0;
                       return (
                         <td key={cat.key} style={{ padding:"8px 12px",textAlign:"center" }}>
@@ -510,12 +561,12 @@ function WeekView({ visibleGyms }) {
       <div style={{ ...CARD,padding:20 }}>
         <div style={{ ...LABEL,marginBottom:14 }}>Totaal trainingsuren / week</div>
         {[...gymStats].sort((a,b)=>b.totalMins-a.totalMins).map(({ gym, totalMins }) => {
-          const col = PALETTE[gym.id]||"#888";
+          const col = gymAccent(gym, PALETTE[gym.id]||"#888");
           const pct = (totalMins/maxMins)*100;
           return (
             <div key={gym.id} style={{ display:"flex",alignItems:"center",gap:10,marginBottom:6 }}>
               <div style={{ width:150,fontSize:10,fontWeight:gym.isAtc?700:500,
-                color:gym.isAtc?"#E63946":"#555",textAlign:"right",flexShrink:0,
+                color:gymNameColor(gym, "#555"),textAlign:"right",flexShrink:0,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{gym.name}</div>
               <div style={{ flex:1,height:22,background:"#0a0a14",borderRadius:4,overflow:"hidden" }}>
                 <div style={{ width:`${pct}%`,height:"100%",background:col,borderRadius:4,
@@ -534,86 +585,172 @@ function WeekView({ visibleGyms }) {
 
 // ─── VIEW: LIJST PER DAG ─────────────────────────────────────────────────────
 
-function LijstView({ visibleGyms }) {
-  const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d).sort((a,b)=>tmin(a.time)-tmin(b.time));
+function LijstView({ visibleGyms, activeCats }) {
+  const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const DAY_MIN = 6 * 60;
+  const DAY_MAX = 23 * 60;
+  const TOTAL   = DAY_MAX - DAY_MIN;
+
+  const pct  = (t) => ((tmin(t) - DAY_MIN) / TOTAL) * 100;
+  const wPct = (f, t) => ((tmin(t) - tmin(f)) / TOTAL) * 100;
+
+  const timeLabels = [6,8,10,12,14,16,18,20,22].map(h => ({
+    h, pct: ((h*60 - DAY_MIN) / TOTAL) * 100
+  }));
+  const hourLines = Array.from({ length: (DAY_MAX - DAY_MIN) / 60 + 1 }, (_,i) => {
+    const h = (DAY_MIN/60) + i;
+    return { h, pct: (((h*60) - DAY_MIN) / TOTAL) * 100, major: h % 2 === 0 };
+  });
+
+  const classesForDay = (gym, d) =>
+    gym.schedule
+      .filter(s => s.day === d && !isOpenGym(s.cls) && catOn(s.cls))
+      .sort((a,b)=>tmin(a.time)-tmin(b.time));
+
+  const laneify = (items) => {
+    const lanesEnd = [];
+    return items.map(it => {
+      const s = tmin(it.time), e = tmin(it.end);
+      let lane = lanesEnd.findIndex(end => s >= end);
+      if (lane === -1) { lane = lanesEnd.length; lanesEnd.push(e); }
+      else lanesEnd[lane] = e;
+      return { ...it, lane };
+    });
+  };
 
   return (
-    <div style={{ display:"flex",flexDirection:"column",gap:28 }}>
+    <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
       {DAYS.map(day => {
-        const allCls = visibleGyms.flatMap(gym =>
-          cfd(gym,day).map(c=>({ ...c, gym }))
-        ).sort((a,b)=>tmin(a.time)-tmin(b.time));
+        const perGym = visibleGyms.map(gym => {
+          const items = classesForDay(gym, day);
+          const laid  = laneify(items);
+          const maxLane = laid.reduce((m,c)=>Math.max(m,c.lane), -1) + 1;
+          return { gym, items: laid, maxLane };
+        });
 
-        const totalMins = allCls.reduce((a,c)=>a+tdur(c.time,c.end),0);
+        const allItems = perGym.flatMap(g => g.items);
+        const totalMins = allItems.reduce((a,c)=>a+tdur(c.time,c.end),0);
 
         return (
-          <div key={day}>
-            {/* Dag-header */}
-            <div style={{ display:"flex",alignItems:"center",gap:14,marginBottom:12 }}>
-              <div style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:22,letterSpacing:3,
-                color:"#e0e0e0",lineHeight:1,flexShrink:0 }}>{DAY_LABELS[day]}</div>
-              <div style={{ fontSize:10,color:"#404060",flexShrink:0 }}>
-                {allCls.length} lessen · {fmtH(totalMins)}
+          <div key={day} style={{ ...CARD, overflow:"hidden" }}>
+            {/* Header */}
+            <div style={{ padding:"11px 18px",borderBottom:"1px solid #101020",
+              display:"flex",alignItems:"center",gap:12,flexWrap:"wrap" }}>
+              <div style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:20,
+                letterSpacing:2,color:"#e0e0e0" }}>{DAY_LABELS[day]}</div>
+              <div style={{ fontSize:10,color:"#404060" }}>
+                {allItems.length} lessen · {fmtH(totalMins)}
               </div>
-              <div style={{ flex:1,height:1,background:"#151528" }}/>
             </div>
 
-            {allCls.length===0
-              ? <div style={{ padding:"10px 14px",background:"#0a0a14",border:"1px solid #101020",
-                  borderRadius:8,fontSize:11,color:"#1e1e2e" }}>Geen lessen</div>
-              : SLOTS.map(slot => {
-                  const slotCls = allCls.filter(c=>tmin(c.time)>=slot.from&&tmin(c.time)<slot.to);
-                  if (!slotCls.length) return null;
-                  return (
-                    <div key={slot.key} style={{ marginBottom:10 }}>
-                      {/* Slot label */}
-                      <div style={{ display:"flex",alignItems:"center",gap:7,marginBottom:5 }}>
-                        <div style={{ width:7,height:7,borderRadius:2,background:slot.color }}/>
-                        <span style={{ fontSize:9,fontWeight:700,letterSpacing:"1.5px",
-                          textTransform:"uppercase",color:slot.color }}>{slot.label}</span>
-                        <span style={{ fontSize:9,color:"#303050" }}>
-                          {String(Math.floor(slot.from/60)).padStart(2,"0")}:00 –{" "}
-                          {slot.to===24*60?"00:00":String(Math.floor(slot.to/60)).padStart(2,"0")+":00"}
-                        </span>
-                      </div>
-                      {/* Les rijen */}
-                      <div style={{ display:"flex",flexDirection:"column",gap:3 }}>
-                        {slotCls.map((c,i) => {
-                          const col = PALETTE[c.gym.id]||"#888";
-                          const cat = getCat(c.cls);
-                          return (
-                            <div key={i} style={{ display:"flex",alignItems:"stretch",
-                              background:"#0d0d18",border:"1px solid #151528",
-                              borderRadius:7,overflow:"hidden" }}>
-                              <div style={{ width:3,flexShrink:0,background:col }}/>
-                              {/* Tijd */}
-                              <div style={{ padding:"7px 12px",flexShrink:0,minWidth:100 }}>
-                                <div style={{ fontSize:12,fontWeight:700,color:"#e0e0e0",
-                                  fontVariantNumeric:"tabular-nums" }}>
-                                  {c.time}<span style={{ color:"#303050",margin:"0 2px" }}>–</span>{c.end}
-                                </div>
-                                <div style={{ fontSize:9,color:"#404060",marginTop:2 }}>{tdur(c.time,c.end)} min</div>
-                              </div>
-                              {/* Lesnaam + categorie */}
-                              <div style={{ flex:1,padding:"7px 8px",borderLeft:"1px solid #111120" }}>
-                                <div style={{ fontSize:12,fontWeight:600,color:"#c0c0cc" }}>{c.cls}</div>
-                                <span style={{ fontSize:9,padding:"1px 6px",borderRadius:3,marginTop:2,display:"inline-block",
-                                  background:`${cat.color}18`,color:cat.color,fontWeight:600 }}>{cat.label}</span>
-                              </div>
-                              {/* Gym naam */}
-                              <div style={{ padding:"7px 14px",flexShrink:0,textAlign:"right",
-                                borderLeft:"1px solid #111120",display:"flex",alignItems:"center" }}>
-                                <span style={{ fontSize:11,fontWeight:c.gym.isAtc?800:600,
-                                  color:c.gym.isAtc?"#E63946":col }}>{c.gym.name}</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+            <div style={{ overflowX:"auto" }}>
+              <div style={{ minWidth:820 }}>
+                {/* Time axis */}
+                <div style={{ display:"grid", gridTemplateColumns:"200px 1fr",
+                  padding:"12px 18px 8px", borderBottom:"1px solid #0f0f1e" }}>
+                  <div style={{ ...LABEL, alignSelf:"end" }}>Gyms</div>
+                  <div>
+                    <div style={{ position:"relative", height:16, marginBottom:6 }}>
+                      {timeLabels.map(({ h, pct: p }) => (
+                        <div key={h} style={{ position:"absolute", left:`${p}%`,
+                          fontSize:10, fontWeight:800, color:"#c0c0cc",
+                          textShadow:"0 1px 0 #00000060",
+                          transform:"translateX(-50%)" }}>
+                          {String(h).padStart(2,"0")}:00
+                        </div>
+                      ))}
                     </div>
-                  );
-                })
-            }
+                    <div style={{ position:"relative", height:10 }}>
+                      {hourLines.map(({ h, pct: p, major }) => (
+                        <div key={h} style={{ position:"absolute", left:`${p}%`,
+                          top:0, bottom:0, width:major?2:1,
+                          background:major?"#1e1e3a":"#0f0f1e",
+                          opacity:major?1:0.65 }}/>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rows per gym */}
+                <div>
+                  {perGym.map(({ gym, items, maxLane }) => {
+                    const accent = gymAccent(gym, PALETTE[gym.id]||"#888");
+                    const nameCol = gymNameColor(gym, "#c0c0cc");
+                    const rowHeight = Math.max(28, 10 + maxLane * 20);
+
+                    return (
+                      <div key={gym.id} style={{ display:"grid", gridTemplateColumns:"200px 1fr",
+                        padding:"10px 18px", borderBottom:"1px solid #0c0c18" }}>
+                        {/* Name cell */}
+                        <div style={{ paddingRight:12, display:"flex", alignItems:"flex-start", gap:8 }}>
+                          <div style={{ width:3, height:rowHeight, borderRadius:2, background:accent, flexShrink:0 }}/>
+                          <div style={{ minWidth:0 }}>
+                            <div style={{ fontSize:12, fontWeight:gym.isAtc?800:600, color:nameCol,
+                              whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                              {gym.name}
+                            </div>
+                            <div style={{ fontSize:9, color:"#404060", marginTop:2 }}>
+                              {items.length ? `${items.length} les${items.length!==1?"sen":""}` : "Geen lessen"}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Timeline cell */}
+                        <div style={{ position:"relative", height:rowHeight, background:"#08080f",
+                          border:"1px solid #101020", borderRadius:8, overflow:"hidden" }}>
+                          {/* Grid lines */}
+                          <div style={{ position:"absolute", inset:0, pointerEvents:"none", zIndex:0 }}>
+                            {hourLines.map(({ h, pct: p, major }) => (
+                              <div key={h} style={{ position:"absolute", left:`${p}%`,
+                                top:0, bottom:0, width:major?2:1,
+                                background:major?"#1e1e3a":"#0f0f1e",
+                                opacity:major?1:0.65 }}/>
+                            ))}
+                          </div>
+
+                          {/* Lesson blocks */}
+                          {items.map((c, i) => {
+                            const cat = getCat(c.cls);
+                            const top = 6 + c.lane * 20;
+                            const left = pct(c.time);
+                            const width = Math.max(0.5, wPct(c.time, c.end));
+                            return (
+                              <div key={i} title={`${c.time}–${c.end} · ${c.cls}`}
+                                style={{
+                                  position:"absolute",
+                                  left:`${left}%`,
+                                  width:`${width}%`,
+                                  top,
+                                  height:16,
+                                  borderRadius:6,
+                                  background:cat.color,
+                                  opacity:0.9,
+                                  border:`1px solid ${cat.color}80`,
+                                  boxShadow:`0 0 0 1px #00000020 inset`,
+                                  zIndex:2,
+                                  overflow:"hidden",
+                                }}>
+                                <div style={{
+                                  fontSize:9,
+                                  fontWeight:800,
+                                  color:"#0b0b10",
+                                  padding:"1px 6px",
+                                  whiteSpace:"nowrap",
+                                  textOverflow:"ellipsis",
+                                  overflow:"hidden",
+                                }}>
+                                  {c.cls}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         );
       })}
@@ -623,8 +760,9 @@ function LijstView({ visibleGyms }) {
 
 // ─── VIEW: GATEN IN DE MARKT ─────────────────────────────────────────────────
 
-function GatenView({ visibleGyms }) {
-  const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d && !isOpenGym(s.cls));
+function GatenView({ visibleGyms, activeCats }) {
+  const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls));
 
   const data = useMemo(() => DAYS.map(day => {
     const all = visibleGyms.flatMap(g=>cfd(g,day));
@@ -634,7 +772,7 @@ function GatenView({ visibleGyms }) {
       return { ...slot, count:hits.length, isEmpty:hits.length===0 };
     });
 
-    const catInfo = CATEGORIES.filter(c=>c.key!=="overig").map(cat => {
+    const catInfo = CATEGORIES.filter(c=>c.key!=="overig" && activeCats.includes(c.key)).map(cat => {
       const present = all.some(c=>getCat(c.cls).key===cat.key);
       return { ...cat, present };
     });
@@ -764,7 +902,7 @@ function OpenGymView() {
     return DAYS.map(day => {
       // Maak een minuut-voor-minuut array (6:00–23:00 = 1020 min)
       const counts = new Array(TOTAL).fill(0);
-      for (const gym of openGymData) {
+      for (const gym of openGymDataSorted) {
         const dayHours = gym.hours.find(h => h.day === day);
         if (!dayHours) continue;
         for (const slot of dayHours.slots) {
@@ -805,9 +943,9 @@ function OpenGymView() {
       {/* Legenda */}
       <div style={{ ...CARD, padding:"11px 16px", display:"flex", gap:20, flexWrap:"wrap", alignItems:"center" }}>
         <div style={LABEL}>Legenda:</div>
-        {openGymData.map((g,i) => (
+        {openGymDataSorted.map((g,i) => (
           <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:"#c0c0cc" }}>
-            <div style={{ width:14, height:10, borderRadius:2, background:PALETTE[i], opacity:0.85 }}/>
+            <div style={{ width:14, height:10, borderRadius:2, background:gymAccent(g, PALETTE[i]), opacity:0.85 }}/>
             {g.name}
           </div>
         ))}
@@ -879,9 +1017,9 @@ function OpenGymView() {
                 ))}
 
                 {/* Gym bars */}
-                {openGymData.map((gym, gi) => {
+                {openGymDataSorted.map((gym, gi) => {
                   const dayHours = gym.hours.find(h => h.day === day);
-                  const col = PALETTE[gi];
+                  const col = gymAccent(gym, PALETTE[gi]);
                   return (
                     <div key={gym.id} style={{ position:"relative", height:32, marginBottom:4,
                       background:"#08080f", borderRadius:6, overflow:"hidden", zIndex:2 }}>
@@ -941,10 +1079,13 @@ const TABS = [
 export default function ScheduleDashboard() {
   const [tab,        setTab]        = useState("dag");
   const [day,        setDay]        = useState("Ma");
-  const [activeGyms, setActiveGyms] = useState(gyms.map(g=>g.id));
+  const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
+  const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
 
   const toggleGym    = id => setActiveGyms(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
-  const visibleGyms  = gyms.filter(g=>activeGyms.includes(g.id));
+  const toggleCat    = key => setActiveCats(p=>p.includes(key)?p.filter(x=>x!==key):[...p,key]);
+  const visibleGyms  = gymsSorted.filter(g=>activeGyms.includes(g.id));
+  const catOn        = (cls) => activeCats.includes(getCat(cls).key);
 
   return (
     <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif",background:"#08080f",minHeight:"100vh",color:"#e0e0e0" }}>
@@ -965,7 +1106,7 @@ export default function ScheduleDashboard() {
         <span style={{ color:"#1a1a2e" }}>|</span>
         <span style={{ fontSize:12,color:"#303050",fontWeight:500 }}>Rooster Analyse · Amsterdam</span>
         <div style={{ marginLeft:"auto",fontSize:11,color:"#252535" }}>
-          {visibleGyms.length}/{gyms.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls)).length,0)} lessen
+          {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
         </div>
       </header>
 
@@ -975,9 +1116,9 @@ export default function ScheduleDashboard() {
         <aside style={{ width:200,borderRight:"1px solid #0f0f1e",
           padding:"16px 12px",overflowY:"auto",flexShrink:0 }}>
           <div style={{ ...LABEL,marginBottom:10 }}>Gyms</div>
-          {gyms.map((gym,i) => {
+          {gymsSorted.map((gym,i) => {
             const active = activeGyms.includes(gym.id);
-            const col    = PALETTE[i]||"#888";
+            const col    = gymAccent(gym, PALETTE[i]||"#888");
             return (
               <button key={gym.id} onClick={()=>toggleGym(gym.id)} style={{
                 display:"flex",alignItems:"center",gap:8,width:"100%",
@@ -989,11 +1130,11 @@ export default function ScheduleDashboard() {
                 <div style={{ width:3,height:30,borderRadius:2,background:col,flexShrink:0 }}/>
                 <div>
                   <div style={{ fontSize:11,fontWeight:gym.isAtc?800:600,
-                    color:gym.isAtc?"#E63946":"#c0c0cc",lineHeight:1.3 }}>
+                    color:gymNameColor(gym, "#c0c0cc"),lineHeight:1.3 }}>
                     <GymTag gym={gym}/>
                   </div>
                   <div style={{ fontSize:9,color:"#404060",marginTop:1 }}>
-                    {gym.schedule.filter(s=>!isOpenGym(s.cls)).length} lessen/week
+                    {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length} lessen/week
                   </div>
                 </div>
               </button>
@@ -1002,12 +1143,21 @@ export default function ScheduleDashboard() {
 
           <div style={{ height:1,background:"#0f0f1e",margin:"16px 0" }}/>
           <div style={{ ...LABEL,marginBottom:10 }}>Categorieën</div>
-          {CATEGORIES.map(cat=>(
-            <div key={cat.key} style={{ display:"flex",alignItems:"center",gap:7,marginBottom:5 }}>
-              <div style={{ width:7,height:7,borderRadius:2,background:cat.color,flexShrink:0 }}/>
-              <span style={{ fontSize:10,color:"#555" }}>{cat.label}</span>
-            </div>
-          ))}
+          {CATEGORIES.map(cat=>{
+            const active = activeCats.includes(cat.key);
+            return (
+              <button key={cat.key} onClick={()=>toggleCat(cat.key)} style={{
+                display:"flex",alignItems:"center",gap:8,width:"100%",
+                padding:"6px 8px",borderRadius:8,marginBottom:3,
+                background:active?"#0d0d18":"transparent",
+                border:`1px solid ${active?`${cat.color}40`:"transparent"}`,
+                opacity:active?1:0.3,transition:"all .15s",textAlign:"left",
+              }}>
+                <div style={{ width:7,height:7,borderRadius:2,background:cat.color,flexShrink:0 }}/>
+                <span style={{ fontSize:10,fontWeight:700,color:active?cat.color:"#555" }}>{cat.label}</span>
+              </button>
+            );
+          })}
         </aside>
 
         {/* Main */}
@@ -1024,10 +1174,10 @@ export default function ScheduleDashboard() {
             ))}
           </div>
 
-          {tab==="dag"     && <DagView     visibleGyms={visibleGyms} day={day} setDay={setDay}/>}
-          {tab==="week"    && <WeekView    visibleGyms={visibleGyms}/>}
-          {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms}/>}
-          {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms}/>}
+          {tab==="dag"     && <DagView     visibleGyms={visibleGyms} day={day} setDay={setDay} activeCats={activeCats}/>}
+          {tab==="week"    && <WeekView    visibleGyms={visibleGyms} activeCats={activeCats}/>}
+          {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms} activeCats={activeCats}/>}
+          {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms} activeCats={activeCats}/>}
           {tab==="opengym" && <OpenGymView/>}
         </main>
       </div>

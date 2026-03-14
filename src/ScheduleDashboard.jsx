@@ -613,11 +613,12 @@ const getCat = cls => {
 };
 const isOpenGym = cls => cls.toLowerCase().includes("open gym");
 
-const LABEL = { fontSize:9,fontWeight:700,letterSpacing:"1.8px",textTransform:"uppercase",color:"#303050" };
-const TH    = { padding:"8px 12px",fontSize:9,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",
-                color:"#252540",borderBottom:"1px solid #111120",background:"#08080f",
-                position:"sticky",top:0,zIndex:1,whiteSpace:"nowrap" };
-const CARD  = { background:"#0d0d18",border:"1px solid #151528",borderRadius:12 };
+const LABEL_BASE = { fontSize:9,fontWeight:700,letterSpacing:"1.8px",textTransform:"uppercase" };
+const getLabel = (T) => ({ ...LABEL_BASE, color: T.textMuted });
+const TH_BASE = { padding:"8px 12px",fontSize:9,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",
+                  position:"sticky",top:0,zIndex:1,whiteSpace:"nowrap" };
+const getTH = (T) => ({ ...TH_BASE, background: T.bg, color: T.textMuted, borderBottom: `1px solid ${T.border}` });
+const getCard = (T) => ({ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 12 });
 
 function GymTag({ gym }) {
   return <>{gym.name}</>;
@@ -625,20 +626,22 @@ function GymTag({ gym }) {
 
 // ─── VIEW: PER DAG ────────────────────────────────────────────────────────────
 
-function DagView({ visibleGyms, day, setDay, activeCats }) {
+function DagView({ visibleGyms, day, setDay, activeCats, theme }) {
+  const T = theme || DARK_THEME;
   const catOn = (cls) => activeCats.includes(getCat(cls).key);
   const cfd = (gym,d) =>
     gym.schedule
       .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
       .sort((a,b)=>tmin(a.time)-tmin(b.time));
+  const CARD = getCard(T);
   return <>
     <div style={{ display:"flex",gap:3,marginBottom:18,flexWrap:"wrap" }}>
       {DAYS.map(d => (
         <button key={d} onClick={()=>setDay(d)} style={{
           width:38,height:38,borderRadius:8,fontSize:11,fontWeight:700,border:"none",
-          background:day===d?"#141428":"transparent",
-          color:day===d?"#fff":"#404060",
-          outline:day===d?"1px solid #1e1e3a":"none",transition:"all .15s",
+          background:day===d?T.btnBgA:"transparent",
+          color:day===d?"#fff":T.textMuted,
+          outline:day===d?`1px solid ${T.border2}`:"none",transition:"all .15s",
         }}>{d}</button>
       ))}
     </div>
@@ -648,14 +651,14 @@ function DagView({ visibleGyms, day, setDay, activeCats }) {
         const cls = cfd(gym, day);
         return (
           <div key={gym.id} style={CARD}>
-            <div style={{ padding:"10px 14px",borderBottom:"1px solid #101020",
+            <div style={{ padding:"10px 14px",borderBottom:`1px solid ${T.border}`,
               display:"flex",alignItems:"center",gap:8 }}>
               <div style={{ width:3,height:28,borderRadius:2,background:col,flexShrink:0 }}/>
               <div style={{ flex:1 }}>
-                <div style={{ fontSize:12,fontWeight:700,color:gymNameColor(gym, "#c0c0cc") }}>
+                <div style={{ fontSize:12,fontWeight:700,color:gymNameColor(gym, T.textSub) }}>
                   <GymTag gym={gym}/>
                 </div>
-                <div style={{ fontSize:10,color:"#404060",marginTop:1 }}>
+                <div style={{ fontSize:10,color:T.textMuted,marginTop:1 }}>
                   {cls.length} lessen · {fmtH(cls.reduce((a,c)=>a+tdur(c.time,c.end),0))}
                 </div>
               </div>
@@ -663,20 +666,20 @@ function DagView({ visibleGyms, day, setDay, activeCats }) {
             </div>
             <div style={{ padding:"8px 12px" }}>
               {gym.schedule.length===0
-                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:"#1e1e2e" }}>Nog geen schema</div>
+                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:T.textMuted }}>Nog geen schema</div>
                 : cls.length===0
-                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:"#202030" }}>Geen lessen</div>
+                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:T.textMuted }}>Geen lessen</div>
                 : cls.map((c,j) => {
                     const cat = getCat(c.cls);
-                    return <div key={j} style={{ padding:"6px 10px",borderRadius:6,background:"#101020",
-                      border:"1px solid #181828",marginBottom:4,display:"flex",
+                    return <div key={j} style={{ padding:"6px 10px",borderRadius:6,background:T.row,
+                      border:`1px solid ${T.border}`,marginBottom:4,display:"flex",
                       justifyContent:"space-between",alignItems:"center" }}>
                       <div>
-                        <div style={{ fontSize:11,fontWeight:600,color:"#c0c0cc" }}>{c.cls}</div>
+                        <div style={{ fontSize:11,fontWeight:600,color:T.textSub }}>{c.cls}</div>
                         <span style={{ fontSize:9,padding:"1px 5px",borderRadius:3,
                           background:`${cat.color}18`,color:cat.color,fontWeight:600 }}>{cat.label}</span>
                       </div>
-                      <div style={{ fontSize:10,color:"#404060",marginLeft:8,flexShrink:0,textAlign:"right" }}>
+                      <div style={{ fontSize:10,color:T.textMuted,marginLeft:8,flexShrink:0,textAlign:"right" }}>
                         <div>{c.time}–{c.end}</div>
                         <div>{tdur(c.time,c.end)}m</div>
                       </div>
@@ -693,8 +696,12 @@ function DagView({ visibleGyms, day, setDay, activeCats }) {
 
 // ─── VIEW: WEEKOVERZICHT ─────────────────────────────────────────────────────
 
-function WeekView({ visibleGyms, activeCats }) {
+function WeekView({ visibleGyms, activeCats, theme }) {
+  const T = theme || DARK_THEME;
   const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const TH = getTH(T);
+  const CARD = getCard(T);
+  const LABEL = getLabel(T);
   const cfd = (gym,d) =>
     gym.schedule
       .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
@@ -724,7 +731,7 @@ function WeekView({ visibleGyms, activeCats }) {
 
       {/* Heatmap */}
       <div style={CARD}>
-        <div style={{ padding:"16px 20px 12px",borderBottom:"1px solid #101020" }}>
+        <div style={{ padding:"16px 20px 12px",borderBottom:`1px solid ${T.border}` }}>
           <div style={LABEL}>Lessen per dag</div>
         </div>
         <div style={{ overflowX:"auto",padding:"0 0 4px" }}>
@@ -739,13 +746,13 @@ function WeekView({ visibleGyms, activeCats }) {
               {gymStats.map(({ gym, totalMins }) => {
                 const col = gymAccent(gym, PALETTE[gym.id]||"#888");
                 return (
-                  <tr key={gym.id} style={{ borderBottom:"1px solid #0c0c18" }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#0f0f1e"}
+                  <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
+                    onMouseEnter={e=>e.currentTarget.style.background=T.row}
                     onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
                     <td style={{ padding:"10px 12px",whiteSpace:"nowrap" }}>
                       <div style={{ display:"flex",alignItems:"center",gap:7 }}>
                         <div style={{ width:3,height:24,borderRadius:2,background:col,flexShrink:0 }}/>
-                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, "#c0c0cc") }}>
+                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, T.textSub) }}>
                           <GymTag gym={gym}/>
                         </span>
                       </div>
@@ -756,7 +763,7 @@ function WeekView({ visibleGyms, activeCats }) {
                       return (
                         <td key={d} style={{ padding:"6px",textAlign:"center" }}>
                           <div style={{ width:36,height:30,borderRadius:6,margin:"0 auto",
-                            background:count>0?col:"#101020",opacity:count>0?op:1,
+                            background:count>0?col:T.row,opacity:count>0?op:1,
                             display:"flex",alignItems:"center",justifyContent:"center" }}>
                             {count>0&&<span style={{ fontSize:11,fontWeight:800,color:"#fff" }}>{count}</span>}
                           </div>
@@ -766,7 +773,7 @@ function WeekView({ visibleGyms, activeCats }) {
                     <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:800,fontSize:14,color:col }}>
                       {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length}
                     </td>
-                    <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:700,color:"#c0c0cc" }}>
+                    <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:700,color:T.textSub }}>
                       {fmtH(totalMins)}
                     </td>
                   </tr>
@@ -779,7 +786,7 @@ function WeekView({ visibleGyms, activeCats }) {
 
       {/* Uren per categorie */}
       <div style={CARD}>
-        <div style={{ padding:"16px 20px 12px",borderBottom:"1px solid #101020" }}>
+        <div style={{ padding:"16px 20px 12px",borderBottom:`1px solid ${T.border}` }}>
           <div style={LABEL}>Trainingsuren per categorie (per week)</div>
         </div>
         <div style={{ overflowX:"auto",padding:"0 0 4px" }}>
@@ -797,13 +804,13 @@ function WeekView({ visibleGyms, activeCats }) {
               {gymStats.map(({ gym, catMins, totalMins }) => {
                 const col = gymAccent(gym, PALETTE[gym.id]||"#888");
                 return (
-                  <tr key={gym.id} style={{ borderBottom:"1px solid #0c0c18" }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#0f0f1e"}
+                  <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
+                    onMouseEnter={e=>e.currentTarget.style.background=T.row}
                     onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
                     <td style={{ padding:"10px 12px",whiteSpace:"nowrap" }}>
                       <div style={{ display:"flex",alignItems:"center",gap:7 }}>
                         <div style={{ width:3,height:24,borderRadius:2,background:col,flexShrink:0 }}/>
-                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, "#c0c0cc") }}>
+                        <span style={{ fontSize:12,fontWeight:gym.isAtc?800:600,color:gymNameColor(gym, T.textSub) }}>
                           <GymTag gym={gym}/>
                         </span>
                       </div>
@@ -814,7 +821,7 @@ function WeekView({ visibleGyms, activeCats }) {
                         <td key={cat.key} style={{ padding:"8px 12px",textAlign:"center" }}>
                           {mins>0
                             ? <span style={{ fontSize:12,fontWeight:700,color:cat.color }}>{fmtH(mins)}</span>
-                            : <span style={{ fontSize:11,color:"#1e1e2e" }}>—</span>}
+                            : <span style={{ fontSize:11,color:T.textMuted }}>—</span>}
                         </td>
                       );
                     })}
@@ -838,15 +845,15 @@ function WeekView({ visibleGyms, activeCats }) {
           return (
             <div key={gym.id} style={{ display:"flex",alignItems:"center",gap:10,marginBottom:6 }}>
               <div style={{ width:150,fontSize:10,fontWeight:gym.isAtc?700:500,
-                color:gymNameColor(gym, "#555"),textAlign:"right",flexShrink:0,
+                color:gymNameColor(gym, T.textMuted),textAlign:"right",flexShrink:0,
                 overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{gym.name}</div>
-              <div style={{ flex:1,height:22,background:"#0a0a14",borderRadius:4,overflow:"hidden" }}>
+              <div style={{ flex:1,height:22,background:T.row,borderRadius:4,overflow:"hidden" }}>
                 <div style={{ width:`${pct}%`,height:"100%",background:col,borderRadius:4,
                   display:"flex",alignItems:"center",paddingLeft:8,minWidth:4,transition:"width .4s" }}>
                   {pct>8&&<span style={{ fontSize:10,fontWeight:700,color:"#fff" }}>{fmtH(totalMins)}</span>}
                 </div>
               </div>
-              {pct<=8&&<span style={{ fontSize:10,color:"#404060",flexShrink:0 }}>{fmtH(totalMins)}</span>}
+              {pct<=8&&<span style={{ fontSize:10,color:T.textMuted,flexShrink:0 }}>{fmtH(totalMins)}</span>}
             </div>
           );
         })}
@@ -857,8 +864,11 @@ function WeekView({ visibleGyms, activeCats }) {
 
 // ─── VIEW: LIJST PER DAG ─────────────────────────────────────────────────────
 
-function LijstView({ visibleGyms, activeCats }) {
+function LijstView({ visibleGyms, activeCats, theme }) {
   const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const T = theme || DARK_THEME;
+  const CARD = getCard(T);
+  const LABEL = getLabel(T);
   const DAY_MIN = 6 * 60;
   const DAY_MAX = 23 * 60;
   const TOTAL   = DAY_MAX - DAY_MIN;
@@ -906,11 +916,11 @@ function LijstView({ visibleGyms, activeCats }) {
         return (
           <div key={day} style={{ ...CARD, overflow:"hidden" }}>
             {/* Header */}
-            <div style={{ padding:"11px 18px",borderBottom:"1px solid #101020",
+            <div style={{ padding:"11px 18px",borderBottom:`1px solid ${T.border}`,
               display:"flex",alignItems:"center",gap:12,flexWrap:"wrap" }}>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:20,
-                letterSpacing:2,color:"#e0e0e0" }}>{DAY_LABELS[day]}</div>
-              <div style={{ fontSize:10,color:"#404060" }}>
+                letterSpacing:2,color:T.text }}>{DAY_LABELS[day]}</div>
+              <div style={{ fontSize:10,color:T.textMuted }}>
                 {allItems.length} lessen · {fmtH(totalMins)}
               </div>
             </div>
@@ -919,14 +929,14 @@ function LijstView({ visibleGyms, activeCats }) {
               <div style={{ minWidth:820 }}>
                 {/* Time axis */}
                 <div style={{ display:"grid", gridTemplateColumns:"200px 1fr",
-                  padding:"12px 18px 8px", borderBottom:"1px solid #0f0f1e" }}>
+                  padding:"12px 18px 8px", borderBottom:`1px solid ${T.border}` }}>
                   <div style={{ ...LABEL, alignSelf:"end" }}>Gyms</div>
                   <div>
                     <div style={{ position:"relative", height:16, marginBottom:6 }}>
                       {timeLabels.map(({ h, pct: p }) => (
                         <div key={h} style={{ position:"absolute", left:`${p}%`,
-                          fontSize:10, fontWeight:800, color:"#c0c0cc",
-                          textShadow:"0 1px 0 #00000060",
+                          fontSize:10, fontWeight:800, color:T.textSub,
+                          textShadow: T.bg === DARK_THEME.bg ? "0 1px 0 #00000060" : "none",
                           transform:"translateX(-50%)" }}>
                           {String(h).padStart(2,"0")}:00
                         </div>
@@ -936,7 +946,7 @@ function LijstView({ visibleGyms, activeCats }) {
                       {hourLines.map(({ h, pct: p, major }) => (
                         <div key={h} style={{ position:"absolute", left:`${p}%`,
                           top:0, bottom:0, width:major?2:1,
-                          background:major?"#1e1e3a":"#0f0f1e",
+                          background:major?T.border2:T.border,
                           opacity:major?1:0.65 }}/>
                       ))}
                     </div>
@@ -947,12 +957,12 @@ function LijstView({ visibleGyms, activeCats }) {
                 <div>
                   {perGym.map(({ gym, items, maxLane }) => {
                     const accent = gymAccent(gym, PALETTE[gym.id]||"#888");
-                    const nameCol = gymNameColor(gym, "#c0c0cc");
+                    const nameCol = gymNameColor(gym, T.textSub);
                     const rowHeight = Math.max(28, 10 + maxLane * 20);
 
                     return (
                       <div key={gym.id} style={{ display:"grid", gridTemplateColumns:"200px 1fr",
-                        padding:"10px 18px", borderBottom:"1px solid #0c0c18" }}>
+                        padding:"10px 18px", borderBottom:`1px solid ${T.border}` }}>
                         {/* Name cell */}
                         <div style={{ paddingRight:12, display:"flex", alignItems:"flex-start", gap:8 }}>
                           <div style={{ width:3, height:rowHeight, borderRadius:2, background:accent, flexShrink:0 }}/>
@@ -961,21 +971,21 @@ function LijstView({ visibleGyms, activeCats }) {
                               whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                               {gym.name}
                             </div>
-                            <div style={{ fontSize:9, color:"#404060", marginTop:2 }}>
+                            <div style={{ fontSize:9, color:T.textMuted, marginTop:2 }}>
                               {items.length ? `${items.length} les${items.length!==1?"sen":""}` : "Geen lessen"}
                             </div>
                           </div>
                         </div>
 
                         {/* Timeline cell */}
-                        <div style={{ position:"relative", height:rowHeight, background:"#08080f",
-                          border:"1px solid #101020", borderRadius:8, overflow:"hidden" }}>
+                        <div style={{ position:"relative", height:rowHeight, background:T.bg,
+                          border:`1px solid ${T.border}`, borderRadius:8, overflow:"hidden" }}>
                           {/* Grid lines */}
                           <div style={{ position:"absolute", inset:0, pointerEvents:"none", zIndex:0 }}>
                             {hourLines.map(({ h, pct: p, major }) => (
                               <div key={h} style={{ position:"absolute", left:`${p}%`,
                                 top:0, bottom:0, width:major?2:1,
-                                background:major?"#1e1e3a":"#0f0f1e",
+                                background:major?T.border2:T.border,
                                 opacity:major?1:0.65 }}/>
                             ))}
                           </div>
@@ -998,14 +1008,14 @@ function LijstView({ visibleGyms, activeCats }) {
                                   background:cat.color,
                                   opacity:0.9,
                                   border:`1px solid ${cat.color}80`,
-                                  boxShadow:`0 0 0 1px #00000020 inset`,
+                                  boxShadow: T.bg === DARK_THEME.bg ? "0 0 0 1px #00000020 inset" : "0 0 0 1px rgba(0,0,0,.08) inset",
                                   zIndex:2,
                                   overflow:"hidden",
                                 }}>
                                 <div style={{
                                   fontSize:9,
                                   fontWeight:800,
-                                  color:"#0b0b10",
+                                  color: T.bg === DARK_THEME.bg ? "#0b0b10" : "#1a1a2e",
                                   padding:"1px 6px",
                                   whiteSpace:"nowrap",
                                   textOverflow:"ellipsis",
@@ -1032,7 +1042,10 @@ function LijstView({ visibleGyms, activeCats }) {
 
 // ─── VIEW: GATEN IN DE MARKT ─────────────────────────────────────────────────
 
-function GatenView({ visibleGyms, activeCats }) {
+function GatenView({ visibleGyms, activeCats, theme }) {
+  const T = theme || DARK_THEME;
+  const CARD = getCard(T);
+  const LABEL = getLabel(T);
   const catOn = (cls) => activeCats.includes(getCat(cls).key);
   const cfd = (gym,d) => gym.schedule.filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls));
 
@@ -1066,7 +1079,7 @@ function GatenView({ visibleGyms, activeCats }) {
       <div style={{ ...CARD,padding:"11px 16px",display:"flex",gap:20,flexWrap:"wrap",alignItems:"center" }}>
         <div style={LABEL}>Legenda:</div>
         {[["#4ade80","#052e16","Aanwezig"],["#ef4444","#200505","Leeg → kans"],["#fbbf24","#1c1200","Weinig concurrentie"]].map(([c,bg,l])=>(
-          <div key={l} style={{ display:"flex",alignItems:"center",gap:6,fontSize:11,color:"#c0c0cc" }}>
+          <div key={l} style={{ display:"flex",alignItems:"center",gap:6,fontSize:11,color:T.textSub }}>
             <div style={{ width:10,height:10,borderRadius:2,background:bg,border:`1px solid ${c}40` }}/>
             {l}
           </div>
@@ -1076,15 +1089,15 @@ function GatenView({ visibleGyms, activeCats }) {
       {data.map(({ day, slotInfo, catInfo, missingCats, level, levelColor, totalLessen, totalMins }) => (
         <div key={day} style={{ ...CARD,overflow:"hidden" }}>
           {/* Header */}
-          <div style={{ padding:"11px 18px",borderBottom:"1px solid #101020",
+          <div style={{ padding:"11px 18px",borderBottom:`1px solid ${T.border}`,
             display:"flex",alignItems:"center",gap:12,flexWrap:"wrap" }}>
             <div style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:20,
-              letterSpacing:2,color:"#e0e0e0" }}>{DAY_LABELS[day]}</div>
-            <div style={{ fontSize:10,color:"#404060" }}>
+              letterSpacing:2,color:T.text }}>{DAY_LABELS[day]}</div>
+            <div style={{ fontSize:10,color:T.textMuted }}>
               {totalLessen} lessen · {fmtH(totalMins)}
             </div>
             <div style={{ marginLeft:"auto",display:"flex",alignItems:"center",gap:6 }}>
-              <span style={{ fontSize:9,color:"#404060",fontWeight:600,
+              <span style={{ fontSize:9,color:T.textMuted,fontWeight:600,
                 textTransform:"uppercase",letterSpacing:1 }}>Kansen:</span>
               <span style={{ fontSize:11,fontWeight:800,color:levelColor,
                 padding:"2px 10px",borderRadius:99,
@@ -1109,7 +1122,7 @@ function GatenView({ visibleGyms, activeCats }) {
                     <div style={{ flex:1 }}>
                       <span style={{ fontSize:11,fontWeight:600,
                         color:slot.isEmpty?"#f87171":"#86efac" }}>{slot.label}</span>
-                      <span style={{ fontSize:9,color:"#404060",marginLeft:6 }}>
+                      <span style={{ fontSize:9,color:T.textMuted,marginLeft:6 }}>
                         {String(Math.floor(slot.from/60)).padStart(2,"0")}:00–
                         {slot.to===24*60?"00:00":String(Math.floor(slot.to/60)).padStart(2,"0")+":00"}
                       </span>
@@ -1161,7 +1174,10 @@ function GatenView({ visibleGyms, activeCats }) {
 
 // ─── VIEW: OPEN GYM ──────────────────────────────────────────────────────────
 
-function OpenGymView() {
+function OpenGymView({ theme }) {
+  const T = theme || DARK_THEME;
+  const CARD = getCard(T);
+  const LABEL = getLabel(T);
   const DAY_MIN = 6 * 60;
   const DAY_MAX = 23 * 60;
   const TOTAL   = DAY_MAX - DAY_MIN;
@@ -1216,7 +1232,7 @@ function OpenGymView() {
       <div style={{ ...CARD, padding:"11px 16px", display:"flex", gap:20, flexWrap:"wrap", alignItems:"center" }}>
         <div style={LABEL}>Legenda:</div>
         {openGymDataSorted.map((g,i) => (
-          <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:"#c0c0cc" }}>
+          <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:T.textSub }}>
             <div style={{ width:14, height:10, borderRadius:2, background:gymAccent(g, PALETTE[i]), opacity:0.85 }}/>
             {g.name}
           </div>
@@ -1235,10 +1251,10 @@ function OpenGymView() {
         return (
           <div key={day} style={CARD}>
             {/* Dag header */}
-            <div style={{ padding:"11px 18px", borderBottom:"1px solid #101020",
+            <div style={{ padding:"11px 18px", borderBottom:`1px solid ${T.border}`,
               display:"flex", alignItems:"center", gap:12 }}>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:20,
-                letterSpacing:2, color:"#e0e0e0" }}>{DAY_LABELS[day]}</div>
+                letterSpacing:2, color:T.text }}>{DAY_LABELS[day]}</div>
               {gaps.length > 0 && (
                 <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
                   {gaps.map((g,i) => (
@@ -1251,7 +1267,7 @@ function OpenGymView() {
                 </div>
               )}
               {gaps.length === 0 && (
-                <span style={{ fontSize:10, color:"#404060" }}>Altijd minimaal 1 gym open</span>
+                <span style={{ fontSize:10, color:T.textMuted }}>Altijd minimaal 1 gym open</span>
               )}
             </div>
 
@@ -1260,7 +1276,7 @@ function OpenGymView() {
               <div style={{ position:"relative", height:16, marginBottom:6 }}>
                 {timeLabels.map(({ h, pct: p }) => (
                   <div key={h} style={{ position:"absolute", left:`${p}%`,
-                    fontSize:9, color:"#303050", transform:"translateX(-50%)" }}>
+                    fontSize:9, color:T.textMuted, transform:"translateX(-50%)" }}>
                     {String(h).padStart(2,"0")}:00
                   </div>
                 ))}
@@ -1271,7 +1287,7 @@ function OpenGymView() {
                 <div style={{ position:"absolute", inset:0, pointerEvents:"none", zIndex:0 }}>
                   {timeLabels.map(({ h, pct: p }) => (
                     <div key={h} style={{ position:"absolute", left:`${p}%`,
-                      top:0, bottom:0, width:1, background:"#0f0f1e" }}/>
+                      top:0, bottom:0, width:1, background:T.border }}/>
                   ))}
                 </div>
 
@@ -1294,11 +1310,11 @@ function OpenGymView() {
                   const col = gymAccent(gym, PALETTE[gi]);
                   return (
                     <div key={gym.id} style={{ position:"relative", height:32, marginBottom:4,
-                      background:"#08080f", borderRadius:6, overflow:"hidden", zIndex:2 }}>
+                      background:T.bg, borderRadius:6, overflow:"hidden", zIndex:2 }}>
                       {/* Lege achtergrond */}
                       <div style={{ position:"absolute", inset:0,
                         display:"flex", alignItems:"center", paddingLeft:6 }}>
-                        <span style={{ fontSize:10, color:"#1a1a2e", fontWeight:600 }}>
+                        <span style={{ fontSize:10, color:T.textMuted, fontWeight:600 }}>
                           {gym.name}
                         </span>
                       </div>
@@ -1323,7 +1339,7 @@ function OpenGymView() {
                         <div style={{ position:"absolute", inset:0,
                           display:"flex", alignItems:"center", justifyContent:"flex-end",
                           paddingRight:8, zIndex:3 }}>
-                          <span style={{ fontSize:9, color:"#1a1a2e" }}>gesloten</span>
+                          <span style={{ fontSize:9, color:T.textMuted }}>gesloten</span>
                         </div>
                       )}
                     </div>
@@ -1347,9 +1363,33 @@ const TABS = [
   ["gaten",   "Gaten in markt"],
   ["opengym", "Open Gym"],
 ];
-
+const DARK_THEME = {
+  bg:       "#08080f",
+  surface:  "#0d0d18",
+  border:   "#0f0f1e",
+  border2:  "#151528",
+  text:     "#e0e0e0",
+  textMuted:"#404060",
+  textSub:  "#c0c0cc",
+  row:      "#101020",
+  btnBgA:   "#141428",
+  btnBorder:"#151528",
+};
+const LIGHT_THEME = {
+  bg:       "#f4f4f8",
+  surface:  "#ffffff",
+  border:   "#e0e0ea",
+  border2:  "#d0d0e0",
+  text:     "#1a1a2e",
+  textMuted:"#888899",
+  textSub:  "#444455",
+  row:      "#f0f0f8",
+  btnBgA:   "#e8e8f8",
+  btnBorder:"#c0c0d8",
+};
 export default function ScheduleDashboard() {
   const [tab,        setTab]        = useState("dag");
+  const [dark, setDark]             = useState(true);
   const [day,        setDay]        = useState("Ma");
   const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
   const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
@@ -1357,37 +1397,79 @@ export default function ScheduleDashboard() {
   const toggleGym    = id => setActiveGyms(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const toggleCat    = key => setActiveCats(p=>p.includes(key)?p.filter(x=>x!==key):[...p,key]);
   const visibleGyms  = gymsSorted.filter(g=>activeGyms.includes(g.id));
+  const T = dark ? DARK_THEME : LIGHT_THEME;
   const catOn        = (cls) => activeCats.includes(getCat(cls).key);
 
   return (
-    <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif",background:"#08080f",minHeight:"100vh",color:"#e0e0e0" }}>
+    <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif",background:T.bg,minHeight:"100vh",width:"100%",color:T.text }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
-        body{background:#08080f;}
+        body{background:${T.bg};}
         button{font-family:inherit;cursor:pointer;}
         ::-webkit-scrollbar{width:4px;height:4px;}
-        ::-webkit-scrollbar-thumb{background:#1e1e2e;border-radius:2px;}
+        ::-webkit-scrollbar-thumb{background:${T.border2};border-radius:2px;}
       `}</style>
 
-      <header style={{ padding:"13px 24px",borderBottom:"1px solid #0f0f1e",
-        display:"flex",alignItems:"center",gap:14 }}>
+      <header style={{ padding:"13px 24px",borderBottom:`1px solid ${T.border}`,
+  display:"flex", alignItems:"center", gap:14, background:T.bg }}>
         <span style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,
           background:"linear-gradient(120deg,#e63946,#f4a261)",
           WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent" }}>ATC</span>
-        <span style={{ color:"#1a1a2e" }}>|</span>
-        <span style={{ fontSize:12,color:"#303050",fontWeight:500 }}>Rooster Analyse · Amsterdam</span>
-        <div style={{ marginLeft:"auto",fontSize:11,color:"#252535" }}>
-          {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
-        </div>
+        <span style={{ color:T.textMuted }}>|</span>
+        <span style={{ fontSize:12,color:T.textMuted,fontWeight:500 }}>Rooster Analyse · Amsterdam</span>
+        <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:16 }}>
+  <span style={{ fontSize:11, color:T.textMuted }}>
+    {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
+  </span>
+
+  {/* ── DARK / LIGHT TOGGLE ── */}
+  <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+    <span style={{ fontSize:13 }}>{dark ? "🌙" : "☀️"}</span>
+    <div
+      onClick={() => setDark(d => !d)}
+      style={{
+        width:44, height:24, borderRadius:12, cursor:"pointer",
+        background: dark ? "#2a2a4a" : "#c8c8d8",
+        position:"relative", transition:"background .2s",
+      }}
+    >
+      <div style={{
+        position:"absolute", top:3,
+        left: dark ? 23 : 3,
+        width:18, height:18, borderRadius:"50%",
+        background: dark ? "#8080c0" : "#ffffff",
+        boxShadow:"0 1px 3px rgba(0,0,0,.3)",
+        transition:"left .2s",
+      }}/>
+    </div>
+    <span style={{ fontSize:13 }}>{dark ? "" : "🌙"}</span>
+  </div>
+</div>
       </header>
 
       <div style={{ display:"flex",height:"calc(100vh - 53px)" }}>
 
         {/* Sidebar */}
-        <aside style={{ width:200,borderRight:"1px solid #0f0f1e",
-          padding:"16px 12px",overflowY:"auto",flexShrink:0 }}>
-          <div style={{ ...LABEL,marginBottom:10 }}>Gyms</div>
+        <aside style={{ width:200, borderRight:`1px solid ${T.border}`,
+  padding:"16px 12px", overflowY:"auto", flexShrink:0, background:T.bg }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+  <div style={{ ...getLabel(T) }}>Gyms</div>
+  <div style={{ display:"flex", gap:4 }}>
+    <button onClick={() => setActiveGyms(gymsSorted.map(g=>g.id))}
+      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+      Alles aan
+    </button>
+    <button onClick={() => setActiveGyms([])}
+      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+      Alles uit
+    </button>
+  </div>
+</div>
           {gymsSorted.map((gym,i) => {
             const active = activeGyms.includes(gym.id);
             const col    = gymAccent(gym, PALETTE[i]||"#888");
@@ -1395,17 +1477,17 @@ export default function ScheduleDashboard() {
               <button key={gym.id} onClick={()=>toggleGym(gym.id)} style={{
                 display:"flex",alignItems:"center",gap:8,width:"100%",
                 padding:"7px 8px",borderRadius:8,marginBottom:3,
-                background:active?"#0d0d18":"transparent",
-                border:`1px solid ${active?"#151528":"transparent"}`,
+                background:active?T.surface:"transparent",
+                border:`1px solid ${active?T.border2:"transparent"}`,
                 opacity:active?1:0.3,transition:"all .15s",textAlign:"left",
               }}>
                 <div style={{ width:3,height:30,borderRadius:2,background:col,flexShrink:0 }}/>
                 <div>
                   <div style={{ fontSize:11,fontWeight:gym.isAtc?800:600,
-                    color:gymNameColor(gym, "#c0c0cc"),lineHeight:1.3 }}>
+                    color:gymNameColor(gym, T.textSub),lineHeight:1.3 }}>
                     <GymTag gym={gym}/>
                   </div>
-                  <div style={{ fontSize:9,color:"#404060",marginTop:1 }}>
+                  <div style={{ fontSize:9,color:T.textMuted,marginTop:1 }}>
                     {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length} lessen/week
                   </div>
                 </div>
@@ -1413,20 +1495,36 @@ export default function ScheduleDashboard() {
             );
           })}
 
-          <div style={{ height:1,background:"#0f0f1e",margin:"16px 0" }}/>
-          <div style={{ ...LABEL,marginBottom:10 }}>Categorieën</div>
+          <div style={{ height:1,background:T.border,margin:"16px 0" }}/>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+  <div style={{ ...getLabel(T) }}>Categorieën</div>
+  <div style={{ display:"flex", gap:4 }}>
+    <button onClick={() => setActiveCats(CATEGORIES.map(c=>c.key))}
+      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+      Alles aan
+    </button>
+    <button onClick={() => setActiveCats([])}
+      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+      Alles uit
+    </button>
+  </div>
+</div>
           {CATEGORIES.map(cat=>{
             const active = activeCats.includes(cat.key);
             return (
               <button key={cat.key} onClick={()=>toggleCat(cat.key)} style={{
                 display:"flex",alignItems:"center",gap:8,width:"100%",
                 padding:"6px 8px",borderRadius:8,marginBottom:3,
-                background:active?"#0d0d18":"transparent",
+                background:active?T.surface:"transparent",
                 border:`1px solid ${active?`${cat.color}40`:"transparent"}`,
                 opacity:active?1:0.3,transition:"all .15s",textAlign:"left",
               }}>
                 <div style={{ width:7,height:7,borderRadius:2,background:cat.color,flexShrink:0 }}/>
-                <span style={{ fontSize:10,fontWeight:700,color:active?cat.color:"#555" }}>{cat.label}</span>
+                <span style={{ fontSize:10,fontWeight:700,color:active?cat.color:T.textMuted }}>{cat.label}</span>
               </button>
             );
           })}
@@ -1434,23 +1532,23 @@ export default function ScheduleDashboard() {
 
         {/* Main */}
         <main style={{ flex:1,overflowY:"auto",padding:"18px 20px" }}>
-          <div style={{ display:"flex",gap:2,background:"#0d0d18",border:"1px solid #151528",
+          <div style={{ display:"flex",gap:2,background:T.surface,border:`1px solid ${T.border2}`,
             borderRadius:9,padding:3,marginBottom:18,width:"fit-content" }}>
             {TABS.map(([k,l])=>(
               <button key={k} onClick={()=>setTab(k)} style={{
                 padding:"6px 16px",borderRadius:7,fontSize:12,fontWeight:700,
                 border:"none",transition:"all .15s",letterSpacing:.3,
-                background:tab===k?"#141428":"transparent",
-                color:tab===k?"#fff":"#404060",
+                background:tab===k?T.btnBgA:"transparent",
+                color:tab===k?"#fff":T.textMuted,
               }}>{l}</button>
             ))}
           </div>
 
-          {tab==="dag"     && <DagView     visibleGyms={visibleGyms} day={day} setDay={setDay} activeCats={activeCats}/>}
-          {tab==="week"    && <WeekView    visibleGyms={visibleGyms} activeCats={activeCats}/>}
-          {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms} activeCats={activeCats}/>}
-          {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms} activeCats={activeCats}/>}
-          {tab==="opengym" && <OpenGymView/>}
+          {tab==="dag"     && <DagView     visibleGyms={visibleGyms} day={day} setDay={setDay} activeCats={activeCats} theme={T}/>}
+          {tab==="week"    && <WeekView    visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
+          {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
+          {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
+          {tab==="opengym" && <OpenGymView theme={T}/>}
         </main>
       </div>
     </div>

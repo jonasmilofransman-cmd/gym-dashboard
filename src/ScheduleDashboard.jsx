@@ -1387,9 +1387,12 @@ const LIGHT_THEME = {
   btnBgA:   "#e8e8f8",
   btnBorder:"#c0c0d8",
 };
-export default function ScheduleDashboard() {
+export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp }) {
+  const [internalDark, setInternalDark] = useState(true);
+  const dark = darkProp !== undefined ? darkProp : internalDark;
+  const setDark = setDarkProp !== undefined ? setDarkProp : setInternalDark;
+
   const [tab,        setTab]        = useState("dag");
-  const [dark, setDark]             = useState(true);
   const [day,        setDay]        = useState("Ma");
   const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
   const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
@@ -1401,7 +1404,7 @@ export default function ScheduleDashboard() {
   const catOn        = (cls) => activeCats.includes(getCat(cls).key);
 
   return (
-    <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif",background:T.bg,minHeight:"100vh",width:"100%",color:T.text }}>
+    <div style={{ fontFamily:"'DM Sans',system-ui,sans-serif",background:T.bg,minHeight:noHeader?"100%":"100vh",width:"100%",color:T.text }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
@@ -1411,6 +1414,7 @@ export default function ScheduleDashboard() {
         ::-webkit-scrollbar-thumb{background:${T.border2};border-radius:2px;}
       `}</style>
 
+      {!noHeader && (
       <header style={{ padding:"13px 24px",borderBottom:`1px solid ${T.border}`,
   display:"flex", alignItems:"center", gap:14, background:T.bg }}>
         <span style={{ fontFamily:"'Bebas Neue',sans-serif",fontSize:26,letterSpacing:3,
@@ -1423,7 +1427,6 @@ export default function ScheduleDashboard() {
     {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
   </span>
 
-  {/* ── DARK / LIGHT TOGGLE ── */}
   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
     <span style={{ fontSize:13 }}>{dark ? "🌙" : "☀️"}</span>
     <div
@@ -1447,8 +1450,9 @@ export default function ScheduleDashboard() {
   </div>
 </div>
       </header>
+      )}
 
-      <div style={{ display:"flex",height:"calc(100vh - 53px)" }}>
+      <div style={{ display:"flex",height:noHeader?"calc(100vh - 53px)":"calc(100vh - 53px)" }}>
 
         {/* Sidebar */}
         <aside style={{ width:200, borderRight:`1px solid ${T.border}`,

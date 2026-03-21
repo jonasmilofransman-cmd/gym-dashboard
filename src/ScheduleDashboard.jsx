@@ -1,11 +1,11 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 const DAYS = ["Ma","Di","Wo","Do","Vr","Za","Zo"];
 const DAY_LABELS = { Ma:"Maandag",Di:"Dinsdag",Wo:"Woensdag",Do:"Donderdag",Vr:"Vrijdag",Za:"Zaterdag",Zo:"Zondag" };
 
-const CATEGORIES = [
+export const CATEGORIES = [
   { key:"jeugd",      label:"Jeugd",            keywords:["jeugd","youth","kids","kidsles","13-17","6-12","12-17"],          color:"#06d6a0" },
   { key:"bjj",        label:"BJJ / Grappling",  keywords:["bjj","jiu jitsu","jitsu","grappling","agua","submission"],        color:"#3a86ff" },
   { key:"wrestling",  label:"Worstelen",         keywords:["amsterdam airlines","wrestling","worstelen"],                     color:"#2ec4b6" },
@@ -25,41 +25,146 @@ const SLOTS = [
   { key:"avond",   label:"Avond",   from:17*60, to:24*60, color:"#8338ec" },
 ];
 
+// Extended palette for gym colors (ATC and Ettaki have fixed colors below)
 const PALETTE = [
-  "#E63946","#3a86ff","#06d6a0","#ffb703","#8338ec",
-  "#fb5607","#2ec4b6","#f77f00","#4cc9f0","#80b918",
-  "#e9c46a","#9d4edd","#f72585","#023e8a","#b5179e",
-  "#264653","#e76f51","#2d6a4f","#7209b7","#3c096c",
-  "#ff006e","#8ac926","#1982c4","#6a4c93","#f4a261",
+  "#E63946","#3a86ff","#06d6a0","#8338ec","#fb5607",
+  "#2ec4b6","#f77f00","#4cc9f0","#80b918","#9d4edd",
+  "#f72585","#023e8a","#b5179e","#264653","#e76f51",
+  "#2d6a4f","#7209b7","#3c096c","#ff006e","#8ac926",
+  "#1982c4","#6a4c93","#f4a261","#06ffa5","#7b2cbf",
+  "#ee9b00","#2a9d8f","#e07a5f","#3d5a80","#bc4749",
 ];
 
-const gyms = [
+export const BASE_GYMS = [
+  { id: 4, name: "10th Planet Jiu-Jitsu Amsterdam", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Ma", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Di", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Wo", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Wo", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Do", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Vr", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Za", time:"19:30", end:"21:00", cls:"Open Mat" },
+    { day:"Zo", time:"11:30", end:"13:00", cls:"Open Mat" },
+],
+},
+
+{ id: 5, name: "Amsterdam Airlines", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"13:30", end:"15:00", cls:"Ne-Waza – Grondwerk (BJJ, submissions, controle)" },
+    { day:"Ma", time:"18:00", end:"19:30", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Di", time:"12:00", end:"13:30", cls:"Ne-Waza – Grondwerk (BJJ, submissions, controle)" },
+    { day:"Di", time:"19:30", end:"21:00", cls:"Sparring Only – Alleen live sparren (hoge intensiteit)" },
+    { day:"Wo", time:"10:00", end:"11:30", cls:"Pro Training – Alleen voor gevorderde/high-level vechters (invite only)" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Beginners – Basis technieken, minder intensiteit" },
+    { day:"Do", time:"19:30", end:"21:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Pro Training – Alleen voor gevorderde/high-level vechters (invite only)" },
+    { day:"Vr", time:"11:00", end:"12:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Vr", time:"20:00", end:"22:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+],
+},
+
+{ id: 6, name: "Amsterdam BJJ", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"13:00", cls:"BJJ Basics" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Street BJJ/MMA" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"BJJ Basics" },
+    { day:"Ma", time:"21:00", end:"22:00", cls:"Open Mat" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"BJJ White Belts" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Wo", time:"12:00", end:"13:00", cls:"BJJ No-Gi" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"BJJ No-Gi" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Street BJJ/MMA" },
+    { day:"Do", time:"20:00", end:"21:00", cls:"BJJ Basics" },
+    { day:"Do", time:"21:00", end:"22:00", cls:"Open Mat" },
+    { day:"Vr", time:"12:00", end:"13:00", cls:"BJJ Basics" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"BJJ No-Gi" },
+    { day:"Vr", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"BJJ Kids 6–8" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"BJJ Kids 9–14" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Women Only Self Defence" },
+    { day:"Za", time:"12:00", end:"13:00", cls:"BJJ No-Gi" },
+    { day:"Za", time:"13:00", end:"14:00", cls:"Open Mat" },
+    { day:"Zo", time:"14:00", end:"15:00", cls:"Women Only Self Defence" },
+    { day:"Zo", time:"14:00", end:"16:00", cls:"Open Mat" },
+],
+},
+
+{ id: 7, name: "Amsterdam Grappling Academy", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"BJJ" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"BJJ" },
+    { day:"Di", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Di", time:"17:30", end:"18:30", cls:"BJJ" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"BJJ" },
+    { day:"Wo", time:"12:00", end:"13:00", cls:"BJJ" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"BJJ" },
+    { day:"Do", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"BJJ" },
+    { day:"Za", time:"09:00", end:"10:00", cls:"BJJ" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Open Mat" },
+],
+},
+
+{ id: 8, name: "Arena Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"07:00", end:"08:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"CrossFit WOD" },
+    { day:"Di", time:"07:00", end:"08:00", cls:"Hyrox" },
+    { day:"Di", time:"11:00", end:"12:00", cls:"Kickboksen (Advanced)" },
+    { day:"Di", time:"12:00", end:"13:00", cls:"Hyrox" },
+    { day:"Di", time:"16:30", end:"17:30", cls:"Kickboksen (Kids)" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Hyrox" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Kickboksen (Advanced)" },
+    { day:"Wo", time:"07:00", end:"08:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Kickboksen (recreatief)" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen (Advanced)" },
+    { day:"Do", time:"11:00", end:"12:00", cls:"Kickboksen (Advanced)" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"CrossFit WOD" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Kickboksen (recreatief)" },
+    { day:"Vr", time:"07:00", end:"08:00", cls:"Hyrox" },
+    { day:"Vr", time:"16:30", end:"17:30", cls:"Kickboksen (Kids)" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"CrossFit WOD" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"CrossFit WOD" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboksen (recreatief)" },
+    { day:"Za", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Hyrox" },
+    { day:"Zo", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Zo", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+],
+},
   {
     id: 0, name: "ATC", isAtc: true,
     schedule: [
       { day:"Ma", time:"07:00", end:"08:30", cls:"United Fighters – BJJ" },
-      { day:"Ma", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Ma", time:"13:30", end:"15:00", cls:"Amsterdam Airlines" },
       { day:"Ma", time:"17:00", end:"18:00", cls:"Open Mat" },
       { day:"Ma", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Ma", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Ma", time:"20:00", end:"21:00", cls:"Kickboksen" },
-      { day:"Ma", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Di", time:"10:00", end:"11:15", cls:"MMA" },
-      { day:"Di", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Di", time:"16:45", end:"18:00", cls:"Jeugd MMA" },
       { day:"Di", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Di", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Di", time:"20:15", end:"21:45", cls:"Team Agua – BJJ" },
       { day:"Wo", time:"07:00", end:"08:30", cls:"United Fighters – BJJ" },
-      { day:"Wo", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Wo", time:"17:00", end:"18:00", cls:"Open Mat" },
       { day:"Wo", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Wo", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen" },
-      { day:"Wo", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Do", time:"10:00", end:"11:15", cls:"MMA" },
-      { day:"Do", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Do", time:"16:45", end:"18:00", cls:"Jeugd MMA" },
       { day:"Do", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Do", time:"18:45", end:"20:00", cls:"MMA" },
@@ -69,13 +174,10 @@ const gyms = [
       { day:"Vr", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Vr", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Vr", time:"20:00", end:"21:00", cls:"Amsterdam Airlines" },
-      { day:"Vr", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Za", time:"11:00", end:"12:00", cls:"Flow Fit" },
       { day:"Za", time:"12:00", end:"13:00", cls:"Kickboksen" },
       { day:"Za", time:"13:00", end:"14:30", cls:"Team Agua – BJJ" },
-      { day:"Za", time:"19:30", end:"21:00", cls:"10th Planet Jiu Jitsu" },
       { day:"Zo", time:"08:30", end:"11:00", cls:"Personal Training" },
-      { day:"Zo", time:"11:30", end:"13:00", cls:"10th Planet Jiu Jitsu" },
       { day:"Zo", time:"13:00", end:"14:30", cls:"Team Agua – BJJ" },
     ],
   },
@@ -588,30 +690,64 @@ const openGymData = [
   { id: 14, name: "Royal Gym Amsterdam", isAtc: false, hours: [] },
   { id: 15, name: "Sin City Boxing", isAtc: false, hours: [] },
   { id: 16, name: "Sport city", isAtc: false, hours: [] },
+  { id: 17, name: "10th Planet Jiu-Jitsu Amsterdam", isAtc: false, hours: [] },
 ];
 
 // Sort gyms alphabetically and reassign ids so colors stay consistent
-const gymsSorted = [...gyms].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
+const gymsSorted = [...BASE_GYMS].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
 const openGymDataSorted = [...openGymData].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
 
+// ATC = always red, Ettaki = always yellow (roster + gym data)
+const ATC_RED = "#E63946";
 const ETTaki_YELLOW = "#ffb703";
-const isEttaki = (gym) => gym?.name?.toLowerCase() === "ettakigym";
-const gymAccent = (gym, fallback) => (isEttaki(gym) ? ETTaki_YELLOW : fallback);
-const gymNameColor = (gym, fallback) => (gym.isAtc ? "#E63946" : (isEttaki(gym) ? ETTaki_YELLOW : fallback));
+const isEttaki = (gym) => gym?.name?.toLowerCase().replace(/\s/g, "") === "ettakigym";
+// Name-based colors so every gym has a fixed color in both roster and open gym views
+const GYM_COLORS_BY_NAME = {
+  "ATC": ATC_RED,
+  "EttakiGym": ETTaki_YELLOW,
+  "Bensy Gym": "#3a86ff",
+  "Eastbound Gym": "#06d6a0",
+  "El Otmani Gym": "#8338ec",
+  "Elite Training Center": "#fb5607",
+  "FIGHT DISTRICT": "#2ec4b6",
+  "Fight IQ": "#f77f00",
+  "Gym Royale": "#4cc9f0",
+  "Gym Southpaw": "#80b918",
+  "Southpaw": "#80b918",
+  "Kops Gym": "#9d4edd",
+  "KOPS": "#9d4edd",
+  "Martial Arts Center Amsterdam": "#f72585",
+  "MOUSID GYM": "#023e8a",
+  "Patrick's Gym": "#b5179e",
+  "Royal Gym Amsterdam": "#264653",
+  "Sin City Boxing": "#e76f51",
+  "Sport city": "#2d6a4f",
+  "10th Planet Jiu-Jitsu Amsterdam": "#5c4d7d",
+};
+const hashName = (s) => { let h = 0; for (let i = 0; i < (s||"").length; i++) h = ((h << 5) - h) + s.charCodeAt(i) | 0; return Math.abs(h); };
+const getGymColor = (gym) => {
+  if (gym?.isAtc) return ATC_RED;
+  if (isEttaki(gym)) return ETTaki_YELLOW;
+  const name = gym?.name;
+  if (name && GYM_COLORS_BY_NAME[name] !== undefined) return GYM_COLORS_BY_NAME[name];
+  return PALETTE[hashName(name || "") % PALETTE.length] || "#888";
+};
+const gymAccent = (gym, _fallback) => getGymColor(gym);
+const gymNameColor = (gym, fallback) => (gym?.isAtc ? ATC_RED : (isEttaki(gym) ? ETTaki_YELLOW : (fallback ?? getGymColor(gym))));
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
-const tmin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
-const tdur = (s,e) => tmin(e) - tmin(s);
+export const tmin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+export const tdur = (s,e) => tmin(e) - tmin(s);
 const fmtH = mins => {
   const h = Math.floor(mins/60), m = mins%60;
   return m === 0 ? `${h}u` : `${h}u${m}m`;
 };
-const getCat = cls => {
+export const getCat = cls => {
   const low = cls.toLowerCase();
   return CATEGORIES.find(c => c.keywords.some(k => low.includes(k))) || CATEGORIES[CATEGORIES.length-1];
 };
-const isOpenGym = cls => cls.toLowerCase().includes("open gym");
+export const isOpenGym = cls => cls.toLowerCase().includes("open gym");
 
 const LABEL_BASE = { fontSize:9,fontWeight:700,letterSpacing:"1.8px",textTransform:"uppercase" };
 const getLabel = (T) => ({ ...LABEL_BASE, color: T.textMuted });
@@ -647,7 +783,7 @@ function DagView({ visibleGyms, day, setDay, activeCats, theme }) {
     </div>
     <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(255px,1fr))",gap:12 }}>
       {visibleGyms.map(gym => {
-        const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+        const col = getGymColor(gym);
         const cls = cfd(gym, day);
         return (
           <div key={gym.id} style={CARD}>
@@ -744,7 +880,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, totalMins }) => {
-                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+                const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
                     onMouseEnter={e=>e.currentTarget.style.background=T.row}
@@ -802,7 +938,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, catMins, totalMins }) => {
-                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+                const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
                     onMouseEnter={e=>e.currentTarget.style.background=T.row}
@@ -840,7 +976,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
       <div style={{ ...CARD,padding:20 }}>
         <div style={{ ...LABEL,marginBottom:14 }}>Totaal trainingsuren / week</div>
         {[...gymStats].sort((a,b)=>b.totalMins-a.totalMins).map(({ gym, totalMins }) => {
-          const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+          const col = getGymColor(gym);
           const pct = (totalMins/maxMins)*100;
           return (
             <div key={gym.id} style={{ display:"flex",alignItems:"center",gap:10,marginBottom:6 }}>
@@ -956,7 +1092,7 @@ function LijstView({ visibleGyms, activeCats, theme }) {
                 {/* Rows per gym */}
                 <div>
                   {perGym.map(({ gym, items, maxLane }) => {
-                    const accent = gymAccent(gym, PALETTE[gym.id]||"#888");
+                    const accent = getGymColor(gym);
                     const nameCol = gymNameColor(gym, T.textSub);
                     const rowHeight = Math.max(28, 10 + maxLane * 20);
 
@@ -1233,7 +1369,7 @@ function OpenGymView({ theme }) {
         <div style={LABEL}>Legenda:</div>
         {openGymDataSorted.map((g,i) => (
           <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:T.textSub }}>
-            <div style={{ width:14, height:10, borderRadius:2, background:gymAccent(g, PALETTE[i]), opacity:0.85 }}/>
+            <div style={{ width:14, height:10, borderRadius:2, background:getGymColor(g), opacity:0.85 }}/>
             {g.name}
           </div>
         ))}
@@ -1307,7 +1443,7 @@ function OpenGymView({ theme }) {
                 {/* Gym bars */}
                 {openGymDataSorted.map((gym, gi) => {
                   const dayHours = gym.hours.find(h => h.day === day);
-                  const col = gymAccent(gym, PALETTE[gi]);
+                  const col = getGymColor(gym);
                   return (
                     <div key={gym.id} style={{ position:"relative", height:32, marginBottom:4,
                       background:T.bg, borderRadius:6, overflow:"hidden", zIndex:2 }}>
@@ -1387,7 +1523,7 @@ const LIGHT_THEME = {
   btnBgA:   "#e8e8f8",
   btnBorder:"#c0c0d8",
 };
-export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp }) {
+export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp, extraGymNames = [] }) {
   const [internalDark, setInternalDark] = useState(true);
   const dark = darkProp !== undefined ? darkProp : internalDark;
   const setDark = setDarkProp !== undefined ? setDarkProp : setInternalDark;
@@ -1397,9 +1533,28 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
   const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
   const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
 
+  const allGymsSorted = useMemo(() => {
+    const base = gymsSorted;
+    const existing = new Set(base.map((g) => g.name.toLowerCase()));
+    const extras = (extraGymNames || [])
+      .map((n) => String(n || "").trim())
+      .filter(Boolean)
+      .filter((n) => !existing.has(n.toLowerCase()))
+      .map((name) => ({ name, isAtc: name.toLowerCase() === "atc", schedule: [] }));
+    const combined = [...base.map((g) => ({ ...g })), ...extras];
+    return combined
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
+      .map((g, i) => ({ ...g, id: i }));
+  }, [extraGymNames]);
+
+  useEffect(() => {
+    // Ensure new gyms appear and are enabled by default when list/order changes.
+    setActiveGyms(allGymsSorted.map((g) => g.id));
+  }, [allGymsSorted.map((g) => g.id).join(",")]);
+
   const toggleGym    = id => setActiveGyms(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const toggleCat    = key => setActiveCats(p=>p.includes(key)?p.filter(x=>x!==key):[...p,key]);
-  const visibleGyms  = gymsSorted.filter(g=>activeGyms.includes(g.id));
+  const visibleGyms  = allGymsSorted.filter(g=>activeGyms.includes(g.id));
   const T = dark ? DARK_THEME : LIGHT_THEME;
   const catOn        = (cls) => activeCats.includes(getCat(cls).key);
 
@@ -1424,7 +1579,7 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
         <span style={{ fontSize:12,color:T.textMuted,fontWeight:500 }}>Rooster Analyse · Amsterdam</span>
         <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:16 }}>
   <span style={{ fontSize:11, color:T.textMuted }}>
-    {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
+    {visibleGyms.length}/{allGymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
   </span>
 
   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
@@ -1452,7 +1607,7 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
       </header>
       )}
 
-      <div style={{ display:"flex",height:noHeader?"calc(100vh - 53px)":"calc(100vh - 53px)" }}>
+      <div style={{ display:"flex", height: noHeader ? "100vh" : "calc(100vh - 53px)" }}>
 
         {/* Sidebar */}
         <aside style={{ width:200, borderRight:`1px solid ${T.border}`,
@@ -1460,7 +1615,7 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
   <div style={{ ...getLabel(T) }}>Gyms</div>
   <div style={{ display:"flex", gap:4 }}>
-    <button onClick={() => setActiveGyms(gymsSorted.map(g=>g.id))}
+    <button onClick={() => setActiveGyms(allGymsSorted.map(g=>g.id))}
       style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
         padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
         color:T.textMuted, background:"transparent", cursor:"pointer" }}>
@@ -1474,9 +1629,9 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
     </button>
   </div>
 </div>
-          {gymsSorted.map((gym,i) => {
+          {allGymsSorted.map((gym,i) => {
             const active = activeGyms.includes(gym.id);
-            const col    = gymAccent(gym, PALETTE[i]||"#888");
+            const col    = getGymColor(gym);
             return (
               <button key={gym.id} onClick={()=>toggleGym(gym.id)} style={{
                 display:"flex",alignItems:"center",gap:8,width:"100%",

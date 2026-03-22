@@ -1,65 +1,170 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
-const DAYS = ["Ma","Di","Wo","Do","Vr","Za","Zo"];
+export const DAYS = ["Ma","Di","Wo","Do","Vr","Za","Zo"];
 const DAY_LABELS = { Ma:"Maandag",Di:"Dinsdag",Wo:"Woensdag",Do:"Donderdag",Vr:"Vrijdag",Za:"Zaterdag",Zo:"Zondag" };
-
-const CATEGORIES = [
-  { key:"jeugd",      label:"Jeugd",            keywords:["jeugd","youth","kids","kidsles","13-17","6-12","12-17"],          color:"#06d6a0" },
-  { key:"bjj",        label:"BJJ / Grappling",  keywords:["bjj","jiu jitsu","jitsu","grappling","agua","submission"],        color:"#3a86ff" },
+export const CATEGORIES = [
+  { key:"jeugd",      label:"Jeugd",            keywords:["jeugd","youth","kids","kidsles","13-17","6-12","12-17","Youngsters","teens"],          color:"#06d6a0" },
   { key:"wrestling",  label:"Worstelen",         keywords:["amsterdam airlines","wrestling","worstelen"],                     color:"#2ec4b6" },
+  { key:"bjj",        label:"BJJ / Grappling",  keywords:["bjj","jiu jitsu","jitsu","grappling","agua","submission"],        color:"#3a86ff" },
   { key:"mma",        label:"MMA",               keywords:["mma"],                                                            color:"#E63946" },
-  { key:"kickboks",   label:"Kickboksen",         keywords:["kickboks","kickbox","muay thai","personal training"],             color:"#ffb703" },
   { key:"bokszak",    label:"Bokszaktraining",    keywords:["bokszaktraining","bokszak","Bagtraining","Heavybag","zak","bag"],  color:"#8ac926" },
+  { key:"kickboks",   label:"Kickboksen",         keywords:["kickboks","kickbox","muay thai","HIIT"],             color:"#ffb703" },
   { key:"boksen",     label:"Boksen",             keywords:["boksen","boxing","Boksconditie"],                                        color:"#fb5607" },
   { key:"openmat",    label:"Open Mat",           keywords:["open mat","sparring","sparren","Zelftraining"],                                                       color:"#8338ec" },
   { key:"hyrox",      label:"Hyrox / Cardio",     keywords:["hyrox"],                                                          color:"#4cc9f0" },
   { key:"strength",   label:"Strength",           keywords:["strength","krachttraining","powerlifting","body strength"],       color:"#f77f00" },
-  { key:"overig",     label:"Overig",              keywords:[],                                                                  color:"#505068" },
+  { key:"overig",     label:"Overig",              keywords:["Personal Training"],                                                                  color:"#505068" },
 ];
 
-const SLOTS = [
+export const DAY_PART_SLOTS = [
   { key:"ochtend", label:"Ochtend", from:6*60,  to:12*60, color:"#f59e0b" },
   { key:"middag",  label:"Middag",  from:12*60, to:17*60, color:"#06d6a0" },
   { key:"avond",   label:"Avond",   from:17*60, to:24*60, color:"#8338ec" },
 ];
+const SLOTS = DAY_PART_SLOTS;
 
+// Extended palette for gym colors (ATC and Ettaki have fixed colors below)
 const PALETTE = [
-  "#E63946","#3a86ff","#06d6a0","#ffb703","#8338ec",
-  "#fb5607","#2ec4b6","#f77f00","#4cc9f0","#80b918",
-  "#e9c46a","#9d4edd","#f72585","#023e8a","#b5179e",
-  "#264653","#e76f51","#2d6a4f","#7209b7","#3c096c",
-  "#ff006e","#8ac926","#1982c4","#6a4c93","#f4a261",
+  "#E63946","#3a86ff","#06d6a0","#8338ec","#fb5607",
+  "#2ec4b6","#f77f00","#4cc9f0","#80b918","#9d4edd",
+  "#f72585","#023e8a","#b5179e","#264653","#e76f51",
+  "#2d6a4f","#7209b7","#3c096c","#ff006e","#8ac926",
+  "#1982c4","#6a4c93","#f4a261","#06ffa5","#7b2cbf",
+  "#ee9b00","#2a9d8f","#e07a5f","#3d5a80","#bc4749",
 ];
 
-const gyms = [
+export const BASE_GYMS = [
+  { id: 4, name: "10th Planet Jiu-Jitsu Amsterdam", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Ma", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Di", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Wo", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Wo", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Do", time:"12:00", end:"13:30", cls:"Fundamentals BJJ" },
+    { day:"Vr", time:"21:00", end:"22:30", cls:"Intermediate BJJ" },
+    { day:"Za", time:"19:30", end:"21:00", cls:"Open Mat" },
+    { day:"Zo", time:"11:30", end:"13:00", cls:"Open Mat" },
+],
+},
+
+{ id: 5, name: "Amsterdam Airlines", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"13:30", end:"15:00", cls:"Ne-Waza – Grondwerk (BJJ, submissions, controle)" },
+    { day:"Ma", time:"18:00", end:"19:30", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Di", time:"12:00", end:"13:30", cls:"Ne-Waza – Grondwerk (BJJ, submissions, controle)" },
+    { day:"Di", time:"19:30", end:"21:00", cls:"Sparring Only – Alleen live sparren (hoge intensiteit)" },
+    { day:"Wo", time:"10:00", end:"11:30", cls:"Pro Training – Alleen voor gevorderde/high-level vechters (invite only)" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Beginners – Basis technieken, minder intensiteit" },
+    { day:"Do", time:"19:30", end:"21:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Pro Training – Alleen voor gevorderde/high-level vechters (invite only)" },
+    { day:"Vr", time:"11:00", end:"12:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+    { day:"Vr", time:"20:00", end:"22:00", cls:"Tachi-Waza – Staande technieken (worstelen, takedowns, no-gi judo voor MMA/BJJ)" },
+],
+},
+
+{ id: 6, name: "Amsterdam BJJ", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"13:00", cls:"BJJ Basics" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Street BJJ/MMA" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"BJJ Basics" },
+    { day:"Ma", time:"21:00", end:"22:00", cls:"Open Mat" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"BJJ White Belts" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Wo", time:"12:00", end:"13:00", cls:"BJJ No-Gi" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"BJJ No-Gi" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Street BJJ/MMA" },
+    { day:"Do", time:"20:00", end:"21:00", cls:"BJJ Basics" },
+    { day:"Do", time:"21:00", end:"22:00", cls:"Open Mat" },
+    { day:"Vr", time:"12:00", end:"13:00", cls:"BJJ Basics" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"BJJ No-Gi" },
+    { day:"Vr", time:"20:00", end:"21:00", cls:"Open Mat" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"BJJ Kids 6–8" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"BJJ Kids 9–14" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Women Only Self Defence" },
+    { day:"Za", time:"12:00", end:"13:00", cls:"BJJ No-Gi" },
+    { day:"Za", time:"13:00", end:"14:00", cls:"Open Mat" },
+    { day:"Zo", time:"14:00", end:"15:00", cls:"Women Only Self Defence" },
+    { day:"Zo", time:"14:00", end:"16:00", cls:"Open Mat" },
+],
+},
+
+{ id: 7, name: "Amsterdam Grappling Academy", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"BJJ" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"BJJ" },
+    { day:"Di", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Di", time:"17:30", end:"18:30", cls:"BJJ" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"BJJ" },
+    { day:"Wo", time:"12:00", end:"13:00", cls:"BJJ" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"BJJ" },
+    { day:"Do", time:"11:00", end:"12:00", cls:"BJJ" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"BJJ" },
+    { day:"Za", time:"09:00", end:"10:00", cls:"BJJ" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Open Mat" },
+],
+},
+
+{ id: 8, name: "Arena Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"07:00", end:"08:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"CrossFit WOD" },
+    { day:"Di", time:"07:00", end:"08:00", cls:"Hyrox" },
+    { day:"Di", time:"11:00", end:"12:00", cls:"Kickboksen (Advanced)" },
+    { day:"Di", time:"12:00", end:"13:00", cls:"Hyrox" },
+    { day:"Di", time:"16:30", end:"17:30", cls:"Kickboksen (Kids)" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Hyrox" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Kickboksen (Advanced)" },
+    { day:"Wo", time:"07:00", end:"08:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Kickboksen (recreatief)" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"CrossFit WOD" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen (Advanced)" },
+    { day:"Do", time:"11:00", end:"12:00", cls:"Kickboksen (Advanced)" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"CrossFit WOD" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"CrossFit WOD" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Kickboksen (recreatief)" },
+    { day:"Vr", time:"07:00", end:"08:00", cls:"Hyrox" },
+    { day:"Vr", time:"16:30", end:"17:30", cls:"Kickboksen (Kids)" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"CrossFit WOD" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"CrossFit WOD" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboksen (recreatief)" },
+    { day:"Za", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Hyrox" },
+    { day:"Zo", time:"18:00", end:"19:00", cls:"Kickboksen (recreatief)" },
+    { day:"Zo", time:"19:00", end:"20:00", cls:"Kickboksen (Advanced)" },
+],
+},
   {
     id: 0, name: "ATC", isAtc: true,
     schedule: [
       { day:"Ma", time:"07:00", end:"08:30", cls:"United Fighters – BJJ" },
-      { day:"Ma", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Ma", time:"13:30", end:"15:00", cls:"Amsterdam Airlines" },
       { day:"Ma", time:"17:00", end:"18:00", cls:"Open Mat" },
       { day:"Ma", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Ma", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Ma", time:"20:00", end:"21:00", cls:"Kickboksen" },
-      { day:"Ma", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Di", time:"10:00", end:"11:15", cls:"MMA" },
-      { day:"Di", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Di", time:"16:45", end:"18:00", cls:"Jeugd MMA" },
       { day:"Di", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Di", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Di", time:"20:15", end:"21:45", cls:"Team Agua – BJJ" },
       { day:"Wo", time:"07:00", end:"08:30", cls:"United Fighters – BJJ" },
-      { day:"Wo", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Wo", time:"17:00", end:"18:00", cls:"Open Mat" },
       { day:"Wo", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Wo", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen" },
-      { day:"Wo", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Do", time:"10:00", end:"11:15", cls:"MMA" },
-      { day:"Do", time:"12:00", end:"13:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Do", time:"16:45", end:"18:00", cls:"Jeugd MMA" },
       { day:"Do", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Do", time:"18:45", end:"20:00", cls:"MMA" },
@@ -69,13 +174,10 @@ const gyms = [
       { day:"Vr", time:"18:00", end:"18:45", cls:"Bokszaktraining" },
       { day:"Vr", time:"18:45", end:"20:00", cls:"MMA" },
       { day:"Vr", time:"20:00", end:"21:00", cls:"Amsterdam Airlines" },
-      { day:"Vr", time:"21:00", end:"22:30", cls:"10th Planet Jiu Jitsu" },
       { day:"Za", time:"11:00", end:"12:00", cls:"Flow Fit" },
       { day:"Za", time:"12:00", end:"13:00", cls:"Kickboksen" },
       { day:"Za", time:"13:00", end:"14:30", cls:"Team Agua – BJJ" },
-      { day:"Za", time:"19:30", end:"21:00", cls:"10th Planet Jiu Jitsu" },
       { day:"Zo", time:"08:30", end:"11:00", cls:"Personal Training" },
-      { day:"Zo", time:"11:30", end:"13:00", cls:"10th Planet Jiu Jitsu" },
       { day:"Zo", time:"13:00", end:"14:30", cls:"Team Agua – BJJ" },
     ],
   },
@@ -251,7 +353,34 @@ const gyms = [
     ],
   },
   { id: 3, name: "Bensy Gym", isAtc: false, schedule: [] },
-  { id: 4, name: "El Otmani Gym", isAtc: false, schedule: [] },
+  { id: 4, name: "El Otmani Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"10:00", end:"11:00", cls:"Kickbokszak Training" },
+    { day:"Ma", time:"16:00", end:"16:45", cls:"Pupillen (4–8 jaar)" },
+    { day:"Ma", time:"16:45", end:"17:30", cls:"Jeugd Kickboks" },
+    { day:"Ma", time:"17:30", end:"18:30", cls:"Jeugd Kickboks" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Beginners Senioren" },
+    { day:"Di", time:"16:00", end:"17:00", cls:"Pupillen (4–8 jaar)" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"Jeugd (9–12 jaar)" },
+    { day:"Di", time:"18:30", end:"19:30", cls:"Ladies Only Kickboks" },
+    { day:"Di", time:"19:30", end:"20:30", cls:"Ladies Only Kickboks" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Kickbokszak Training" },
+    { day:"Wo", time:"16:00", end:"16:45", cls:"Pupillen (4–8 jaar)" },
+    { day:"Wo", time:"16:45", end:"17:30", cls:"Jeugd Kickboks" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Jeugd Kickboks" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Beginners Senioren" },
+    { day:"Do", time:"16:00", end:"17:00", cls:"Pupillen (4–8 jaar)" },
+    { day:"Do", time:"17:00", end:"18:00", cls:"Jeugd (9–12 jaar)" },
+    { day:"Do", time:"18:30", end:"19:30", cls:"Ladies Only Kickboks" },
+    { day:"Do", time:"19:30", end:"20:30", cls:"Ladies Only Kickboks" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Kickbokszak Training" },
+    { day:"Vr", time:"16:00", end:"16:45", cls:"Pupillen (4–8 jaar)" },
+    { day:"Vr", time:"16:45", end:"17:30", cls:"Jeugd Kickboks" },
+    { day:"Vr", time:"17:30", end:"18:30", cls:"Jeugd Kickboks" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Beginners Senioren" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Ladies Only Kickboks" },
+],
+  },
   { id: 5, name: "Elite Training Center", isAtc: false, schedule: [
     { day:"Ma", time:"19:00", end:"20:00", cls:"Boksen" },
     { day:"Di", time:"19:00", end:"20:00", cls:"Ladies Only Full Body Kickboksen" },
@@ -373,7 +502,7 @@ const gyms = [
     { day:"Za", time:"12:00", end:"13:00", cls:"Inter-Gym Sparring" },
   ],
  },
- { id: 4, name: "Southpaw", isAtc: false,
+ { id: 4, name: "Gym Southpaw", isAtc: false,
   schedule: [
   { day:"Ma", time:"10:00", end:"11:00", cls:"Comprehensive Kickboxing & Strength" },
   { day:"Ma", time:"18:00", end:"19:00", cls:"Kickboxing Fundamentals" },
@@ -396,7 +525,7 @@ const gyms = [
 ],
 },
 
-{ id: 5, name: "KOPS", isAtc: false,
+{ id: 5, name: "Kops Gym", isAtc: false,
   schedule: [
   { day:"Ma", time:"18:00", end:"19:00", cls:"Kickboksen" },
   { day:"Ma", time:"19:00", end:"20:00", cls:"Boksconditie" },
@@ -532,10 +661,497 @@ const gyms = [
   { day:"Zo", time:"12:15", end:"13:15", cls:"Ladies Only Kickboxing" },
 ],
 },
-  { id: 14, name: "Royal Gym Amsterdam", isAtc: false, schedule: [] },
-  { id: 15, name: "Sin City Boxing", isAtc: false, schedule: [] },
-  { id: 16, name: "Sport city", isAtc: false, schedule: [] },
+  { id: 9, name: "Boogieland", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"16:30", end:"17:30", cls:"Boogie Youngsters" },
+    { day:"Ma", time:"17:30", end:"18:30", cls:"Kettlebell Skills" },
+    { day:"Ma", time:"17:30", end:"18:30", cls:"Boogie Teens" },
+    { day:"Ma", time:"18:30", end:"19:30", cls:"Boksen" },
+    { day:"Ma", time:"18:30", end:"19:30", cls:"Zaktraining Kickboksen" },
+    { day:"Ma", time:"19:30", end:"20:30", cls:"Muay Thai" },
+    { day:"Ma", time:"19:30", end:"20:30", cls:"Zaktraining Boksen" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"Boogie Youngsters" },
+    { day:"Di", time:"17:30", end:"18:30", cls:"Kickboksen" },
+    { day:"Di", time:"18:30", end:"19:30", cls:"Boksen" },
+    { day:"Di", time:"18:30", end:"19:30", cls:"Zaktraining Kickboksen" },
+    { day:"Di", time:"19:30", end:"20:30", cls:"Zaktraining Boksen" },
+    { day:"Di", time:"19:30", end:"20:30", cls:"Boogieland Kickstarter" },
+    { day:"Wo", time:"08:00", end:"09:00", cls:"Strength and Conditioning" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Kickboksen Basics" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Zaktraining Boksen" },
+    { day:"Wo", time:"16:30", end:"17:30", cls:"Boogie Youngsters" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Boogie Teens" },
+    { day:"Wo", time:"18:30", end:"19:30", cls:"Muay Thai Basics" },
+    { day:"Wo", time:"18:30", end:"19:30", cls:"Zaktraining Boksen" },
+    { day:"Wo", time:"19:30", end:"20:30", cls:"Sparren" },
+    { day:"Do", time:"10:00", end:"11:00", cls:"Boksen" },
+    { day:"Do", time:"17:00", end:"18:00", cls:"Boogie Teens" },
+    { day:"Do", time:"18:30", end:"19:30", cls:"Boksen Fundamentals" },
+    { day:"Do", time:"18:30", end:"19:30", cls:"Zaktraining Kickboksen" },
+    { day:"Do", time:"19:30", end:"20:30", cls:"Kickboksen" },
+    { day:"Do", time:"19:30", end:"20:30", cls:"Zaktraining Boksen" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Zaktraining Kickboksen" },
+    { day:"Vr", time:"11:00", end:"12:00", cls:"Strength and Mobility" },
+    { day:"Vr", time:"11:00", end:"12:00", cls:"Zaktraining Boksen" },
+    { day:"Vr", time:"17:00", end:"18:00", cls:"Boksen Fundamentals" },
+    { day:"Vr", time:"18:00", end:"19:30", cls:"Kleine Bliksem Prep – Boxing" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Strength and Mobility" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboksen Basics" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Zaktraining Boksen" },
+    { day:"Za", time:"12:00", end:"13:15", cls:"Sparren" },
+    { day:"Zo", time:"10:00", end:"11:00", cls:"Boksen Fundamentals" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Zaktraining Kickboksen" },
+    { day:"Zo", time:"11:30", end:"12:30", cls:"Kleine Bliksem – KB Prep" },
+    { day:"Zo", time:"13:00", end:"14:00", cls:"Queer Boxing" },
+],
+  },
+  { id: 10, name: "Dojo Doorjé", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"16:15", end:"17:00", cls:"Kickboksen Jeugd (5–8 jaar)" },
+    { day:"Ma", time:"17:00", end:"17:45", cls:"Kickboksen Jeugd (8–10 jaar)" },
+    { day:"Ma", time:"17:45", end:"18:45", cls:"Kickboksen Jeugd (11–15 jaar)" },
+    { day:"Ma", time:"18:45", end:"19:30", cls:"Kickboksen Volwassenen – Zaktraining (HIIT)" },
+    { day:"Ma", time:"19:30", end:"21:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Di", time:"07:30", end:"09:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Di", time:"17:00", end:"18:30", cls:"Brazilian Jiu Jitsu – Jeugd (10–14 jaar)" },
+    { day:"Di", time:"18:45", end:"19:45", cls:"Kickboksen Volwassenen (Basic)" },
+    { day:"Di", time:"19:45", end:"20:45", cls:"Kickboksen Volwassenen (Advanced)" },
+    { day:"Wo", time:"07:30", end:"09:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Wo", time:"18:45", end:"19:30", cls:"Kickboksen Volwassenen – Zaktraining (HIIT)" },
+    { day:"Wo", time:"19:30", end:"21:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Do", time:"07:30", end:"09:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Do", time:"16:15", end:"17:00", cls:"Kickboksen Jeugd (5–8 jaar)" },
+    { day:"Do", time:"17:00", end:"17:45", cls:"Kickboksen Jeugd (8–10 jaar)" },
+    { day:"Do", time:"17:45", end:"18:45", cls:"Kickboksen Jeugd (11–15 jaar)" },
+    { day:"Do", time:"18:45", end:"19:45", cls:"Boksen Volwassenen (Techniek + Sparring)" },
+    { day:"Do", time:"19:45", end:"20:45", cls:"Kickboksen Volwassenen (Sparring)" },
+    { day:"Vr", time:"19:30", end:"21:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Za", time:"08:30", end:"10:00", cls:"Brazilian Jiu Jitsu – Volwassenen" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Kickboksen Volwassenen (Basic)" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboksen Volwassenen (Advanced)" },
+],
+  },
+  { id: 12, name: "Focus Jiujitsu", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"13:00", cls:"No-Gi (All Levels)" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"BJJ Introduction Course" },
+    { day:"Ma", time:"19:00", end:"20:15", cls:"Gi (All Levels)" },
+    { day:"Ma", time:"20:15", end:"21:15", cls:"Kickboxing" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"No-Gi (Kids)" },
+    { day:"Di", time:"18:00", end:"19:30", cls:"No-Gi (All Levels)" },
+    { day:"Di", time:"19:30", end:"21:00", cls:"Wrestling" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Wrestling" },
+    { day:"Wo", time:"18:30", end:"20:00", cls:"Gi (All Levels)" },
+    { day:"Do", time:"18:00", end:"19:30", cls:"No-Gi (All Levels)" },
+    { day:"Do", time:"19:30", end:"21:00", cls:"Wrestling" },
+    { day:"Vr", time:"12:00", end:"13:30", cls:"Gi (All Levels)" },
+    { day:"Vr", time:"17:00", end:"18:00", cls:"No-Gi (Kids)" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"Open Mat" },
+    { day:"Za", time:"11:00", end:"12:30", cls:"No-Gi (All Levels)" },
+    { day:"Zo", time:"11:30", end:"12:30", cls:"Gi (Kids)" },
+    { day:"Zo", time:"12:30", end:"14:00", cls:"Open Mat" },
+],
+  },
+  { id: 13, name: "Kimekai Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Jeugd (10–12 jaar)" },
+    { day:"Ma", time:"19:15", end:"20:15", cls:"Volwassenen Techniek Training" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Bokszaktraining (Volwassenen – geen sparren)" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Volwassenen Techniek Training" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"Jeugd (10–12 jaar)" },
+],
+  },
+  { id: 14, name: "Royal Gym Amsterdam", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Cardio Boksen" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Kickboksen" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Fat Attack" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Zaktraining" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Cardio Boksen" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Kickboksen" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Fat Attack" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Zaktraining" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"Sparren (Open Mat)" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Zo", time:"10:00", end:"11:00", cls:"Zaktraining" },
+],
+  },
+  { id: 15, name: "Team Ramzi", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"17:00", end:"18:00", cls:"Jeugd" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Heavy Bag Training" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Kickbox (All Levels)" },
+    { day:"Wo", time:"17:00", end:"18:00", cls:"Jeugd" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Kickbox (All Levels)" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Heavy Bag Training" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Heavy Bag Training" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Jeugd" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Heavy Bag Training" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Heavy Bag Training" },
+],
+  },
+  { id: 16, name: "Tribe Grappling", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"08:00", end:"09:30", cls:"No-Gi" },
+    { day:"Ma", time:"18:15", end:"19:45", cls:"No-Gi" },
+    { day:"Di", time:"18:15", end:"19:45", cls:"No-Gi" },
+    { day:"Wo", time:"08:00", end:"09:30", cls:"No-Gi" },
+    { day:"Wo", time:"12:00", end:"13:30", cls:"No-Gi" },
+    { day:"Wo", time:"18:15", end:"19:45", cls:"No-Gi" },
+    { day:"Do", time:"18:15", end:"19:45", cls:"No-Gi" },
+    { day:"Vr", time:"08:00", end:"09:30", cls:"No-Gi" },
+    { day:"Vr", time:"18:15", end:"19:45", cls:"No-Gi" },
+    { day:"Za", time:"09:30", end:"11:00", cls:"No-Gi" },
+    { day:"Za", time:"11:00", end:"13:00", cls:"Open Mat" },
+    { day:"Zo", time:"10:00", end:"11:00", cls:"Kids (No-Gi)" },
+    { day:"Zo", time:"11:00", end:"13:00", cls:"Open Mat" },
+],
+  },
+  { id: 17, name: "Vos Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"12:00", end:"12:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Ma", time:"17:00", end:"18:00", cls:"Jeugdtraining (11–15 jaar)" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Yin Yoga" },
+    { day:"Ma", time:"18:15", end:"19:00", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Ma", time:"19:30", end:"20:30", cls:"English Boxing (Technique & Light Sparring)" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"Kickboxing Pro Level" },
+    { day:"Di", time:"09:00", end:"09:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Di", time:"10:00", end:"11:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Di", time:"18:15", end:"19:00", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Di", time:"18:30", end:"19:30", cls:"Brazilian Jiu-Jitsu (Gi/No-Gi)" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Muay Thai (Technique)" },
+    { day:"Wo", time:"07:00", end:"07:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Wo", time:"13:00", end:"14:00", cls:"Kickboxing Ladies Only" },
+    { day:"Wo", time:"16:00", end:"17:00", cls:"Jeugdtraining (6–10 jaar)" },
+    { day:"Wo", time:"17:00", end:"18:00", cls:"Jeugdtraining (11–15 jaar)" },
+    { day:"Wo", time:"18:15", end:"19:00", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"English Boxing (Technique & Light Sparring)" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Brazilian Jiu-Jitsu (Gi/No-Gi)" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboxing Pro Level" },
+    { day:"Do", time:"09:00", end:"09:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Do", time:"10:00", end:"11:00", cls:"Muay Thai (Technique)" },
+    { day:"Do", time:"18:15", end:"19:00", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Kickboxing (Big Pads & Light Sparring)" },
+    { day:"Vr", time:"08:00", end:"08:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Vr", time:"18:15", end:"19:00", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"English Boxing (Technique & Light Sparring)" },
+    { day:"Vr", time:"20:00", end:"21:00", cls:"Kickboxing Pro Level" },
+    { day:"Vr", time:"20:00", end:"21:00", cls:"Brazilian Jiu-Jitsu (No-Gi)" },
+    { day:"Za", time:"10:00", end:"10:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboxing (Technique & Light Sparring)" },
+    { day:"Zo", time:"11:00", end:"11:45", cls:"HIIT Heavy Bag Kickboxing" },
+    { day:"Zo", time:"12:30", end:"13:30", cls:"Kickboxing Ladies Only" },
+],
+  },
+  { id: 18, name: "Carlson Gracie Amsterdam", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"08:00", end:"09:00", cls:"Beginners & Intermediates" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Olga Class Takedowns" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"All Levels" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Beginners & Intermediates" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Level Up: Intermediates & Advanced" },
+    { day:"Wo", time:"08:00", end:"09:00", cls:"Beginners & Intermediates" },
+    { day:"Wo", time:"15:30", end:"16:30", cls:"Kids Class (5 t/m 10)" },
+    { day:"Wo", time:"16:30", end:"17:30", cls:"Kids Class (10+)" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Machiel Class (All Levels)" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"All Levels" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Beginners & Intermediates" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Level Up: Intermediates & Advanced" },
+    { day:"Vr", time:"08:00", end:"09:00", cls:"Beginners & Intermediates" },
+    { day:"Vr", time:"18:00", end:"19:15", cls:"Women's Only Class" },
+    { day:"Vr", time:"19:30", end:"20:30", cls:"No-Gi All Belts" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Kids Class (5 t/m 8)" },
+    { day:"Za", time:"11:15", end:"12:15", cls:"Kids Class (8 t/m 12)" },
+    { day:"Za", time:"12:30", end:"13:30", cls:"Kids Class (12+)" },
+],
+  },
+  { id: 19, name: "DODO Jiu Jitsu", isAtc: false,
+    schedule: [
+    { day:"Di", time:"18:00", end:"20:00", cls:"BJJ No-Gi" },
+    { day:"Wo", time:"17:30", end:"19:00", cls:"BJJ Mixed Level" },
+    { day:"Do", time:"17:30", end:"19:00", cls:"BJJ Mixed Level" },
+    { day:"Za", time:"13:00", end:"14:30", cls:"BJJ Fundamentals" },
+    { day:"Za", time:"14:30", end:"16:00", cls:"Open Mat" },
+    { day:"Zo", time:"16:30", end:"18:00", cls:"BJJ Fundamentals" },
+],
+  },
+  { id: 20, name: "Mike's Gym", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"07:00", end:"08:00", cls:"Boksen" },
+    { day:"Ma", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Ma", time:"11:15", end:"12:15", cls:"Grappling" },
+    { day:"Ma", time:"16:00", end:"17:00", cls:"Jeugd Kickboksen (4 t/m 7 jaar)" },
+    { day:"Ma", time:"17:00", end:"18:00", cls:"Jeugd Kickboksen (8 t/m 13 jaar)" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Grappling / Boksen" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Braziliaans Jiu Jitsu" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"Kickboksen / Zaktraining" },
+    { day:"Di", time:"07:00", end:"08:00", cls:"Boksen" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"Jeugd MMA" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Kickboksen / Grappling" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"MMA / Zaktraining" },
+    { day:"Di", time:"20:00", end:"21:00", cls:"Kickboksen" },
+    { day:"Wo", time:"07:00", end:"08:00", cls:"Boksen" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Wo", time:"11:15", end:"12:15", cls:"Grappling" },
+    { day:"Wo", time:"16:00", end:"17:00", cls:"Jeugd Kickboksen (4 t/m 7 jaar)" },
+    { day:"Wo", time:"17:00", end:"18:00", cls:"Jeugd Kickboksen (8 t/m 13 jaar)" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Boksen / Grappling" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Braziliaans Jiu Jitsu" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen / Zaktraining" },
+    { day:"Do", time:"07:00", end:"08:00", cls:"Boksen" },
+    { day:"Do", time:"10:00", end:"11:00", cls:"Kickboksen" },
+    { day:"Do", time:"17:00", end:"18:00", cls:"Jeugd MMA" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Kickboksen / Grappling" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"MMA / Zaktraining" },
+    { day:"Do", time:"20:00", end:"21:00", cls:"Kickboksen" },
+    { day:"Vr", time:"07:00", end:"08:00", cls:"Boksen" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Kickboksen" },
+    { day:"Vr", time:"16:00", end:"17:00", cls:"Jeugd Kickboksen (4 t/m 7 jaar)" },
+    { day:"Vr", time:"17:00", end:"18:00", cls:"Jeugd Kickboksen (8 t/m 13 jaar)" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"Grappling / Boksen" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Kickboksen / Braziliaans Jiu Jitsu" },
+    { day:"Vr", time:"20:00", end:"21:00", cls:"Zaktraining" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kickboksen" },
+    { day:"Za", time:"12:00", end:"13:00", cls:"Kickboksen" },
+    { day:"Zo", time:"10:00", end:"11:00", cls:"Zaktraining" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Sparren" },
+],
+  },
+  { id: 21, name: "NDSM Fightclub", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"08:00", end:"09:00", cls:"Outdoor Strengthening" },
+    { day:"Ma", time:"09:00", end:"10:00", cls:"Outdoor Strengthening" },
+    { day:"Ma", time:"09:00", end:"10:00", cls:"Outdoor Kickboksen" },
+    { day:"Ma", time:"10:00", end:"11:00", cls:"Outdoor Beginners Kickboksen" },
+    { day:"Ma", time:"16:00", end:"17:00", cls:"Outdoor Kids" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Outdoor Strengthening" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"Outdoor Boksen" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Outdoor Strengthening" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Outdoor Boksen – Techniek (gevorderd)" },
+    { day:"Di", time:"08:00", end:"09:00", cls:"Outdoor Strengthening" },
+    { day:"Di", time:"09:00", end:"10:00", cls:"Outdoor Kickboksen – All Levels" },
+    { day:"Di", time:"09:00", end:"10:00", cls:"Outdoor Strengthening" },
+    { day:"Di", time:"10:00", end:"11:00", cls:"Outdoor Beginners Kickboksen" },
+    { day:"Di", time:"16:00", end:"17:00", cls:"Outdoor Kids" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"Outdoor Tieners" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Outdoor Strengthening" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"Outdoor Kickboksen – All Levels" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Outdoor Strengthening" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Outdoor Beginners Kickboksen" },
+    { day:"Wo", time:"08:00", end:"09:00", cls:"Strengthening" },
+    { day:"Wo", time:"09:00", end:"10:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Wo", time:"09:00", end:"10:00", cls:"Strengthening" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Beginners Kickboksen – Zaktraining" },
+    { day:"Wo", time:"12:00", end:"12:45", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Wo", time:"16:00", end:"17:00", cls:"Kids" },
+    { day:"Wo", time:"17:00", end:"18:00", cls:"Strengthening" },
+    { day:"Wo", time:"17:00", end:"18:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Boksen – Zaktraining" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Strengthening" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Strengthening" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Boksen – Techniek (gevorderd)" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Kickboksen – Sparren" },
+    { day:"Do", time:"08:00", end:"09:00", cls:"Strengthening" },
+    { day:"Do", time:"09:00", end:"10:00", cls:"Strengthening" },
+    { day:"Do", time:"09:00", end:"10:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Do", time:"10:00", end:"11:00", cls:"Beginners Kickboksen – Zaktraining" },
+    { day:"Do", time:"11:00", end:"13:00", cls:"Vrij Trainen" },
+    { day:"Do", time:"12:00", end:"12:45", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Do", time:"15:00", end:"17:00", cls:"Vrij Trainen" },
+    { day:"Do", time:"16:00", end:"17:00", cls:"Kids" },
+    { day:"Do", time:"17:00", end:"18:00", cls:"Tieners" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Strengthening" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Beginners Kickboksen – Zaktraining" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Strengthening" },
+    { day:"Do", time:"20:00", end:"21:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Vr", time:"07:00", end:"08:00", cls:"Crossbox" },
+    { day:"Vr", time:"08:00", end:"09:00", cls:"Strengthening" },
+    { day:"Vr", time:"09:00", end:"10:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Vr", time:"09:00", end:"10:00", cls:"Strengthening" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"Beginners Kickboksen – Zaktraining" },
+    { day:"Vr", time:"12:00", end:"12:45", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Vr", time:"16:00", end:"17:00", cls:"Kids" },
+    { day:"Vr", time:"17:00", end:"18:00", cls:"Tieners" },
+    { day:"Za", time:"09:00", end:"10:00", cls:"Strengthening" },
+    { day:"Za", time:"09:00", end:"10:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Strengthening" },
+    { day:"Za", time:"10:00", end:"11:00", cls:"Kickboksen – Techniek" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"Kids" },
+    { day:"Za", time:"12:00", end:"13:00", cls:"Beginners Kickboksen – Zaktraining" },
+    { day:"Zo", time:"09:00", end:"10:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Zo", time:"10:00", end:"11:00", cls:"Kickboksen – Zaktraining All Levels" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Boksen – Zaktraining" },
+    { day:"Zo", time:"12:00", end:"13:00", cls:"Boksen – Techniek" },
+],
+  },
+  { id: 22, name: "Sin City Boxing", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"07:00", end:"07:50", cls:"Boxing and Weights" },
+    { day:"Ma", time:"08:00", end:"08:50", cls:"Strength and Burn" },
+    { day:"Ma", time:"09:00", end:"09:50", cls:"Boxing and Weights" },
+    { day:"Ma", time:"12:00", end:"12:50", cls:"Boxing and Weights" },
+    { day:"Ma", time:"17:00", end:"17:50", cls:"Boxing and Weights" },
+    { day:"Ma", time:"18:00", end:"18:50", cls:"Boxing and Weights" },
+    { day:"Ma", time:"19:15", end:"20:05", cls:"Booty and Boxing" },
+    { day:"Ma", time:"20:00", end:"20:50", cls:"Full Body Circuit" },
+    { day:"Ma", time:"20:15", end:"21:05", cls:"Strength and Burn" },
+    { day:"Di", time:"07:00", end:"07:50", cls:"Boxing and Weights" },
+    { day:"Di", time:"08:00", end:"08:50", cls:"Booty and Boxing" },
+    { day:"Di", time:"09:00", end:"09:50", cls:"Boxing and Weights" },
+    { day:"Di", time:"12:00", end:"12:50", cls:"Boxing and Weights" },
+    { day:"Di", time:"17:30", end:"18:20", cls:"Boxing and Weights" },
+    { day:"Di", time:"18:00", end:"18:50", cls:"Full Body Circuit" },
+    { day:"Di", time:"18:45", end:"19:35", cls:"Booty and Abs" },
+    { day:"Di", time:"19:00", end:"19:50", cls:"HYROX x Functional Training" },
+    { day:"Di", time:"20:00", end:"20:50", cls:"Boxing and Weights" },
+    { day:"Di", time:"20:00", end:"20:50", cls:"Boxing Technique Training" },
+    { day:"Wo", time:"07:00", end:"07:50", cls:"Boxing and Weights" },
+    { day:"Wo", time:"08:00", end:"08:50", cls:"Boxing and Weights" },
+    { day:"Wo", time:"09:00", end:"09:50", cls:"Boxing and Bodyweight" },
+    { day:"Wo", time:"12:00", end:"12:50", cls:"Boxing and Weights" },
+    { day:"Wo", time:"17:00", end:"17:50", cls:"Boxing and Weights" },
+    { day:"Wo", time:"18:00", end:"18:50", cls:"Boxing and Weights / HYROX x Functional Training" },
+    { day:"Wo", time:"19:00", end:"19:50", cls:"Booty Builder / Kickboxing Bags" },
+    { day:"Wo", time:"20:00", end:"20:50", cls:"Boxing and Weights" },
+    { day:"Do", time:"07:00", end:"07:50", cls:"Boxing and Weights" },
+    { day:"Do", time:"08:00", end:"08:50", cls:"Boxing and Bodyweight" },
+    { day:"Do", time:"09:00", end:"09:50", cls:"Boxing and Weights" },
+    { day:"Do", time:"11:00", end:"11:50", cls:"Strength and Burn" },
+    { day:"Do", time:"12:00", end:"12:50", cls:"Booty and Boxing" },
+    { day:"Do", time:"17:30", end:"18:20", cls:"Boxing and Bodyweight" },
+    { day:"Do", time:"18:00", end:"18:50", cls:"HYROX x Functional Training" },
+    { day:"Do", time:"18:30", end:"19:20", cls:"Boxing and Weights" },
+    { day:"Do", time:"19:30", end:"20:20", cls:"Booty and Abs" },
+    { day:"Vr", time:"07:00", end:"07:50", cls:"Boxing and Weights" },
+    { day:"Vr", time:"08:00", end:"08:50", cls:"Booty and Boxing" },
+    { day:"Vr", time:"09:00", end:"09:50", cls:"Booty and Abs" },
+    { day:"Vr", time:"11:00", end:"11:50", cls:"Boxing and Weights" },
+    { day:"Vr", time:"12:00", end:"12:50", cls:"Strength and Burn" },
+    { day:"Vr", time:"17:00", end:"17:50", cls:"Boxing and Weights" },
+    { day:"Za", time:"09:00", end:"09:50", cls:"Boxing and Weights" },
+    { day:"Za", time:"10:00", end:"10:50", cls:"Booty and Abs (+ Live DJ)" },
+    { day:"Za", time:"11:15", end:"12:05", cls:"Boxing and Weights (+ Live DJ)" },
+    { day:"Za", time:"12:00", end:"12:50", cls:"HYROX x Functional Training" },
+    { day:"Za", time:"12:15", end:"13:05", cls:"Kickboxing Bags" },
+    { day:"Zo", time:"09:00", end:"09:50", cls:"Boxing and Weights" },
+    { day:"Zo", time:"10:00", end:"10:50", cls:"Booty Builder / Kickboxing Bags" },
+    { day:"Zo", time:"11:00", end:"11:50", cls:"HYROX x Functional Training" },
+    { day:"Zo", time:"11:15", end:"12:05", cls:"Boxing and Weights" },
+    { day:"Zo", time:"12:00", end:"12:50", cls:"HYROX x Functional Training" },
+    { day:"Zo", time:"12:15", end:"13:05", cls:"Booty and Abs" },
+],
+  },
+  { id: 23, name: "Sport City", isAtc: false,
+    schedule: [
+    { day:"Ma", time:"09:00", end:"10:00", cls:"Bokszaktraining" },
+    { day:"Ma", time:"09:15", end:"10:15", cls:"KickBoxing" },
+    { day:"Ma", time:"11:30", end:"12:30", cls:"Bokszaktraining" },
+    { day:"Ma", time:"16:00", end:"17:00", cls:"KickBoxing" },
+    { day:"Ma", time:"17:30", end:"18:30", cls:"Bokszaktraining" },
+    { day:"Ma", time:"18:00", end:"19:00", cls:"KickBoxing" },
+    { day:"Ma", time:"18:15", end:"19:15", cls:"BodyCombat" },
+    { day:"Ma", time:"18:30", end:"19:30", cls:"KickBoxing Beginner" },
+    { day:"Ma", time:"19:00", end:"20:00", cls:"Bokszaktraining" },
+    { day:"Ma", time:"19:30", end:"20:30", cls:"KickBoxing Gevorderd" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"KickBoxing" },
+    { day:"Ma", time:"20:00", end:"21:00", cls:"Bokszaktraining (door Felipe)" },
+    { day:"Ma", time:"20:15", end:"21:00", cls:"Boxing" },
+    { day:"Ma", time:"20:30", end:"21:30", cls:"Bokszaktraining" },
+    { day:"Ma", time:"21:00", end:"22:00", cls:"KickBoxing" },
+    { day:"Di", time:"08:00", end:"09:00", cls:"Bokszaktraining" },
+    { day:"Di", time:"09:00", end:"10:00", cls:"Bokszaktraining" },
+    { day:"Di", time:"10:30", end:"11:30", cls:"KickBoxing" },
+    { day:"Di", time:"12:45", end:"13:45", cls:"KickBoxing" },
+    { day:"Di", time:"14:00", end:"15:00", cls:"KickBoxing" },
+    { day:"Di", time:"17:00", end:"18:00", cls:"Bokszaktraining" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"KickBoxing" },
+    { day:"Di", time:"18:00", end:"19:00", cls:"BodyCombat" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"Bokszaktraining" },
+    { day:"Di", time:"19:00", end:"20:00", cls:"BodyCombat" },
+    { day:"Di", time:"19:15", end:"20:15", cls:"KickBoxing" },
+    { day:"Wo", time:"08:00", end:"09:00", cls:"KickBoxing" },
+    { day:"Wo", time:"09:00", end:"10:00", cls:"Bokszaktraining" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"BodyCombat" },
+    { day:"Wo", time:"10:00", end:"11:00", cls:"Bokszaktraining" },
+    { day:"Wo", time:"11:00", end:"12:00", cls:"KickBoxing" },
+    { day:"Wo", time:"15:00", end:"16:00", cls:"KickBoxing" },
+    { day:"Wo", time:"17:30", end:"18:30", cls:"Bokszaktraining" },
+    { day:"Wo", time:"18:00", end:"18:45", cls:"Boxing" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Bokszaktraining" },
+    { day:"Wo", time:"18:00", end:"19:00", cls:"Boks & Strength" },
+    { day:"Wo", time:"18:30", end:"19:30", cls:"BodyCombat" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Kickboks Techniek Training" },
+    { day:"Wo", time:"19:00", end:"20:00", cls:"Boks & Strength" },
+    { day:"Wo", time:"19:15", end:"20:15", cls:"KickBoxing" },
+    { day:"Wo", time:"19:30", end:"20:30", cls:"KickBoxing" },
+    { day:"Wo", time:"20:00", end:"21:00", cls:"Bokszaktraining" },
+    { day:"Wo", time:"20:30", end:"21:30", cls:"Boks & Strength" },
+    { day:"Do", time:"07:00", end:"08:00", cls:"Bokszaktraining" },
+    { day:"Do", time:"09:00", end:"10:00", cls:"Boks & Strength" },
+    { day:"Do", time:"09:30", end:"10:30", cls:"Bokszaktraining" },
+    { day:"Do", time:"10:00", end:"10:45", cls:"Techniek Training Boksen" },
+    { day:"Do", time:"10:30", end:"11:30", cls:"KickBoxing" },
+    { day:"Do", time:"11:00", end:"12:00", cls:"Boks & Strength" },
+    { day:"Do", time:"11:15", end:"12:00", cls:"Cardio Boksen" },
+    { day:"Do", time:"12:00", end:"13:00", cls:"Bokszaktraining" },
+    { day:"Do", time:"13:00", end:"13:30", cls:"Pads Training" },
+    { day:"Do", time:"13:45", end:"14:15", cls:"Pads Training" },
+    { day:"Do", time:"16:00", end:"17:00", cls:"Boks & Strength" },
+    { day:"Do", time:"17:30", end:"18:30", cls:"BodyCombat" },
+    { day:"Do", time:"18:00", end:"19:00", cls:"Bokszaktraining" },
+    { day:"Do", time:"19:00", end:"20:00", cls:"Bokszaktraining" },
+    { day:"Vr", time:"08:00", end:"09:00", cls:"Bokszaktraining" },
+    { day:"Vr", time:"09:00", end:"09:45", cls:"Boks & Strength" },
+    { day:"Vr", time:"09:00", end:"10:00", cls:"Bokszaktraining" },
+    { day:"Vr", time:"10:00", end:"11:00", cls:"KickBoxing" },
+    { day:"Vr", time:"10:30", end:"11:30", cls:"BodyCombat" },
+    { day:"Vr", time:"10:45", end:"11:15", cls:"Small Group Boxing" },
+    { day:"Vr", time:"11:00", end:"11:45", cls:"Cardio Boksen" },
+    { day:"Vr", time:"11:00", end:"12:00", cls:"Bokszaktraining" },
+    { day:"Vr", time:"11:30", end:"12:30", cls:"Bokszaktraining" },
+    { day:"Vr", time:"12:00", end:"12:30", cls:"Small Group Boxing" },
+    { day:"Vr", time:"16:45", end:"17:45", cls:"Boks & Strength" },
+    { day:"Vr", time:"17:00", end:"18:00", cls:"Bokszaktraining" },
+    { day:"Vr", time:"17:30", end:"18:30", cls:"KickBoxing" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"KickBoxing" },
+    { day:"Vr", time:"18:00", end:"19:00", cls:"Boks & Strength" },
+    { day:"Vr", time:"19:00", end:"20:00", cls:"Boks & Strength" },
+    { day:"Vr", time:"19:30", end:"20:30", cls:"Bokszaktraining" },
+    { day:"Vr", time:"20:15", end:"21:15", cls:"Bokszaktraining" },
+    { day:"Za", time:"10:15", end:"11:15", cls:"BodyCombat" },
+    { day:"Za", time:"10:15", end:"11:15", cls:"Bokszaktraining" },
+    { day:"Za", time:"10:30", end:"11:30", cls:"KickBoxing" },
+    { day:"Za", time:"11:00", end:"12:00", cls:"KickBoxing" },
+    { day:"Za", time:"11:10", end:"11:40", cls:"Small Group Boxing" },
+    { day:"Za", time:"11:15", end:"12:15", cls:"Bokszaktraining" },
+    { day:"Za", time:"11:30", end:"13:00", cls:"KickBoxing" },
+    { day:"Za", time:"12:30", end:"13:15", cls:"Boks & Strength" },
+    { day:"Za", time:"12:30", end:"13:30", cls:"Bokszaktraining" },
+    { day:"Za", time:"14:00", end:"15:00", cls:"HIIT & Boks" },
+    { day:"Za", time:"14:00", end:"15:00", cls:"Boks & Strength" },
+    { day:"Za", time:"15:30", end:"16:30", cls:"Boks & Strength" },
+    { day:"Zo", time:"09:30", end:"10:30", cls:"KickBoxing" },
+    { day:"Zo", time:"11:00", end:"11:45", cls:"Bokszaktraining" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Bokszaktraining" },
+    { day:"Zo", time:"11:00", end:"12:00", cls:"Bokszaktraining" },
+    { day:"Zo", time:"11:30", end:"12:30", cls:"Bokszaktraining" },
+    { day:"Zo", time:"11:45", end:"12:45", cls:"BodyCombat" },
+    { day:"Zo", time:"12:00", end:"13:00", cls:"Bokszaktraining" },
+    { day:"Zo", time:"13:00", end:"14:00", cls:"HIIT & Boks" },
+    { day:"Zo", time:"13:15", end:"14:15", cls:"Boks & Booty" },
+    { day:"Zo", time:"13:15", end:"14:45", cls:"KickBoxing" },
+    { day:"Zo", time:"14:45", end:"15:45", cls:"Bokszaktraining" },
+    ],
+  },
 ];
+
 
 // ─── OPEN GYM TIJDEN ─────────────────────────────────────────────────────────
 
@@ -587,31 +1203,95 @@ const openGymData = [
   { id: 13, name: "Patrick's Gym", isAtc: false, hours: [] },
   { id: 14, name: "Royal Gym Amsterdam", isAtc: false, hours: [] },
   { id: 15, name: "Sin City Boxing", isAtc: false, hours: [] },
-  { id: 16, name: "Sport city", isAtc: false, hours: [] },
+  { id: 16, name: "Sport City", isAtc: false, hours: [] },
+  { id: 17, name: "10th Planet Jiu-Jitsu Amsterdam", isAtc: false, hours: [] },
+  { id: 18, name: "Boogieland", isAtc: false, hours: [] },
+  { id: 19, name: "Dojo Doorjé", isAtc: false, hours: [] },
+  { id: 20, name: "Focus Jiujitsu", isAtc: false, hours: [] },
+  { id: 21, name: "Kimekai Gym", isAtc: false, hours: [] },
+  { id: 22, name: "Team Ramzi", isAtc: false, hours: [] },
+  { id: 23, name: "Tribe Grappling", isAtc: false, hours: [] },
+  { id: 24, name: "Vos Gym", isAtc: false, hours: [] },
+  { id: 25, name: "Carlson Gracie Amsterdam", isAtc: false, hours: [] },
+  { id: 26, name: "DODO Jiu Jitsu", isAtc: false, hours: [] },
+  { id: 27, name: "Mike's Gym", isAtc: false, hours: [] },
+  { id: 28, name: "NDSM Fightclub", isAtc: false, hours: [] },
 ];
 
 // Sort gyms alphabetically and reassign ids so colors stay consistent
-const gymsSorted = [...gyms].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
+const gymsSorted = [...BASE_GYMS].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
 const openGymDataSorted = [...openGymData].sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map((g,i) => ({ ...g, id: i }));
 
+/** Resolve roster data by gym name (trimmed, case-insensitive). Unknown names get an empty schedule. */
+export function findGymScheduleByName(rawName) {
+  const s = String(rawName ?? "").trim();
+  if (!s) return { name: "", isAtc: false, schedule: [], id: -1 };
+  const lower = s.toLowerCase();
+  const g = gymsSorted.find((x) => x.name.trim().toLowerCase() === lower);
+  if (g) return { ...g };
+  return { id: -1, name: s, isAtc: lower === "atc", schedule: [] };
+}
+
+// ATC = always red, Ettaki = always yellow (roster + gym data)
+const ATC_RED = "#E63946";
 const ETTaki_YELLOW = "#ffb703";
-const isEttaki = (gym) => gym?.name?.toLowerCase() === "ettakigym";
-const gymAccent = (gym, fallback) => (isEttaki(gym) ? ETTaki_YELLOW : fallback);
-const gymNameColor = (gym, fallback) => (gym.isAtc ? "#E63946" : (isEttaki(gym) ? ETTaki_YELLOW : fallback));
+const isEttaki = (gym) => gym?.name?.toLowerCase().replace(/\s/g, "") === "ettakigym";
+// Name-based colors so every gym has a fixed color in both roster and open gym views
+const GYM_COLORS_BY_NAME = {
+  "ATC": ATC_RED,
+  "EttakiGym": ETTaki_YELLOW,
+  "Boogieland": "#f97316",
+  "Bensy Gym": "#3a86ff",
+  "Dojo Doorjé": "#2a9d8f",
+  "Eastbound Gym": "#06d6a0",
+  "El Otmani Gym": "#8338ec",
+  "Focus Jiujitsu": "#457b9d",
+  "Elite Training Center": "#fb5607",
+  "FIGHT DISTRICT": "#2ec4b6",
+  "Fight IQ": "#f77f00",
+  "Gym Royale": "#4cc9f0",
+  "Gym Southpaw": "#80b918",
+  "Kimekai Gym": "#bc6c25",
+  "Kops Gym": "#9d4edd",
+  "Martial Arts Center Amsterdam": "#f72585",
+  "MOUSID GYM": "#023e8a",
+  "Patrick's Gym": "#b5179e",
+  "Royal Gym Amsterdam": "#264653",
+  "Sin City Boxing": "#e76f51",
+  "Sport City": "#2d6a4f",
+  "Carlson Gracie Amsterdam": "#c1121f",
+  "DODO Jiu Jitsu": "#588157",
+  "Mike's Gym": "#6c757d",
+  "NDSM Fightclub": "#0077b6",
+  "Team Ramzi": "#7209b7",
+  "Tribe Grappling": "#1d3557",
+  "Vos Gym": "#d4a373",
+  "10th Planet Jiu-Jitsu Amsterdam": "#5c4d7d",
+};
+const hashName = (s) => { let h = 0; for (let i = 0; i < (s||"").length; i++) h = ((h << 5) - h) + s.charCodeAt(i) | 0; return Math.abs(h); };
+const getGymColor = (gym) => {
+  if (gym?.isAtc) return ATC_RED;
+  if (isEttaki(gym)) return ETTaki_YELLOW;
+  const name = gym?.name;
+  if (name && GYM_COLORS_BY_NAME[name] !== undefined) return GYM_COLORS_BY_NAME[name];
+  return PALETTE[hashName(name || "") % PALETTE.length] || "#888";
+};
+const gymAccent = (gym, _fallback) => getGymColor(gym);
+const gymNameColor = (gym, fallback) => (gym?.isAtc ? ATC_RED : (isEttaki(gym) ? ETTaki_YELLOW : (fallback ?? getGymColor(gym))));
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
-const tmin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
-const tdur = (s,e) => tmin(e) - tmin(s);
+export const tmin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+export const tdur = (s,e) => tmin(e) - tmin(s);
 const fmtH = mins => {
   const h = Math.floor(mins/60), m = mins%60;
   return m === 0 ? `${h}u` : `${h}u${m}m`;
 };
-const getCat = cls => {
+export const getCat = cls => {
   const low = cls.toLowerCase();
   return CATEGORIES.find(c => c.keywords.some(k => low.includes(k))) || CATEGORIES[CATEGORIES.length-1];
 };
-const isOpenGym = cls => cls.toLowerCase().includes("open gym");
+export const isOpenGym = cls => cls.toLowerCase().includes("open gym");
 
 const LABEL_BASE = { fontSize:9,fontWeight:700,letterSpacing:"1.8px",textTransform:"uppercase" };
 const getLabel = (T) => ({ ...LABEL_BASE, color: T.textMuted });
@@ -624,74 +1304,107 @@ function GymTag({ gym }) {
   return <>{gym.name}</>;
 }
 
-// ─── VIEW: PER DAG ────────────────────────────────────────────────────────────
-
-function DagView({ visibleGyms, day, setDay, activeCats, theme }) {
-  const T = theme || DARK_THEME;
-  const catOn = (cls) => activeCats.includes(getCat(cls).key);
-  const cfd = (gym,d) =>
-    gym.schedule
-      .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
-      .sort((a,b)=>tmin(a.time)-tmin(b.time));
-  const CARD = getCard(T);
-  return <>
-    <div style={{ display:"flex",gap:3,marginBottom:18,flexWrap:"wrap" }}>
-      {DAYS.map(d => (
-        <button key={d} onClick={()=>setDay(d)} style={{
-          width:38,height:38,borderRadius:8,fontSize:11,fontWeight:700,border:"none",
-          background:day===d?T.btnBgA:"transparent",
-          color:day===d?"#fff":T.textMuted,
-          outline:day===d?`1px solid ${T.border2}`:"none",transition:"all .15s",
-        }}>{d}</button>
+export function DayPicker({ day, setDay, theme, rowStyle }) {
+  const T = theme;
+  return (
+    <div style={{ display: "flex", gap: 3, marginBottom: 18, flexWrap: "wrap", ...rowStyle }}>
+      {DAYS.map((d) => (
+        <button
+          key={d}
+          type="button"
+          onClick={() => setDay(d)}
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 8,
+            fontSize: 11,
+            fontWeight: 700,
+            border: "none",
+            background: day === d ? T.btnBgA : "transparent",
+            color: day === d ? "#fff" : T.textMuted,
+            outline: day === d ? `1px solid ${T.border2}` : "none",
+            transition: "all .15s",
+          }}
+        >
+          {d}
+        </button>
       ))}
     </div>
-    <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(255px,1fr))",gap:12 }}>
-      {visibleGyms.map(gym => {
-        const col = gymAccent(gym, PALETTE[gym.id]||"#888");
-        const cls = cfd(gym, day);
-        return (
-          <div key={gym.id} style={CARD}>
-            <div style={{ padding:"10px 14px",borderBottom:`1px solid ${T.border}`,
-              display:"flex",alignItems:"center",gap:8 }}>
-              <div style={{ width:3,height:28,borderRadius:2,background:col,flexShrink:0 }}/>
-              <div style={{ flex:1 }}>
-                <div style={{ fontSize:12,fontWeight:700,color:gymNameColor(gym, T.textSub) }}>
-                  <GymTag gym={gym}/>
+  );
+}
+
+export function GymDayLessonCard({ gym, day, activeCats, theme }) {
+  const T = theme;
+  const catOn = (cls) => activeCats.includes(getCat(cls).key);
+  const cls = gym.schedule
+    .filter((s) => s.day === day && !isOpenGym(s.cls) && catOn(s.cls))
+    .sort((a, b) => tmin(a.time) - tmin(b.time));
+  const col = getGymColor(gym);
+  const CARD = getCard(T);
+  return (
+    <div style={CARD}>
+      <div style={{ padding: "10px 14px", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ width: 3, height: 28, borderRadius: 2, background: col, flexShrink: 0 }} />
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: gymNameColor(gym, T.textSub) }}>
+            <GymTag gym={gym} />
+          </div>
+          <div style={{ fontSize: 10, color: T.textMuted, marginTop: 1 }}>
+            {cls.length} lessen · {fmtH(cls.reduce((a, c) => a + tdur(c.time, c.end), 0))}
+          </div>
+        </div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: col }}>{cls.length}</div>
+      </div>
+      <div style={{ padding: "8px 12px" }}>
+        {gym.schedule.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "14px 0", fontSize: 11, color: T.textMuted }}>Nog geen schema</div>
+        ) : cls.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "14px 0", fontSize: 11, color: T.textMuted }}>Geen lessen</div>
+        ) : (
+          cls.map((c, j) => {
+            const cat = getCat(c.cls);
+            return (
+              <div
+                key={j}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  background: T.row,
+                  border: `1px solid ${T.border}`,
+                  marginBottom: 4,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: T.textSub }}>{c.cls}</div>
+                  <span
+                    style={{
+                      fontSize: 9,
+                      padding: "1px 5px",
+                      borderRadius: 3,
+                      background: `${cat.color}18`,
+                      color: cat.color,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {cat.label}
+                  </span>
                 </div>
-                <div style={{ fontSize:10,color:T.textMuted,marginTop:1 }}>
-                  {cls.length} lessen · {fmtH(cls.reduce((a,c)=>a+tdur(c.time,c.end),0))}
+                <div style={{ fontSize: 10, color: T.textMuted, marginLeft: 8, flexShrink: 0, textAlign: "right" }}>
+                  <div>
+                    {c.time}–{c.end}
+                  </div>
+                  <div>{tdur(c.time, c.end)}m</div>
                 </div>
               </div>
-              <div style={{ fontSize:18,fontWeight:800,color:col }}>{cls.length}</div>
-            </div>
-            <div style={{ padding:"8px 12px" }}>
-              {gym.schedule.length===0
-                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:T.textMuted }}>Nog geen schema</div>
-                : cls.length===0
-                ? <div style={{ textAlign:"center",padding:"14px 0",fontSize:11,color:T.textMuted }}>Geen lessen</div>
-                : cls.map((c,j) => {
-                    const cat = getCat(c.cls);
-                    return <div key={j} style={{ padding:"6px 10px",borderRadius:6,background:T.row,
-                      border:`1px solid ${T.border}`,marginBottom:4,display:"flex",
-                      justifyContent:"space-between",alignItems:"center" }}>
-                      <div>
-                        <div style={{ fontSize:11,fontWeight:600,color:T.textSub }}>{c.cls}</div>
-                        <span style={{ fontSize:9,padding:"1px 5px",borderRadius:3,
-                          background:`${cat.color}18`,color:cat.color,fontWeight:600 }}>{cat.label}</span>
-                      </div>
-                      <div style={{ fontSize:10,color:T.textMuted,marginLeft:8,flexShrink:0,textAlign:"right" }}>
-                        <div>{c.time}–{c.end}</div>
-                        <div>{tdur(c.time,c.end)}m</div>
-                      </div>
-                    </div>;
-                  })
-              }
-            </div>
-          </div>
-        );
-      })}
+            );
+          })
+        )}
+      </div>
     </div>
-  </>;
+  );
 }
 
 // ─── VIEW: WEEKOVERZICHT ─────────────────────────────────────────────────────
@@ -744,7 +1457,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, totalMins }) => {
-                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+                const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
                     onMouseEnter={e=>e.currentTarget.style.background=T.row}
@@ -802,7 +1515,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
             </tr></thead>
             <tbody>
               {gymStats.map(({ gym, catMins, totalMins }) => {
-                const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+                const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
                     onMouseEnter={e=>e.currentTarget.style.background=T.row}
@@ -840,7 +1553,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
       <div style={{ ...CARD,padding:20 }}>
         <div style={{ ...LABEL,marginBottom:14 }}>Totaal trainingsuren / week</div>
         {[...gymStats].sort((a,b)=>b.totalMins-a.totalMins).map(({ gym, totalMins }) => {
-          const col = gymAccent(gym, PALETTE[gym.id]||"#888");
+          const col = getGymColor(gym);
           const pct = (totalMins/maxMins)*100;
           return (
             <div key={gym.id} style={{ display:"flex",alignItems:"center",gap:10,marginBottom:6 }}>
@@ -903,14 +1616,16 @@ function LijstView({ visibleGyms, activeCats, theme }) {
   return (
     <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
       {DAYS.map(day => {
-        const perGym = visibleGyms.map(gym => {
-          const items = classesForDay(gym, day);
-          const laid  = laneify(items);
-          const maxLane = laid.reduce((m,c)=>Math.max(m,c.lane), -1) + 1;
-          return { gym, items: laid, maxLane };
-        });
+        const perGym = visibleGyms
+          .map((gym) => {
+            const items = classesForDay(gym, day);
+            const laid = laneify(items);
+            const maxLane = laid.reduce((m, c) => Math.max(m, c.lane), -1) + 1;
+            return { gym, items: laid, maxLane };
+          })
+          .filter(({ items }) => items.length > 0);
 
-        const allItems = perGym.flatMap(g => g.items);
+        const allItems = perGym.flatMap((g) => g.items);
         const totalMins = allItems.reduce((a,c)=>a+tdur(c.time,c.end),0);
 
         return (
@@ -956,7 +1671,7 @@ function LijstView({ visibleGyms, activeCats, theme }) {
                 {/* Rows per gym */}
                 <div>
                   {perGym.map(({ gym, items, maxLane }) => {
-                    const accent = gymAccent(gym, PALETTE[gym.id]||"#888");
+                    const accent = getGymColor(gym);
                     const nameCol = gymNameColor(gym, T.textSub);
                     const rowHeight = Math.max(28, 10 + maxLane * 20);
 
@@ -1233,7 +1948,7 @@ function OpenGymView({ theme }) {
         <div style={LABEL}>Legenda:</div>
         {openGymDataSorted.map((g,i) => (
           <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:T.textSub }}>
-            <div style={{ width:14, height:10, borderRadius:2, background:gymAccent(g, PALETTE[i]), opacity:0.85 }}/>
+            <div style={{ width:14, height:10, borderRadius:2, background:getGymColor(g), opacity:0.85 }}/>
             {g.name}
           </div>
         ))}
@@ -1307,7 +2022,7 @@ function OpenGymView({ theme }) {
                 {/* Gym bars */}
                 {openGymDataSorted.map((gym, gi) => {
                   const dayHours = gym.hours.find(h => h.day === day);
-                  const col = gymAccent(gym, PALETTE[gi]);
+                  const col = getGymColor(gym);
                   return (
                     <div key={gym.id} style={{ position:"relative", height:32, marginBottom:4,
                       background:T.bg, borderRadius:6, overflow:"hidden", zIndex:2 }}>
@@ -1357,7 +2072,6 @@ function OpenGymView({ theme }) {
 // ─── APP ─────────────────────────────────────────────────────────────────────
 
 const TABS = [
-  ["dag",     "Per Dag"],
   ["week",    "Weekoverzicht"],
   ["lijst",   "Lijst per dag"],
   ["gaten",   "Gaten in markt"],
@@ -1387,19 +2101,37 @@ const LIGHT_THEME = {
   btnBgA:   "#e8e8f8",
   btnBorder:"#c0c0d8",
 };
-export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp }) {
+export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp, extraGymNames = [] }) {
   const [internalDark, setInternalDark] = useState(true);
   const dark = darkProp !== undefined ? darkProp : internalDark;
   const setDark = setDarkProp !== undefined ? setDarkProp : setInternalDark;
 
-  const [tab,        setTab]        = useState("dag");
-  const [day,        setDay]        = useState("Ma");
+  const [tab,        setTab]        = useState("week");
   const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
   const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
 
+  const allGymsSorted = useMemo(() => {
+    const base = gymsSorted;
+    const existing = new Set(base.map((g) => g.name.toLowerCase()));
+    const extras = (extraGymNames || [])
+      .map((n) => String(n || "").trim())
+      .filter(Boolean)
+      .filter((n) => !existing.has(n.toLowerCase()))
+      .map((name) => ({ name, isAtc: name.toLowerCase() === "atc", schedule: [] }));
+    const combined = [...base.map((g) => ({ ...g })), ...extras];
+    return combined
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
+      .map((g, i) => ({ ...g, id: i }));
+  }, [extraGymNames]);
+
+  useEffect(() => {
+    // Ensure new gyms appear and are enabled by default when list/order changes.
+    setActiveGyms(allGymsSorted.map((g) => g.id));
+  }, [allGymsSorted.map((g) => g.id).join(",")]);
+
   const toggleGym    = id => setActiveGyms(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
   const toggleCat    = key => setActiveCats(p=>p.includes(key)?p.filter(x=>x!==key):[...p,key]);
-  const visibleGyms  = gymsSorted.filter(g=>activeGyms.includes(g.id));
+  const visibleGyms  = allGymsSorted.filter(g=>activeGyms.includes(g.id));
   const T = dark ? DARK_THEME : LIGHT_THEME;
   const catOn        = (cls) => activeCats.includes(getCat(cls).key);
 
@@ -1424,7 +2156,7 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
         <span style={{ fontSize:12,color:T.textMuted,fontWeight:500 }}>Rooster Analyse · Amsterdam</span>
         <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:16 }}>
   <span style={{ fontSize:11, color:T.textMuted }}>
-    {visibleGyms.length}/{gymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
+    {visibleGyms.length}/{allGymsSorted.length} gyms · {visibleGyms.reduce((a,g)=>a+g.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length,0)} lessen
   </span>
 
   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
@@ -1452,52 +2184,77 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
       </header>
       )}
 
-      <div style={{ display:"flex",height:noHeader?"calc(100vh - 53px)":"calc(100vh - 53px)" }}>
+      <div style={{ display:"flex", height: noHeader ? "100vh" : "calc(100vh - 53px)" }}>
 
         {/* Sidebar */}
         <aside style={{ width:200, borderRight:`1px solid ${T.border}`,
   padding:"16px 12px", overflowY:"auto", flexShrink:0, background:T.bg }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
-  <div style={{ ...getLabel(T) }}>Gyms</div>
-  <div style={{ display:"flex", gap:4 }}>
-    <button onClick={() => setActiveGyms(gymsSorted.map(g=>g.id))}
-      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
-        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
-        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
-      Alles aan
-    </button>
-    <button onClick={() => setActiveGyms([])}
-      style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
-        padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
-        color:T.textMuted, background:"transparent", cursor:"pointer" }}>
-      Alles uit
-    </button>
-  </div>
-</div>
-          {gymsSorted.map((gym,i) => {
-            const active = activeGyms.includes(gym.id);
-            const col    = gymAccent(gym, PALETTE[i]||"#888");
-            return (
-              <button key={gym.id} onClick={()=>toggleGym(gym.id)} style={{
-                display:"flex",alignItems:"center",gap:8,width:"100%",
-                padding:"7px 8px",borderRadius:8,marginBottom:3,
-                background:active?T.surface:"transparent",
-                border:`1px solid ${active?T.border2:"transparent"}`,
-                opacity:active?1:0.3,transition:"all .15s",textAlign:"left",
-              }}>
-                <div style={{ width:3,height:30,borderRadius:2,background:col,flexShrink:0 }}/>
-                <div>
-                  <div style={{ fontSize:11,fontWeight:gym.isAtc?800:600,
-                    color:gymNameColor(gym, T.textSub),lineHeight:1.3 }}>
-                    <GymTag gym={gym}/>
-                  </div>
-                  <div style={{ fontSize:9,color:T.textMuted,marginTop:1 }}>
-                    {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length} lessen/week
-                  </div>
+          <details className="sidebar-gyms-details" style={{ marginBottom:4 }}>
+            <summary
+              className="sidebar-gyms-summary"
+              style={{
+                ...getLabel(T),
+                cursor:"pointer",
+                userSelect:"none",
+                display:"flex",
+                alignItems:"center",
+                justifyContent:"space-between",
+                gap:8,
+                marginBottom:10,
+              }}
+            >
+              <span style={{ display:"flex", alignItems:"center", gap:6 }}>
+                <span className="sidebar-gyms-chevron" aria-hidden>▶</span>
+                <span>Gyms</span>
+              </span>
+              <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.5px", color:T.textSub }}>
+                {activeGyms.length}/{allGymsSorted.length}
+              </span>
+            </summary>
+            <div>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+                <div style={{ width:8 }} />
+                <div style={{ display:"flex", gap:4 }}>
+                  <button type="button" onClick={() => setActiveGyms(allGymsSorted.map((g) => g.id))}
+                    style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+                      padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+                      color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+                    Alles aan
+                  </button>
+                  <button type="button" onClick={() => setActiveGyms([])}
+                    style={{ fontSize:9, fontWeight:700, letterSpacing:"1px", textTransform:"uppercase",
+                      padding:"3px 7px", borderRadius:5, border:`1px solid ${T.border2}`,
+                      color:T.textMuted, background:"transparent", cursor:"pointer" }}>
+                    Alles uit
+                  </button>
                 </div>
-              </button>
-            );
-          })}
+              </div>
+              {allGymsSorted.map((gym) => {
+                const active = activeGyms.includes(gym.id);
+                const col    = getGymColor(gym);
+                return (
+                  <button type="button" key={gym.id} onClick={()=>toggleGym(gym.id)} style={{
+                    display:"flex",alignItems:"center",gap:8,width:"100%",
+                    padding:"7px 8px",borderRadius:8,marginBottom:3,
+                    background:active?T.surface:"transparent",
+                    border:`1px solid ${active?T.border2:"transparent"}`,
+                    opacity:active?1:0.3,transition:"all .15s",textAlign:"left",
+                  }}>
+                    <div style={{ width:3,height:30,borderRadius:2,background:col,flexShrink:0 }}/>
+                    <div>
+                      <div style={{ fontSize:11,fontWeight:gym.isAtc?800:600,
+                        color:gymNameColor(gym, T.textSub),lineHeight:1.3 }}>
+                        <GymTag gym={gym}/>
+                      </div>
+                      <div style={{ fontSize:9,color:T.textMuted,marginTop:1 }}>
+                        {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length} lessen/week
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </details>
 
           <div style={{ height:1,background:T.border,margin:"16px 0" }}/>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
@@ -1548,7 +2305,6 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
             ))}
           </div>
 
-          {tab==="dag"     && <DagView     visibleGyms={visibleGyms} day={day} setDay={setDay} activeCats={activeCats} theme={T}/>}
           {tab==="week"    && <WeekView    visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
           {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
           {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}

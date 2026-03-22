@@ -1,6 +1,21 @@
-#root {
-  width: 100%;
-  min-height: 100vh;
+/* Collapsible gym list in sidebars: hide default disclosure triangle */
+.sidebar-gyms-details summary.sidebar-gyms-summary {
+  list-style: none;
+}
+.sidebar-gyms-details summary.sidebar-gyms-summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-gyms-details .sidebar-gyms-chevron {
+  display: inline-block;
+  font-size: 8px;
+  line-height: 1;
+  opacity: 0.75;
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+}
+.sidebar-gyms-details[open] .sidebar-gyms-chevron {
+  transform: rotate(90deg);
 }
 
 .logo {

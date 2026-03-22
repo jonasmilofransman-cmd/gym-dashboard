@@ -1,4 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import {
+  CATEGORIES,
+  DayPicker,
+  GymDayLessonCard,
+  findGymScheduleByName,
+} from "./ScheduleDashboard.jsx";
 
 // ─── THEME (match ScheduleDashboard) ─────────────────────────────────────────
 const DARK_THEME = {
@@ -23,6 +29,33 @@ const LIGHT_THEME = {
   row: "#f0f0f8",
   btnBgA: "#e8e8f8",
 };
+
+const ALL_CATEGORY_KEYS = CATEGORIES.map((c) => c.key);
+
+function GymRoosterDetails({ gymNaam, theme }) {
+  const [day, setDay] = useState("Ma");
+  const gym = useMemo(() => findGymScheduleByName(gymNaam), [gymNaam]);
+  return (
+    <details style={{ marginTop: 4 }}>
+      <summary
+        style={{
+          cursor: "pointer",
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.4px",
+          color: theme.textMuted,
+          listStyle: "none",
+        }}
+      >
+        Rooster (per dag)
+      </summary>
+      <div style={{ marginTop: 10 }}>
+        <DayPicker day={day} setDay={setDay} theme={theme} rowStyle={{ marginBottom: 10 }} />
+        <GymDayLessonCard gym={gym} day={day} activeCats={ALL_CATEGORY_KEYS} theme={theme} />
+      </div>
+    </details>
+  );
+}
 
 // ─── CSV + DISTANCE HELPERS ──────────────────────────────────────────────────
 function parseDelimited(text, delimiter = ";") {
@@ -164,8 +197,6 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
   const [subTab, setSubTab] = useState("overzicht");
   const [sortBy, setSortBy] = useState("prijs");
 
-  const CONCURRENTEN = gyms;
-
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -218,6 +249,8 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
               isAtc: naam.trim().toLowerCase() === "atc",
               locatie,
               website,
+              kmAtc: afstandAtcKm,
+              kmEttaki: afstandEttakiKm,
               afstandAtc: afstandAtcKm != null ? `${afstandAtcKm} km` : "",
               afstandEttaki: afstandEttakiKm != null ? `${afstandEttakiKm} km` : "",
               coords,
@@ -248,14 +281,22 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
         const withDistances = mapped.map((g) => {
           const needsAtc = !String(g.afstandAtc || "").trim();
           const needsEttaki = !String(g.afstandEttaki || "").trim();
-          if (!g.coords) return g;
+          let kmAtc = g.kmAtc;
+          let kmEttaki = g.kmEttaki;
+          let afstandAtc = g.afstandAtc;
+          let afstandEttaki = g.afstandEttaki;
+          if (!g.coords) return { ...g, kmAtc, kmEttaki, afstandAtc, afstandEttaki };
           const atcKm = needsAtc && atcCoords ? haversineKm(g.coords, atcCoords) : null;
           const ettakiKm = needsEttaki && ettakiCoords ? haversineKm(g.coords, ettakiCoords) : null;
-          return {
-            ...g,
-            afstandAtc: needsAtc && atcKm != null ? `${atcKm.toFixed(1)} km` : g.afstandAtc,
-            afstandEttaki: needsEttaki && ettakiKm != null ? `${ettakiKm.toFixed(1)} km` : g.afstandEttaki,
-          };
+          if (needsAtc && atcKm != null) {
+            kmAtc = atcKm;
+            afstandAtc = `${atcKm.toFixed(1)} km`;
+          }
+          if (needsEttaki && ettakiKm != null) {
+            kmEttaki = ettakiKm;
+            afstandEttaki = `${ettakiKm.toFixed(1)} km`;
+          }
+          return { ...g, kmAtc, kmEttaki, afstandAtc, afstandEttaki };
         });
 
         setGyms(withDistances);
@@ -274,14 +315,29 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
 
   const sorted = useMemo(() => {
     const num = (v, fallback) => (Number.isFinite(v) ? v : fallback);
-    return [...CONCURRENTEN].sort((a, b) => {
-      if (sortBy === "merkScore") return num(b.merk?.totaal, -1) - num(a.merk?.totaal, -1);
-      if (sortBy === "googleRating") return num(b.reputatie?.googleRating, -1) - num(a.reputatie?.googleRating, -1);
-      if (sortBy === "instagram") return num(b.reputatie?.instagram, -1) - num(a.reputatie?.instagram, -1);
-      if (sortBy === "prijs") return num(a.kosten?.onbeperkt, 999) - num(b.kosten?.onbeperkt, 999);
-      return String(a.naam || "").localeCompare(String(b.naam || ""));
+    const tie = (a, b) => String(a.naam || "").localeCompare(String(b.naam || ""), "nl");
+    const kmRank = (v) => (Number.isFinite(v) ? v : Infinity);
+
+    return [...gyms].sort((a, b) => {
+      let c = 0;
+      if (sortBy === "merkScore") c = num(b.merk?.totaal, -1) - num(a.merk?.totaal, -1);
+      else if (sortBy === "googleRating") c = num(b.reputatie?.googleRating, -1) - num(a.reputatie?.googleRating, -1);
+      else if (sortBy === "instagram") c = num(b.reputatie?.instagram, -1) - num(a.reputatie?.instagram, -1);
+      else if (sortBy === "prijs") c = num(a.kosten?.onbeperkt, 999) - num(b.kosten?.onbeperkt, 999);
+      else if (sortBy === "afstandAtc") {
+        const da = kmRank(a.kmAtc);
+        const db = kmRank(b.kmAtc);
+        c = da === db ? tie(a, b) : da - db;
+      } else if (sortBy === "afstandEttaki") {
+        const da = kmRank(a.kmEttaki);
+        const db = kmRank(b.kmEttaki);
+        c = da === db ? tie(a, b) : da - db;
+      } else {
+        c = tie(a, b);
+      }
+      return c;
     });
-  }, [CONCURRENTEN, sortBy]);
+  }, [gyms, sortBy]);
 
   const visible = useMemo(() => {
     if (!Array.isArray(visibleGymNames)) return sorted;
@@ -329,7 +385,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
           Data laden…
         </div>
       )}
-      {!loading && CONCURRENTEN.length === 0 && (
+      {!loading && gyms.length === 0 && (
         <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 10, padding: 16, color: T.textMuted, fontSize: 12 }}>
           Geen gyms gevonden in <code style={{ background: T.bg, padding: "2px 6px", borderRadius: 6, border: `1px solid ${T.border2}` }}>/gym-data.csv</code>.
         </div>
@@ -349,27 +405,16 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
       {/* ── OVERZICHT ── */}
       {subTab === "overzicht" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {/* KPI row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
-            {[
-              { label: "Gyms in lijst", val: CONCURRENTEN.length, color: "#3a86ff" },
-              { label: "Afstand ATC ingevuld", val: `${CONCURRENTEN.filter(g => String(g.afstandAtc||"").trim()).length}/${CONCURRENTEN.length}`, color: "#ffb703" },
-              { label: "Afstand Ettaki ingevuld", val: `${CONCURRENTEN.filter(g => String(g.afstandEttaki||"").trim()).length}/${CONCURRENTEN.length}`, color: "#8338ec" },
-              { label: "Prijs onbeperkt (min)", val: (() => { const vals = CONCURRENTEN.map(g => g.kosten?.onbeperkt).filter(Number.isFinite); return vals.length ? `€${Math.min(...vals)}` : "—"; })(), color: "#E63946" },
-            ].map(({ label, val, color }) => (
-              <div key={label} style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 10, padding: "16px 18px", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color }} />
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: T.textMuted, marginBottom: 8 }}>{label}</div>
-                <div style={{ fontSize: 28, fontWeight: 800, color, letterSpacing: -1 }}>{val}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Sorteer + filter */}
+          {/* Sorteren */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
             <span style={{ fontSize: 10, color: T.textMuted, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>Sorteren:</span>
-            {[["prijs","Prijs"], ["naam","Naam"]].map(([k,l]) => (
-              <button key={k} onClick={() => setSortBy(k)} style={{
+            {[
+              ["prijs", "Prijs"],
+              ["naam", "Naam"],
+              ["afstandAtc", "Afstand ATC"],
+              ["afstandEttaki", "Afstand Ettaki"],
+            ].map(([k, l]) => (
+              <button type="button" key={k} onClick={() => setSortBy(k)} style={{
                 fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 6,
                 border: `1px solid ${sortBy===k?"#3a86ff40":T.border2}`,
                 background: sortBy===k ? (dark ? "#0d1525" : "#eaf1ff") : "transparent",
@@ -421,6 +466,8 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
                       <Pill val={gym.afstandAtc ? `ATC ${gym.afstandAtc}` : "ATC —"} />
                       <Pill val={gym.afstandEttaki ? `Ettaki ${gym.afstandEttaki}` : "Ettaki —"} />
                     </div>
+
+                    <GymRoosterDetails gymNaam={gym.naam} theme={T} />
                   </div>
                 </div>
               );

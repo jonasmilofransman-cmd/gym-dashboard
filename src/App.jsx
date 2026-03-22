@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import "./App.css";
 import ScheduleDashboard from "./ScheduleDashboard.jsx";
 import ConcurrentieView from "./ConcurrentieView.jsx";
-import { BASE_GYMS as SCHEDULE_BASE_GYMS, CATEGORIES as SCHEDULE_CATEGORIES, getCat as scheduleGetCat, isOpenGym as scheduleIsOpenGym, tdur as scheduleTdur, tmin as scheduleTmin } from "./ScheduleDashboard.jsx";
+import { BASE_GYMS as SCHEDULE_BASE_GYMS, CATEGORIES as SCHEDULE_CATEGORIES, DAY_PART_SLOTS, getCat as scheduleGetCat, isOpenGym as scheduleIsOpenGym, tdur as scheduleTdur, tmin as scheduleTmin } from "./ScheduleDashboard.jsx";
 
 const DASHBOARD_TABS = [
   ["schedule", "Rooster"],
@@ -157,13 +158,15 @@ export default function App() {
   );
 
   const lessonStatsByCategory = useMemo(() => {
-    // Use schedule base gyms (rooster data) to compute analytics.
     const selected = new Set(gymDataActive.map((n) => n.toLowerCase()));
     const gyms = SCHEDULE_BASE_GYMS.filter((g) => selected.has(String(g.name).toLowerCase()));
 
+    const emptyParts = () =>
+      Object.fromEntries(DAY_PART_SLOTS.map((slot) => [slot.key, { count: 0, sumStart: 0 }]));
+
     const byCat = new Map();
     for (const cat of SCHEDULE_CATEGORIES) {
-      byCat.set(cat.key, { cat, count: 0, sumStart: 0, sumDur: 0 });
+      byCat.set(cat.key, { cat, count: 0, sumDur: 0, minDur: Infinity, maxDur: -Infinity, parts: emptyParts() });
     }
 
     for (const gym of gyms) {
@@ -174,8 +177,15 @@ export default function App() {
         const dur = scheduleTdur(s.time, s.end);
         const agg = byCat.get(cat.key) || byCat.get("overig");
         agg.count += 1;
-        agg.sumStart += start;
         agg.sumDur += dur;
+        if (dur < agg.minDur) agg.minDur = dur;
+        if (dur > agg.maxDur) agg.maxDur = dur;
+        const slot = DAY_PART_SLOTS.find((p) => start >= p.from && start < p.to);
+        if (slot) {
+          const p = agg.parts[slot.key];
+          p.count += 1;
+          p.sumStart += start;
+        }
       }
     }
 
@@ -296,76 +306,108 @@ export default function App() {
               background: T.bg,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: T.textMuted }}>
-                Gyms
-              </div>
-              <div style={{ display: "flex", gap: 4 }}>
-                <button
-                  onClick={() => setGymDataActive(csvGyms.map((g) => g.name))}
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 700,
-                    letterSpacing: "1px",
-                    textTransform: "uppercase",
-                    padding: "3px 7px",
-                    borderRadius: 5,
-                    border: `1px solid ${T.border2}`,
-                    color: T.textMuted,
-                    background: "transparent",
-                    cursor: "pointer",
-                  }}
-                >
-                  Alles aan
-                </button>
-                <button
-                  onClick={() => setGymDataActive([])}
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 700,
-                    letterSpacing: "1px",
-                    textTransform: "uppercase",
-                    padding: "3px 7px",
-                    borderRadius: 5,
-                    border: `1px solid ${T.border2}`,
-                    color: T.textMuted,
-                    background: "transparent",
-                    cursor: "pointer",
-                  }}
-                >
-                  Alles uit
-                </button>
-              </div>
-            </div>
-            {csvGyms.map((g, i) => {
-              const active = gymDataActive.includes(g.name);
-              const col = g.name.toLowerCase() === "atc" ? "#E63946" : ["#3a86ff", "#06d6a0", "#ffb703", "#8338ec", "#fb5607"][i % 5];
-              return (
-                <button
-                  key={g.name}
-                  onClick={() => toggleGymData(g.name)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    width: "100%",
-                    padding: "7px 8px",
-                    borderRadius: 8,
-                    marginBottom: 3,
-                    background: active ? (dark ? "#0d0d18" : "#ffffff") : "transparent",
-                    border: `1px solid ${active ? T.border2 : "transparent"}`,
-                    opacity: active ? 1 : 0.3,
-                    transition: "all .15s",
-                    textAlign: "left",
-                  }}
-                >
-                  <div style={{ width: 3, height: 30, borderRadius: 2, background: col, flexShrink: 0 }} />
-                  <div style={{ fontSize: 11, fontWeight: g.name.toLowerCase() === "atc" ? 800 : 600, color: T.text }}>
-                    {g.name}
+            <details className="sidebar-gyms-details" style={{ marginBottom: 4 }}>
+              <summary
+                className="sidebar-gyms-summary"
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "1.8px",
+                  textTransform: "uppercase",
+                  color: T.textMuted,
+                  cursor: "pointer",
+                  userSelect: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  marginBottom: 10,
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span className="sidebar-gyms-chevron" aria-hidden>
+                    ▶
+                  </span>
+                  <span>Gyms</span>
+                </span>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.5px", color: T.textSub }}>
+                  {gymDataActive.length}/{csvGyms.length}
+                </span>
+              </summary>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                  <div style={{ width: 8 }} />
+                  <div style={{ display: "flex", gap: 4 }}>
+                    <button
+                      type="button"
+                      onClick={() => setGymDataActive(csvGyms.map((g) => g.name))}
+                      style={{
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                        padding: "3px 7px",
+                        borderRadius: 5,
+                        border: `1px solid ${T.border2}`,
+                        color: T.textMuted,
+                        background: "transparent",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Alles aan
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGymDataActive([])}
+                      style={{
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                        padding: "3px 7px",
+                        borderRadius: 5,
+                        border: `1px solid ${T.border2}`,
+                        color: T.textMuted,
+                        background: "transparent",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Alles uit
+                    </button>
                   </div>
-                </button>
-              );
-            })}
+                </div>
+                {csvGyms.map((g, i) => {
+                  const active = gymDataActive.includes(g.name);
+                  const col = g.name.toLowerCase() === "atc" ? "#E63946" : ["#3a86ff", "#06d6a0", "#ffb703", "#8338ec", "#fb5607"][i % 5];
+                  return (
+                    <button
+                      key={g.name}
+                      type="button"
+                      onClick={() => toggleGymData(g.name)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        width: "100%",
+                        padding: "7px 8px",
+                        borderRadius: 8,
+                        marginBottom: 3,
+                        background: active ? (dark ? "#0d0d18" : "#ffffff") : "transparent",
+                        border: `1px solid ${active ? T.border2 : "transparent"}`,
+                        opacity: active ? 1 : 0.3,
+                        transition: "all .15s",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div style={{ width: 3, height: 30, borderRadius: 2, background: col, flexShrink: 0 }} />
+                      <div style={{ fontSize: 11, fontWeight: g.name.toLowerCase() === "atc" ? 800 : 600, color: T.text }}>
+                        {g.name}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </details>
           </aside>
 
           {/* Main */}
@@ -404,19 +446,104 @@ export default function App() {
                   </div>
                 </div>
                 <div style={{ overflowX: "auto" }}>
-                  <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 600 }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 880 }}>
                     <thead>
                       <tr>
-                        {["Categorie", "Lessen", "Gem. start", "Gem. duur"].map((h) => (
-                          <th key={h} style={{ padding: "10px 12px", textAlign: h === "Categorie" ? "left" : "center", fontSize: 9, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: T.textMuted, borderBottom: `1px solid ${T.border2}`, background: T.bg, whiteSpace: "nowrap" }}>
-                            {h}
+                        <th
+                          rowSpan={2}
+                          style={{
+                            padding: "10px 12px",
+                            textAlign: "left",
+                            verticalAlign: "bottom",
+                            fontSize: 9,
+                            fontWeight: 700,
+                            letterSpacing: "1px",
+                            textTransform: "uppercase",
+                            color: T.textMuted,
+                            borderBottom: `1px solid ${T.border2}`,
+                            background: T.bg,
+                          }}
+                        >
+                          Categorie
+                        </th>
+                        <th
+                          rowSpan={2}
+                          style={{
+                            padding: "10px 12px",
+                            textAlign: "center",
+                            verticalAlign: "bottom",
+                            fontSize: 9,
+                            fontWeight: 700,
+                            letterSpacing: "1px",
+                            textTransform: "uppercase",
+                            color: T.textMuted,
+                            borderBottom: `1px solid ${T.border2}`,
+                            background: T.bg,
+                          }}
+                        >
+                          Lessen
+                        </th>
+                        {DAY_PART_SLOTS.map((slot) => (
+                          <th
+                            key={slot.key}
+                            style={{
+                              padding: "8px 10px 2px",
+                              textAlign: "center",
+                              fontSize: 10,
+                              fontWeight: 800,
+                              letterSpacing: "0.4px",
+                              color: slot.color,
+                              borderBottom: "none",
+                              background: T.bg,
+                            }}
+                          >
+                            {slot.label}
+                          </th>
+                        ))}
+                        {["Gem. duur", "Min. tijd", "Max. tijd"].map((label) => (
+                          <th
+                            key={label}
+                            rowSpan={2}
+                            style={{
+                              padding: "10px 12px",
+                              textAlign: "center",
+                              verticalAlign: "bottom",
+                              fontSize: 9,
+                              fontWeight: 700,
+                              letterSpacing: "1px",
+                              textTransform: "uppercase",
+                              color: T.textMuted,
+                              borderBottom: `1px solid ${T.border2}`,
+                              background: T.bg,
+                            }}
+                          >
+                            {label}
+                          </th>
+                        ))}
+                      </tr>
+                      <tr>
+                        {DAY_PART_SLOTS.map((slot) => (
+                          <th
+                            key={`${slot.key}-sub`}
+                            style={{
+                              padding: "2px 10px 10px",
+                              textAlign: "center",
+                              fontSize: 9,
+                              fontWeight: 700,
+                              letterSpacing: "1px",
+                              textTransform: "uppercase",
+                              color: T.textMuted,
+                              borderBottom: `1px solid ${T.border2}`,
+                              background: T.bg,
+                            }}
+                          >
+                            GEM. START
                           </th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
-                      {lessonStatsByCategory.map(({ cat, count, sumStart, sumDur }) => {
-                        const avgStart = sumStart / count;
+                      {lessonStatsByCategory.map(({ cat, count, sumDur, minDur, maxDur, parts }) => {
                         const avgDur = sumDur / count;
                         return (
                           <tr key={cat.key} style={{ borderBottom: `1px solid ${T.border}` }}>
@@ -424,14 +551,24 @@ export default function App() {
                               <span style={{ fontSize: 12, fontWeight: 700, color: cat.color }}>{cat.label}</span>
                             </td>
                             <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{count}</td>
-                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{fmtTimeFromMinutes(avgStart)}</td>
+                            {DAY_PART_SLOTS.map((slot) => {
+                              const p = parts[slot.key];
+                              const cell = p.count > 0 ? fmtTimeFromMinutes(p.sumStart / p.count) : "—";
+                              return (
+                                <td key={slot.key} style={{ padding: "10px 10px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>
+                                  {cell}
+                                </td>
+                              );
+                            })}
                             <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(avgDur)}m</td>
+                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(minDur)}m</td>
+                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(maxDur)}m</td>
                           </tr>
                         );
                       })}
                       {lessonStatsByCategory.length === 0 && (
                         <tr>
-                          <td colSpan={4} style={{ padding: "16px 12px", textAlign: "center", color: T.textMuted }}>
+                          <td colSpan={2 + DAY_PART_SLOTS.length + 3} style={{ padding: "16px 12px", textAlign: "center", color: T.textMuted }}>
                             Geen rooster-data gevonden voor de geselecteerde gyms (of gyms hebben geen lessen).
                           </td>
                         </tr>

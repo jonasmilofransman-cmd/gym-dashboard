@@ -1773,6 +1773,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
   const TH = getTH(T);
   const CARD = getCard(T);
   const LABEL = getLabel(T);
+  const [weekSort, setWeekSort] = useState("name"); // name | lessons_asc | lessons_desc | hours_asc | hours_desc
   const cfd = (gym,d) =>
     gym.schedule
       .filter(s=>s.day===d && !isOpenGym(s.cls) && catOn(s.cls))
@@ -1781,24 +1782,90 @@ function WeekView({ visibleGyms, activeCats, theme }) {
   const gymStats = useMemo(() => visibleGyms.map(gym => {
     const catMins = Object.fromEntries(CATEGORIES.map(c=>[c.key,0]));
     let totalMins = 0;
+    let totalLessen = 0;
     for (const s of gym.schedule) {
       if (isOpenGym(s.cls)) continue;
       if (!catOn(s.cls)) continue;
       const dur = tdur(s.time,s.end);
       catMins[getCat(s.cls).key] += dur;
       totalMins += dur;
+      totalLessen += 1;
     }
-    return { gym, catMins, totalMins };
+    return { gym, catMins, totalMins, totalLessen };
   }), [visibleGyms, activeCats]);
+
+  const sortedGymStats = useMemo(() => {
+    const arr = [...gymStats];
+    if (weekSort === "lessons_asc") {
+      arr.sort((a, b) =>
+        (a.totalLessen - b.totalLessen) ||
+        (a.totalMins - b.totalMins) ||
+        a.gym.name.localeCompare(b.gym.name, undefined, { sensitivity: "base" })
+      );
+      return arr;
+    }
+    if (weekSort === "lessons_desc") {
+      arr.sort((a, b) =>
+        (b.totalLessen - a.totalLessen) ||
+        (b.totalMins - a.totalMins) ||
+        a.gym.name.localeCompare(b.gym.name, undefined, { sensitivity: "base" })
+      );
+      return arr;
+    }
+    if (weekSort === "hours_asc") {
+      arr.sort((a, b) =>
+        (a.totalMins - b.totalMins) ||
+        (a.totalLessen - b.totalLessen) ||
+        a.gym.name.localeCompare(b.gym.name, undefined, { sensitivity: "base" })
+      );
+      return arr;
+    }
+    if (weekSort === "hours_desc") {
+      arr.sort((a, b) =>
+        (b.totalMins - a.totalMins) ||
+        (b.totalLessen - a.totalLessen) ||
+        a.gym.name.localeCompare(b.gym.name, undefined, { sensitivity: "base" })
+      );
+      return arr;
+    }
+    // Default: name
+    arr.sort((a, b) => a.gym.name.localeCompare(b.gym.name, undefined, { sensitivity: "base" }));
+    return arr;
+  }, [gymStats, weekSort]);
 
   const maxPerDay = useMemo(() =>
     Math.max(...DAYS.map(d => Math.max(...visibleGyms.map(g => cfd(g,d).length),0)),1),
   [visibleGyms, activeCats]);
 
-  const maxMins = Math.max(...gymStats.map(s=>s.totalMins),1);
+  const maxMins = Math.max(...sortedGymStats.map(s=>s.totalMins),1);
 
   return (
     <div style={{ display:"flex",flexDirection:"column",gap:16 }}>
+
+      {/* Sorting */}
+      <div style={{ ...CARD, padding:"12px 16px", display:"flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
+        <div style={{ ...LABEL, margin:0 }}>Sorteren op</div>
+        <select
+          value={weekSort}
+          onChange={(e) => setWeekSort(e.target.value)}
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: T.textSub,
+            background: T.surface,
+            border: `1px solid ${T.border2}`,
+            borderRadius: 8,
+            padding: "6px 10px",
+            outline: "none",
+          }}
+        >
+          <option value="name">Gym (A–Z)</option>
+          <option value="lessons_asc">Lessen/week (min → max)</option>
+          <option value="lessons_desc">Lessen/week (max → min)</option>
+          <option value="hours_asc">Uren/week (min → max)</option>
+          <option value="hours_desc">Uren/week (max → min)</option>
+        </select>
+      </div>
 
       {/* Heatmap */}
       <div style={CARD}>
@@ -1814,7 +1881,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
               <th style={{ ...TH,textAlign:"center" }}>Uren/week</th>
             </tr></thead>
             <tbody>
-              {gymStats.map(({ gym, totalMins }) => {
+              {sortedGymStats.map(({ gym, totalMins, totalLessen }) => {
                 const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
@@ -1842,7 +1909,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
                       );
                     })}
                     <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:800,fontSize:14,color:col }}>
-                      {gym.schedule.filter(s=>!isOpenGym(s.cls) && catOn(s.cls)).length}
+                      {totalLessen}
                     </td>
                     <td style={{ padding:"8px 12px",textAlign:"center",fontWeight:700,color:T.textSub }}>
                       {fmtH(totalMins)}
@@ -1872,7 +1939,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
               <th style={{ ...TH,textAlign:"center" }}>Totaal</th>
             </tr></thead>
             <tbody>
-              {gymStats.map(({ gym, catMins, totalMins }) => {
+              {sortedGymStats.map(({ gym, catMins, totalMins }) => {
                 const col = getGymColor(gym);
                 return (
                   <tr key={gym.id} style={{ borderBottom:`1px solid ${T.border}` }}
@@ -1910,7 +1977,7 @@ function WeekView({ visibleGyms, activeCats, theme }) {
       {/* Totale uren bar */}
       <div style={{ ...CARD,padding:20 }}>
         <div style={{ ...LABEL,marginBottom:14 }}>Totaal trainingsuren / week</div>
-        {[...gymStats].sort((a,b)=>b.totalMins-a.totalMins).map(({ gym, totalMins }) => {
+        {sortedGymStats.map(({ gym, totalMins }) => {
           const col = getGymColor(gym);
           const pct = (totalMins/maxMins)*100;
           return (

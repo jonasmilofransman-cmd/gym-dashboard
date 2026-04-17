@@ -82,6 +82,58 @@ const marketData = [
 
 const marketAverage = 75; // pre-calculated average of 32 gyms with known prices
 
+// Koppel vaste marketData-namen aan exacte `Naam` in gym-data.csv (anders geen km-match bij filters)
+const PRICE_ANALYSIS_NAME_TO_CSV_NAAM = {
+  kimekai: "Kimekai Gym",
+  mousid: "MOUSID GYM",
+  "sport city": "Sport City",
+  maca: "Martial Arts Center Amsterdam",
+  "royal gym": "Royal Gym Amsterdam",
+  airlines: "Amsterdam Airlines",
+  southpaw: "Gym Southpaw",
+  "kops gym": "Kops Gym",
+  "grappling ac.": "Amsterdam Grappling Academy",
+  tribe: "Tribe Grappling",
+  "arena gym": "Arena Gym",
+  ettakigym: "EttakiGym",
+  "fight iq": "Fight IQ",
+  "amst. bjj": "Amsterdam BJJ",
+  "gym royale": "Gym Royale",
+  boogieland: "Boogieland",
+  "dodo jj": "DODO Jiu Jitsu",
+  "patrick's": "Patrick's Gym",
+  "vos gym": "Vos Gym",
+  "mike's": "Mike's Gym",
+  "elite tc": "Elite Training Center",
+  eastbound: "Eastbound Gym",
+  "dojo doorje": "Dojo Doorjé",
+  "vondel z": "Vondel Gym Zuid",
+  "vondel o": "Vondel Gym Oost",
+  "vondel w": "Vondel Gym West",
+  "focus jj": "Focus Jiujitsu",
+  ndsm: "NDSM Fightclub",
+  "10th planet": "10th Planet Jiu-Jitsu Amsterdam",
+  "team ramzi": "Team Ramzi",
+  carlson: "Carlson Gracie Amsterdam",
+  "sin city": "Sin City Boxing",
+  "fight district": "FIGHT DISTRICT",
+};
+
+function getKmForMarketName(marketName, csvKmByLower, kind) {
+  const lower = String(marketName || "").toLowerCase().trim();
+  const alias = PRICE_ANALYSIS_NAME_TO_CSV_NAAM[lower];
+  const tryKeys = [];
+  if (alias) tryKeys.push(String(alias).toLowerCase().trim());
+  tryKeys.push(lower);
+  for (const k of tryKeys) {
+    const row = csvKmByLower.get(k);
+    if (!row) continue;
+    const km = kind === "ettaki" ? row.kmEttaki : row.kmAtc;
+    if (Number.isFinite(km)) return km;
+  }
+  return null;
+}
+
 const dropInData = [
   { name: "ATC", price: 10, owner: "atc" },
   { name: "Kops Gym", price: 14 },
@@ -387,7 +439,7 @@ function GymBadge({ name }) {
 }
 
 // ─── CONCURRENTIE VIEW ────────────────────────────────────────────────────────
-export default function ConcurrentieView({ dark = true, visibleGymNames }) {
+export default function ConcurrentieView({ dark = true, visibleGymNames, priceAnalysisFilters }) {
   const T = dark ? DARK_THEME : LIGHT_THEME;
   // Optional filtering from outer sidebar
   // visibleGymNames: array of gym names to show
@@ -545,6 +597,94 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
     const set = new Set(visibleGymNames.map((n) => String(n).toLowerCase()));
     return sorted.filter((g) => set.has(String(g.naam).toLowerCase()));
   }, [sorted, visibleGymNames]);
+
+  // Prijsanalyse gebruikt vaste marktnamen (marketData) die niet 1-op-1 matchen met CSV-namen
+  // (bijv. "Airlines" vs "Amsterdam Airlines"). Daarom geen subset-filter op sidebar-gyms hier.
+
+  const priceAnalysisKmByGymLower = useMemo(() => {
+    const map = new Map();
+    for (const g of gyms) {
+      const key = String(g?.naam || "").toLowerCase();
+      if (!key) continue;
+      map.set(key, { kmAtc: g.kmAtc, kmEttaki: g.kmEttaki });
+    }
+    return map;
+  }, [gyms]);
+
+  const rangeAtcKm = Number.isFinite(priceAnalysisFilters?.rangeAtcKm) ? priceAnalysisFilters.rangeAtcKm : null;
+  const rangeEttakiKm = Number.isFinite(priceAnalysisFilters?.rangeEttakiKm) ? priceAnalysisFilters.rangeEttakiKm : null;
+
+  const atcMonthlyFiltered = useMemo(() => {
+    const ownedKey = "atc";
+    const out = [];
+    for (const item of marketData) {
+      const lower = String(item.name || "").toLowerCase();
+      const isOwned = lower === ownedKey;
+      if (!isOwned) {
+        if (rangeAtcKm != null) {
+          const km = getKmForMarketName(item.name, priceAnalysisKmByGymLower, "atc");
+          if (!Number.isFinite(km) || km > rangeAtcKm) continue;
+        }
+      }
+      out.push(item);
+    }
+    // ensure ATC always present even if not in marketData for some reason
+    if (!out.some((x) => String(x.name).toLowerCase() === ownedKey)) {
+      const atc = marketData.find((x) => String(x.name).toLowerCase() === ownedKey);
+      if (atc) out.push(atc);
+    }
+    return out;
+  }, [priceAnalysisKmByGymLower, rangeAtcKm]);
+
+  const ettakiMonthlyFiltered = useMemo(() => {
+    const ownedKey = "ettakigym";
+    const out = [];
+    for (const item of marketData) {
+      const lower = String(item.name || "").toLowerCase();
+      const isOwned = lower === ownedKey;
+      if (!isOwned) {
+        if (rangeEttakiKm != null) {
+          const km = getKmForMarketName(item.name, priceAnalysisKmByGymLower, "ettaki");
+          if (!Number.isFinite(km) || km > rangeEttakiKm) continue;
+        }
+      }
+      out.push(item);
+    }
+    if (!out.some((x) => String(x.name).toLowerCase() === ownedKey)) {
+      const et = marketData.find((x) => String(x.name).toLowerCase() === ownedKey);
+      if (et) out.push(et);
+    }
+    return out;
+  }, [priceAnalysisKmByGymLower, rangeEttakiKm]);
+
+  const atcCompetitorCount = Math.max(0, atcMonthlyFiltered.filter((d) => String(d.owner || "") !== "atc" && String(d.name).toLowerCase() !== "atc").length);
+  const ettakiCompetitorCount = Math.max(0, ettakiMonthlyFiltered.filter((d) => String(d.owner || "") !== "ettaki" && String(d.name).toLowerCase() !== "ettakigym").length);
+
+  const atcMonthlyAvgLine = useMemo(() => {
+    if (rangeAtcKm == null) {
+      return { value: marketAverage, legend: `Gem. markt €${marketAverage.toFixed(2)}` };
+    }
+    const comps = atcMonthlyFiltered.filter((d) => String(d.owner || "") !== "atc" && String(d.name).toLowerCase() !== "atc");
+    if (!comps.length) {
+      return { value: marketAverage, legend: `Gem. markt €${marketAverage.toFixed(2)}` };
+    }
+    const sum = comps.reduce((a, d) => a + Number(d.price), 0);
+    const avg = sum / comps.length;
+    return { value: avg, legend: `Gem. selectie €${avg.toFixed(2)}` };
+  }, [atcMonthlyFiltered, rangeAtcKm]);
+
+  const ettakiMonthlyAvgLine = useMemo(() => {
+    if (rangeEttakiKm == null) {
+      return { value: marketAverage, legend: `Gem. markt €${marketAverage.toFixed(2)}` };
+    }
+    const comps = ettakiMonthlyFiltered.filter((d) => String(d.owner || "") !== "ettaki" && String(d.name).toLowerCase() !== "ettakigym");
+    if (!comps.length) {
+      return { value: marketAverage, legend: `Gem. markt €${marketAverage.toFixed(2)}` };
+    }
+    const sum = comps.reduce((a, d) => a + Number(d.price), 0);
+    const avg = sum / comps.length;
+    return { value: avg, legend: `Gem. selectie €${avg.toFixed(2)}` };
+  }, [ettakiMonthlyFiltered, rangeEttakiKm]);
 
   const ja = v => v === "Ja";
   const addon = v => v === "Add-on";
@@ -892,64 +1032,78 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
                 {/* Chart 1 */}
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Maandabonnement onbeperkt — alle 34 gyms</div>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>
+                      Maandabonnement onbeperkt — selectie ({atcCompetitorCount + 1} gyms)
+                    </div>
                     <CustomLegend
                       items={[
                         { label: "ATC", color: ATC_ACCENT, type: "bar", textColor: T.textMuted },
                         { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
-                        { label: "Gem. €75", color: AVG_LINE, type: "line", textColor: T.textMuted },
+                        { label: atcMonthlyAvgLine.legend, color: AVG_LINE, type: "line", textColor: T.textMuted },
                       ]}
                     />
                   </div>
                   <div style={{ marginTop: 10 }}>
-                    <ChartCanvas
-                      canvasId="atcMonthlyChart"
-                      height={320}
-                      makeConfig={() => {
-                        const labels = marketData.map((d) => d.name);
-                        const values = marketData.map((d) => d.price);
-                        const colors = marketData.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
-                        return {
-                          type: "bar",
-                          data: {
-                            labels,
-                            datasets: [
-                              {
-                                data: values,
-                                backgroundColor: colors,
-                                borderWidth: 0,
-                                borderRadius: 5,
-                                barPercentage: 0.9,
-                                categoryPercentage: 0.9,
+                    {atcCompetitorCount === 0 ? (
+                      <div style={{ height: 320, display: "flex", alignItems: "center", justifyContent: "center", color: T.textMuted, fontSize: 12, fontWeight: 700 }}>
+                        Geen concurrenten binnen deze selectie/afstand (ATC wordt altijd getoond).
+                      </div>
+                    ) : (
+                      <ChartCanvas
+                        canvasId="atcMonthlyChart"
+                        height={320}
+                        makeConfig={() => {
+                          const labels = atcMonthlyFiltered.map((d) => d.name);
+                          const values = atcMonthlyFiltered.map((d) => d.price);
+                          const colors = atcMonthlyFiltered.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
+                          return {
+                            type: "bar",
+                            data: {
+                              labels,
+                              datasets: [
+                                {
+                                  data: values,
+                                  backgroundColor: colors,
+                                  borderWidth: 0,
+                                  borderRadius: 5,
+                                  barPercentage: 0.9,
+                                  categoryPercentage: 0.9,
+                                },
+                              ],
+                            },
+                            options: {
+                              responsive: true,
+                              maintainAspectRatio: false,
+                              plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                  callbacks: {
+                                    label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                  },
+                                },
                               },
-                            ],
-                          },
-                          options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: { display: false },
-                              tooltip: {
-                                callbacks: {
-                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                              scales: {
+                                x: {
+                                  ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
+                                  grid: { display: false },
+                                },
+                                y: {
+                                  ticks: { color: T.textMuted, callback: euroTick },
+                                  grid: { color: `${T.border2}` },
                                 },
                               },
                             },
-                            scales: {
-                              x: {
-                                ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
-                                grid: { display: false },
-                              },
-                              y: {
-                                ticks: { color: T.textMuted, callback: euroTick },
-                                grid: { color: `${T.border2}` },
-                              },
-                            },
-                          },
-                          plugins: [makeAverageLinePlugin({ average: marketAverage, color: AVG_LINE, label: `Gem. €${marketAverage}` })],
-                        };
-                      }}
-                    />
+                            plugins: [
+                              makeAverageLinePlugin({
+                                average: atcMonthlyAvgLine.value,
+                                color: AVG_LINE,
+                                label: atcMonthlyAvgLine.legend,
+                              }),
+                            ],
+                          };
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -1117,64 +1271,78 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
                 {/* Chart 3 */}
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Maandabonnement onbeperkt — alle 34 gyms</div>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>
+                      Maandabonnement onbeperkt — selectie ({ettakiCompetitorCount + 1} gyms)
+                    </div>
                     <CustomLegend
                       items={[
                         { label: "EttakiGym", color: ETTAKI_ACCENT, type: "bar", textColor: T.textMuted },
                         { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
-                        { label: "Gem. €75", color: AVG_LINE, type: "line", textColor: T.textMuted },
+                        { label: ettakiMonthlyAvgLine.legend, color: AVG_LINE, type: "line", textColor: T.textMuted },
                       ]}
                     />
                   </div>
                   <div style={{ marginTop: 10 }}>
-                    <ChartCanvas
-                      canvasId="ettakiMonthlyChart"
-                      height={320}
-                      makeConfig={() => {
-                        const labels = marketData.map((d) => d.name);
-                        const values = marketData.map((d) => d.price);
-                        const colors = marketData.map((d) => (d.owner === "ettaki" ? ETTAKI_ACCENT : COMPETITOR_BAR));
-                        return {
-                          type: "bar",
-                          data: {
-                            labels,
-                            datasets: [
-                              {
-                                data: values,
-                                backgroundColor: colors,
-                                borderWidth: 0,
-                                borderRadius: 5,
-                                barPercentage: 0.9,
-                                categoryPercentage: 0.9,
+                    {ettakiCompetitorCount === 0 ? (
+                      <div style={{ height: 320, display: "flex", alignItems: "center", justifyContent: "center", color: T.textMuted, fontSize: 12, fontWeight: 700 }}>
+                        Geen concurrenten binnen deze selectie/afstand (EttakiGym wordt altijd getoond).
+                      </div>
+                    ) : (
+                      <ChartCanvas
+                        canvasId="ettakiMonthlyChart"
+                        height={320}
+                        makeConfig={() => {
+                          const labels = ettakiMonthlyFiltered.map((d) => d.name);
+                          const values = ettakiMonthlyFiltered.map((d) => d.price);
+                          const colors = ettakiMonthlyFiltered.map((d) => (d.owner === "ettaki" ? ETTAKI_ACCENT : COMPETITOR_BAR));
+                          return {
+                            type: "bar",
+                            data: {
+                              labels,
+                              datasets: [
+                                {
+                                  data: values,
+                                  backgroundColor: colors,
+                                  borderWidth: 0,
+                                  borderRadius: 5,
+                                  barPercentage: 0.9,
+                                  categoryPercentage: 0.9,
+                                },
+                              ],
+                            },
+                            options: {
+                              responsive: true,
+                              maintainAspectRatio: false,
+                              plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                  callbacks: {
+                                    label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                  },
+                                },
                               },
-                            ],
-                          },
-                          options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: { display: false },
-                              tooltip: {
-                                callbacks: {
-                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                              scales: {
+                                x: {
+                                  ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
+                                  grid: { display: false },
+                                },
+                                y: {
+                                  ticks: { color: T.textMuted, callback: euroTick },
+                                  grid: { color: `${T.border2}` },
                                 },
                               },
                             },
-                            scales: {
-                              x: {
-                                ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
-                                grid: { display: false },
-                              },
-                              y: {
-                                ticks: { color: T.textMuted, callback: euroTick },
-                                grid: { color: `${T.border2}` },
-                              },
-                            },
-                          },
-                          plugins: [makeAverageLinePlugin({ average: marketAverage, color: AVG_LINE, label: `Gem. €${marketAverage}` })],
-                        };
-                      }}
-                    />
+                            plugins: [
+                              makeAverageLinePlugin({
+                                average: ettakiMonthlyAvgLine.value,
+                                color: AVG_LINE,
+                                label: ettakiMonthlyAvgLine.legend,
+                              }),
+                            ],
+                          };
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 

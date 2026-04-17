@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CATEGORIES,
   DayPicker,
@@ -31,6 +31,165 @@ const LIGHT_THEME = {
 };
 
 const ALL_CATEGORY_KEYS = CATEGORIES.map((c) => c.key);
+
+const ATC_RED = "#E63946";
+const ETTAKI_YELLOW = "#ffb703";
+const isEttakiName = (name) => String(name || "").toLowerCase().replace(/\s/g, "") === "ettakigym";
+
+// ─── PRIJSANALYSE DATA (hardcoded, los van CSV) ───────────────────────────────
+const ATC_ACCENT = "#EF9F27";
+const ETTAKI_ACCENT = "#5DCAA5";
+const COMPETITOR_BAR = "#378ADD";
+const AVG_LINE = "#E24B4A";
+
+// Exact dataset (sorted by price ascending)
+const marketData = [
+  { name: "Kimekai", price: 35 },
+  { name: "Mousid", price: 37.5 },
+  { name: "Sport City", price: 37.99 },
+  { name: "MACA", price: 40 },
+  { name: "Royal Gym", price: 55 },
+  { name: "ATC", price: 60, owner: "atc" },
+  { name: "Airlines", price: 60 },
+  { name: "Southpaw", price: 60 },
+  { name: "Kops Gym", price: 60 },
+  { name: "Grappling Ac.", price: 65 },
+  { name: "Tribe", price: 65 },
+  { name: "Arena Gym", price: 69 },
+  { name: "EttakiGym", price: 69, owner: "ettaki" },
+  { name: "Fight IQ", price: 69.95 },
+  { name: "Amst. BJJ", price: 70 },
+  { name: "Gym Royale", price: 74.5 },
+  { name: "Boogieland", price: 75 },
+  { name: "DODO JJ", price: 75 },
+  { name: "Patrick's", price: 75 },
+  { name: "Vos Gym", price: 75 },
+  { name: "Mike's", price: 75 },
+  { name: "Elite TC", price: 77.95 },
+  { name: "Eastbound", price: 79.5 },
+  { name: "Dojo Doorje", price: 80 },
+  { name: "Vondel Z", price: 84.5 },
+  { name: "Vondel O", price: 84.5 },
+  { name: "Vondel W", price: 84.5 },
+  { name: "Focus JJ", price: 89 },
+  { name: "NDSM", price: 89 },
+  { name: "10th Planet", price: 90 },
+  { name: "Team Ramzi", price: 95 },
+  { name: "Carlson", price: 99 },
+  { name: "Sin City", price: 125 },
+  { name: "Fight District", price: 149.95 },
+];
+
+const marketAverage = 75; // pre-calculated average of 32 gyms with known prices
+
+const dropInData = [
+  { name: "ATC", price: 10, owner: "atc" },
+  { name: "Kops Gym", price: 14 },
+  { name: "Boogieland", price: 15 },
+  { name: "Dojo Doorje", price: 15 },
+  { name: "Royal Gym", price: 15 },
+  { name: "Vondel", price: 15 },
+  { name: "Elite TC", price: 15 },
+  { name: "Eastbound", price: 16.5 },
+  { name: "Team Ramzi", price: 16.99 },
+  { name: "DODO JJ", price: 20 },
+  { name: "Patrick's", price: 20 },
+  { name: "Sin City", price: 20 },
+  { name: "Carlson", price: 25 },
+  { name: "10th Planet", price: 30 },
+];
+
+const ettakiTypeLabels = ["2× per week", "Onbeperkt", "Jeugd"];
+const ettakiValues = [54, 69, 44];
+const marketValues = [55, 75, 43]; // market averages for each category
+
+function euroTick(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return value;
+  return `€${n}`;
+}
+
+function CustomLegend({ items }) {
+  return (
+    <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+      {items.map((it) => (
+        <div key={it.label} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+          <span
+            aria-hidden="true"
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: 2,
+              background: it.type === "line" ? "transparent" : it.color,
+              border: it.type === "line" ? `2px dashed ${it.color}` : `1px solid ${it.color}55`,
+              boxSizing: "border-box",
+              display: "inline-block",
+            }}
+          />
+          <span style={{ fontSize: 10, fontWeight: 700, color: it.textColor || "inherit" }}>{it.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function makeAverageLinePlugin({ average, color, dashed = [6, 6] }) {
+  return {
+    id: `avgLine-${average}`,
+    afterDraw(chart) {
+      const yScale = chart?.scales?.y;
+      if (!yScale) return;
+      const area = chart.chartArea;
+      if (!area) return;
+      const y = yScale.getPixelForValue(average);
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.beginPath();
+      ctx.setLineDash(dashed);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.moveTo(area.left, y);
+      ctx.lineTo(area.right, y);
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
+}
+
+function ChartCanvas({ canvasId, height, makeConfig }) {
+  const canvasRef = useRef(null);
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const ChartCtor = typeof window !== "undefined" ? window.Chart : null;
+    if (!ChartCtor) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (chartRef.current) {
+      chartRef.current.destroy();
+      chartRef.current = null;
+    }
+
+    const ctx = canvas.getContext("2d");
+    const config = makeConfig?.();
+    if (!config) return;
+    chartRef.current = new ChartCtor(ctx, config);
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
+  }, [makeConfig]);
+
+  return (
+    <div style={{ height, position: "relative" }}>
+      <canvas id={canvasId} ref={canvasRef} />
+    </div>
+  );
+}
 
 function GymRoosterDetails({ gymNaam, theme }) {
   const [day, setDay] = useState("Ma");
@@ -184,6 +343,39 @@ const PALETTE = [
   "#3a86ff", "#06d6a0", "#ffb703", "#8338ec", "#fb5607",
   "#2ec4b6", "#f77f00", "#4cc9f0", "#80b918", "#9d4edd",
 ];
+
+function GymBadge({ name }) {
+  const n = String(name || "");
+  const lower = n.trim().toLowerCase();
+  const isAtc = lower === "atc";
+  const ettaki = isEttakiName(n);
+  if (!isAtc && !ettaki) return null;
+
+  const bg = isAtc ? ATC_RED : ETTAKI_YELLOW;
+  const fg = ettaki ? "#1a1a1a" : "#ffffff";
+  const text = isAtc ? "ATC" : "ETTAKI";
+
+  return (
+    <span
+      style={{
+        fontSize: 9,
+        fontWeight: 800,
+        letterSpacing: 1.1,
+        textTransform: "uppercase",
+        padding: "2px 7px",
+        borderRadius: 999,
+        background: bg,
+        color: fg,
+        border: `1px solid ${fg}20`,
+        lineHeight: 1.1,
+        flexShrink: 0,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {text}
+    </span>
+  );
+}
 
 // ─── CONCURRENTIE VIEW ────────────────────────────────────────────────────────
 export default function ConcurrentieView({ dark = true, visibleGymNames }) {
@@ -426,7 +618,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
           {/* Gym kaarten */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 10 }}>
             {visible.map((gym, i) => {
-              const accentColor = gym.isAtc ? "#E63946" : PALETTE[i % PALETTE.length];
+              const accentColor = gym.isAtc ? ATC_RED : (isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length]);
               const websiteUrl = normalizeUrl(gym.website);
               return (
                 <div key={gym.naam} style={{
@@ -439,7 +631,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
                         <span style={{ fontSize: 13, fontWeight: 800, color: gym.isAtc ? "#E63946" : T.textSub }}>{gym.naam}</span>
-                        {gym.isAtc && <span style={{ fontSize: 9, fontWeight: 700, padding: "1px 6px", borderRadius: 99, background: "#E6394620", color: "#E63946", border: "1px solid #E6394640" }}>ATC</span>}
+                        <GymBadge name={gym.naam} />
                       </div>
                       <div style={{ fontSize: 10, color: T.textMuted }}>{gym.locatie}</div>
                       {websiteUrl && (
@@ -490,7 +682,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
               </thead>
               <tbody>
                 {[...visible].sort((a,b) => (a.kosten.onbeperkt||999)-(b.kosten.onbeperkt||999)).map((gym, i) => {
-                  const col = gym.isAtc ? "#E63946" : PALETTE[i % PALETTE.length];
+                  const col = gym.isAtc ? ATC_RED : (isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length]);
                   const fmt = v => v ? `€${v}` : <span style={{ color: T.textMuted }}>—</span>;
                   return (
                     <tr key={gym.naam} style={{ borderBottom: `1px solid ${T.border}`, background: gym.isAtc ? (dark ? "#130608" : "#ffecec") : "transparent" }}
@@ -499,7 +691,12 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
                       <td style={{ padding: "9px 12px", whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                           <div style={{ width: 3, height: 20, borderRadius: 2, background: col, flexShrink: 0 }} />
-                          <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: gym.isAtc ? "#E63946" : T.textSub }}>{gym.naam}</span>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+                            <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: gym.isAtc ? ATC_RED : T.textSub }}>
+                              {gym.naam}
+                            </span>
+                            <GymBadge name={gym.naam} />
+                          </span>
                         </div>
                       </td>
                       {[gym.kosten.onbeperkt, gym.kosten.week1, gym.kosten.week2, gym.kosten.losses, gym.kosten.extra].map((v, j) => (

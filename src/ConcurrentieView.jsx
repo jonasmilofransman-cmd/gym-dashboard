@@ -133,7 +133,7 @@ function CustomLegend({ items }) {
   );
 }
 
-function makeAverageLinePlugin({ average, color, dashed = [6, 6] }) {
+function makeAverageLinePlugin({ average, color, dashed = [6, 6], label }) {
   return {
     id: `avgLine-${average}`,
     afterDraw(chart) {
@@ -151,6 +151,15 @@ function makeAverageLinePlugin({ average, color, dashed = [6, 6] }) {
       ctx.moveTo(area.left, y);
       ctx.lineTo(area.right, y);
       ctx.stroke();
+
+      if (label) {
+        ctx.setLineDash([]);
+        ctx.fillStyle = color;
+        ctx.font = "700 10px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "bottom";
+        ctx.fillText(label, area.right, Math.max(area.top + 10, y - 6));
+      }
       ctx.restore();
     },
   };
@@ -670,49 +679,568 @@ export default function ConcurrentieView({ dark = true, visibleGymNames }) {
 
       {/* ── KOSTEN TAB ── */}
       {subTab === "kosten" && (
-        <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 700 }}>
-              <thead>
-                <tr>
-                  {["Gym", "Onbeperkt /mnd", "1x /week", "2x /week", "Losse les", "Extra", "Contract", "Jeugd /mnd"].map(h => (
-                    <th key={h} style={{ padding: "10px 12px", textAlign: h === "Gym" ? "left" : "center", fontSize: 9, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: T.textMuted, borderBottom: `1px solid ${T.border2}`, background: T.bg, whiteSpace: "nowrap" }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[...visible].sort((a,b) => (a.kosten.onbeperkt||999)-(b.kosten.onbeperkt||999)).map((gym, i) => {
-                  const col = gym.isAtc ? ATC_RED : (isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length]);
-                  const fmt = v => v ? `€${v}` : <span style={{ color: T.textMuted }}>—</span>;
-                  return (
-                    <tr key={gym.naam} style={{ borderBottom: `1px solid ${T.border}`, background: gym.isAtc ? (dark ? "#130608" : "#ffecec") : "transparent" }}
-                      onMouseEnter={e => e.currentTarget.style.background = gym.isAtc ? (dark ? "#180a0e" : "#ffe2e2") : T.row}
-                      onMouseLeave={e => e.currentTarget.style.background = gym.isAtc ? (dark ? "#130608" : "#ffecec") : "transparent"}>
-                      <td style={{ padding: "9px 12px", whiteSpace: "nowrap" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                          <div style={{ width: 3, height: 20, borderRadius: 2, background: col, flexShrink: 0 }} />
-                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-                            <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: gym.isAtc ? ATC_RED : T.textSub }}>
-                              {gym.naam}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 700 }}>
+                <thead>
+                  <tr>
+                    {["Gym", "Onbeperkt /mnd", "1x /week", "2x /week", "Losse les", "Extra", "Contract", "Jeugd /mnd"].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          padding: "10px 12px",
+                          textAlign: h === "Gym" ? "left" : "center",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          letterSpacing: "1px",
+                          textTransform: "uppercase",
+                          color: T.textMuted,
+                          borderBottom: `1px solid ${T.border2}`,
+                          background: T.bg,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...visible]
+                    .sort((a, b) => (a.kosten.onbeperkt || 999) - (b.kosten.onbeperkt || 999))
+                    .map((gym, i) => {
+                      const col = gym.isAtc ? ATC_RED : isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length];
+                      const fmt = (v) => (v ? `€${v}` : <span style={{ color: T.textMuted }}>—</span>);
+                      return (
+                        <tr
+                          key={gym.naam}
+                          style={{
+                            borderBottom: `1px solid ${T.border}`,
+                            background: gym.isAtc ? (dark ? "#130608" : "#ffecec") : "transparent",
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = gym.isAtc ? (dark ? "#180a0e" : "#ffe2e2") : T.row)}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = gym.isAtc ? (dark ? "#130608" : "#ffecec") : "transparent")}
+                        >
+                          <td style={{ padding: "9px 12px", whiteSpace: "nowrap" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                              <div style={{ width: 3, height: 20, borderRadius: 2, background: col, flexShrink: 0 }} />
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+                                <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: gym.isAtc ? ATC_RED : T.textSub }}>{gym.naam}</span>
+                                <GymBadge name={gym.naam} />
+                              </span>
+                            </div>
+                          </td>
+                          {[gym.kosten.onbeperkt, gym.kosten.week1, gym.kosten.week2, gym.kosten.losses, gym.kosten.extra].map((v, j) => (
+                            <td
+                              key={j}
+                              style={{
+                                padding: "9px 12px",
+                                textAlign: "center",
+                                fontSize: 12,
+                                fontWeight: v ? 700 : 400,
+                                color: v ? "#ffb703" : T.textMuted,
+                              }}
+                            >
+                              {fmt(v)}
+                            </td>
+                          ))}
+                          <td style={{ padding: "9px 12px", textAlign: "center" }}>
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 600,
+                                color:
+                                  gym.kosten.contract === "maandelijks" || gym.kosten.contract === "Maandelijks"
+                                    ? "#06d6a0"
+                                    : gym.kosten.contract === "Jaarlijks"
+                                      ? "#E63946"
+                                      : T.textMuted,
+                              }}
+                            >
+                              {gym.kosten.contract || "—"}
                             </span>
-                            <GymBadge name={gym.naam} />
-                          </span>
+                          </td>
+                          <td
+                            style={{
+                              padding: "9px 12px",
+                              textAlign: "center",
+                              fontSize: 12,
+                              fontWeight: gym.kosten.jeugd ? 700 : 400,
+                              color: gym.kosten.jeugd ? "#3a86ff" : T.textMuted,
+                            }}
+                          >
+                            {fmt(gym.kosten.jeugd)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* ── PRIJSANALYSE ── */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ padding: "16px 20px 12px", borderBottom: `1px solid ${T.border}` }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: T.textMuted }}>
+                Prijsanalyse
+              </div>
+            </div>
+
+            <div style={{ padding: "14px 16px 18px", display: "flex", flexDirection: "column", gap: 16 }}>
+              {/* SECTION 1 — ATC */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 900, letterSpacing: 0.2, color: T.textSub }}>
+                  ATC Prijsanalyse
+                </div>
+
+                {/* metric cards */}
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  {[
+                    { label: "ATC maandprijs", value: "€60", sub: "onbeperkt" },
+                    { label: "Marktgemiddelde", value: "€75", sub: "32 concurrenten" },
+                    { label: "Verschil", value: "−€15", sub: "−20% goedkoper" },
+                    { label: "Goedkoper dan", value: "24", sub: "van de 32 gyms" },
+                  ].map((m) => (
+                    <div
+                      key={m.label}
+                      style={{
+                        flex: "1 1 180px",
+                        minWidth: 180,
+                        background: dark ? "#0d0d18" : "#ffffff",
+                        border: `1px solid ${T.border2}`,
+                        borderRadius: 10,
+                        padding: "12px 14px",
+                      }}
+                    >
+                      <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>
+                        {m.label}
+                      </div>
+                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ATC_ACCENT }}>
+                        {m.value}
+                      </div>
+                      <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>
+                        {m.sub}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* detail + stats */}
+                <div style={{ display: "grid", gridTemplateColumns: "minmax(280px,1fr) minmax(220px,0.8fr)", gap: 12, alignItems: "start" }}>
+                  <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
+                    <div style={{ display: "flex" }}>
+                      <div style={{ width: 3, background: ATC_ACCENT }} />
+                      <div style={{ padding: "12px 14px 10px", flex: 1 }}>
+                        <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub, marginBottom: 10 }}>Prijsoverzicht ATC</div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", rowGap: 8, columnGap: 10, alignItems: "center" }}>
+                          {[
+                            {
+                              k: "Onbeperkt/maand",
+                              v: (
+                                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€60</span>
+                                  <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#06d6a018", border: "1px solid #06d6a030", color: "#06d6a0" }}>
+                                    −20%
+                                  </span>
+                                </span>
+                              ),
+                            },
+                            { k: "1× per week", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€45</span> },
+                            { k: "2× per week", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€55</span> },
+                            {
+                              k: "Losse les",
+                              v: (
+                                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€10</span>
+                                  <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#06d6a018", border: "1px solid #06d6a030", color: "#06d6a0" }}>
+                                    laagste markt
+                                  </span>
+                                </span>
+                              ),
+                            },
+                            { k: "Add-on", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€30</span> },
+                            { k: "Jeugd", v: <span style={{ color: T.textMuted, fontWeight: 700 }}>—</span> },
+                            { k: "Contract", v: <span style={{ fontWeight: 800, color: "#06d6a0" }}>Maandelijks</span> },
+                          ].map((row) => (
+                            <div key={row.k} style={{ display: "contents" }}>
+                              <div style={{ fontSize: 10, fontWeight: 700, color: T.textMuted }}>{row.k}</div>
+                              <div style={{ fontSize: 12, textAlign: "right" }}>{row.v}</div>
+                            </div>
+                          ))}
                         </div>
-                      </td>
-                      {[gym.kosten.onbeperkt, gym.kosten.week1, gym.kosten.week2, gym.kosten.losses, gym.kosten.extra].map((v, j) => (
-                        <td key={j} style={{ padding: "9px 12px", textAlign: "center", fontSize: 12, fontWeight: v ? 700 : 400, color: v ? "#ffb703" : T.textMuted }}>{fmt(v)}</td>
-                      ))}
-                      <td style={{ padding: "9px 12px", textAlign: "center" }}>
-                        <span style={{ fontSize: 10, fontWeight: 600, color: gym.kosten.contract === "maandelijks" || gym.kosten.contract === "Maandelijks" ? "#06d6a0" : gym.kosten.contract === "Jaarlijks" ? "#E63946" : T.textMuted }}>
-                          {gym.kosten.contract || "—"}
-                        </span>
-                      </td>
-                      <td style={{ padding: "9px 12px", textAlign: "center", fontSize: 12, fontWeight: gym.kosten.jeugd ? 700 : 400, color: gym.kosten.jeugd ? "#3a86ff" : T.textMuted }}>{fmt(gym.kosten.jeugd)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {[
+                      { t: "Goedkoper dan", v: "24", s: "van de 32 gyms" },
+                      { t: "Gelijk aan", v: "3", s: "gyms (€60)" },
+                      { t: "Losse les rank", v: "#1", s: "laagste van 14" },
+                    ].map((c) => (
+                      <div key={c.t} style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, padding: "12px 14px" }}>
+                        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>{c.t}</div>
+                        <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: T.textSub }}>{c.v}</div>
+                        <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>{c.s}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Chart 1 */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Maandabonnement onbeperkt — alle 34 gyms</div>
+                    <CustomLegend
+                      items={[
+                        { label: "ATC", color: ATC_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
+                        { label: "Gem. €75", color: AVG_LINE, type: "line", textColor: T.textMuted },
+                      ]}
+                    />
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <ChartCanvas
+                      canvasId="atcMonthlyChart"
+                      height={320}
+                      makeConfig={() => {
+                        const labels = marketData.map((d) => d.name);
+                        const values = marketData.map((d) => d.price);
+                        const colors = marketData.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
+                        return {
+                          type: "bar",
+                          data: {
+                            labels,
+                            datasets: [
+                              {
+                                data: values,
+                                backgroundColor: colors,
+                                borderWidth: 0,
+                                borderRadius: 5,
+                                barPercentage: 0.9,
+                                categoryPercentage: 0.9,
+                              },
+                            ],
+                          },
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: {
+                                callbacks: {
+                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                },
+                              },
+                            },
+                            scales: {
+                              x: {
+                                ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
+                                grid: { display: false },
+                              },
+                              y: {
+                                ticks: { color: T.textMuted, callback: euroTick },
+                                grid: { color: `${T.border2}` },
+                              },
+                            },
+                          },
+                          plugins: [makeAverageLinePlugin({ average: marketAverage, color: AVG_LINE, label: `Gem. €${marketAverage}` })],
+                        };
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Chart 2 */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Losse les — ATC vs. concurrenten</div>
+                    <CustomLegend
+                      items={[
+                        { label: "ATC", color: ATC_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
+                      ]}
+                    />
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <ChartCanvas
+                      canvasId="atcDropInChart"
+                      height={170}
+                      makeConfig={() => {
+                        const labels = dropInData.map((d) => d.name);
+                        const values = dropInData.map((d) => d.price);
+                        const colors = dropInData.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
+                        return {
+                          type: "bar",
+                          data: {
+                            labels,
+                            datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 5 }],
+                          },
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: {
+                                callbacks: {
+                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                },
+                              },
+                            },
+                            scales: {
+                              x: { ticks: { color: T.textMuted, font: { size: 9 } }, grid: { display: false } },
+                              y: { ticks: { color: T.textMuted, callback: euroTick }, grid: { color: `${T.border2}` } },
+                            },
+                          },
+                        };
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Insight box */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ width: 3, background: ATC_ACCENT }} />
+                    <div style={{ padding: "12px 14px", color: T.textSub, fontSize: 12, fontWeight: 650, lineHeight: 1.45 }}>
+                      💡 ATC zit 20% onder het marktgemiddelde en heeft de laagste losse les (€10). Sterke instapstrategie voor de nieuwe locatie — er is ruimte voor een kleine prijsverhoging richting €65–€70 zonder de concurrentiepositie te verliezen.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Ettaki sectie + footer komen hierna */}
+              <div style={{ height: 1, background: T.border2, opacity: 0.6 }} />
+
+              {/* SECTION 2 — ETTAKIGYM */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 900, letterSpacing: 0.2, color: T.textSub }}>
+                  EttakiGym Prijsanalyse
+                </div>
+
+                {/* metric cards */}
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  {[
+                    { label: "Ettaki maandprijs", value: "€69", sub: "onbeperkt" },
+                    { label: "Marktgemiddelde", value: "€75", sub: "32 concurrenten" },
+                    { label: "Verschil", value: "−€6", sub: "−8% goedkoper" },
+                    { label: "Goedkoper dan", value: "21", sub: "van de 32 gyms" },
+                  ].map((m) => (
+                    <div
+                      key={m.label}
+                      style={{
+                        flex: "1 1 180px",
+                        minWidth: 180,
+                        background: dark ? "#0d0d18" : "#ffffff",
+                        border: `1px solid ${T.border2}`,
+                        borderRadius: 10,
+                        padding: "12px 14px",
+                      }}
+                    >
+                      <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>
+                        {m.label}
+                      </div>
+                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ETTAKI_ACCENT }}>
+                        {m.value}
+                      </div>
+                      <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>
+                        {m.sub}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* detail + stats */}
+                <div style={{ display: "grid", gridTemplateColumns: "minmax(280px,1fr) minmax(220px,0.8fr)", gap: 12, alignItems: "start" }}>
+                  <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
+                    <div style={{ display: "flex" }}>
+                      <div style={{ width: 3, background: ETTAKI_ACCENT }} />
+                      <div style={{ padding: "12px 14px 10px", flex: 1 }}>
+                        <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub, marginBottom: 10 }}>Prijsoverzicht EttakiGym</div>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", rowGap: 8, columnGap: 10, alignItems: "center" }}>
+                          {[
+                            {
+                              k: "Onbeperkt/maand",
+                              v: (
+                                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€69</span>
+                                  <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#06d6a018", border: "1px solid #06d6a030", color: "#06d6a0" }}>
+                                    −8%
+                                  </span>
+                                </span>
+                              ),
+                            },
+                            { k: "1× per week", v: <span style={{ color: T.textMuted, fontWeight: 700 }}>—</span> },
+                            { k: "2× per week", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€54</span> },
+                            { k: "Losse les", v: <span style={{ color: T.textMuted, fontWeight: 700 }}>—</span> },
+                            { k: "Add-on", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€39</span> },
+                            {
+                              k: "Jeugd/maand",
+                              v: (
+                                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€44</span>
+                                  <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#ffb70318", border: "1px solid #ffb70330", color: "#ffb703" }}>
+                                    uniek
+                                  </span>
+                                </span>
+                              ),
+                            },
+                            { k: "Contract", v: <span style={{ fontWeight: 800, color: "#06d6a0" }}>Maandelijks</span> },
+                          ].map((row) => (
+                            <div key={row.k} style={{ display: "contents" }}>
+                              <div style={{ fontSize: 10, fontWeight: 700, color: T.textMuted }}>{row.k}</div>
+                              <div style={{ fontSize: 12, textAlign: "right" }}>{row.v}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {[
+                      { t: "Goedkoper dan", v: "21", s: "van de 32 gyms" },
+                      { t: "Gelijk aan", v: "1", s: "Arena Gym (€69)" },
+                      { t: "Marktpositie", v: "Midden", s: "net onder gem." },
+                    ].map((c) => (
+                      <div key={c.t} style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, padding: "12px 14px" }}>
+                        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>{c.t}</div>
+                        <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: T.textSub }}>{c.v}</div>
+                        <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>{c.s}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Chart 3 */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Maandabonnement onbeperkt — alle 34 gyms</div>
+                    <CustomLegend
+                      items={[
+                        { label: "EttakiGym", color: ETTAKI_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
+                        { label: "Gem. €75", color: AVG_LINE, type: "line", textColor: T.textMuted },
+                      ]}
+                    />
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <ChartCanvas
+                      canvasId="ettakiMonthlyChart"
+                      height={320}
+                      makeConfig={() => {
+                        const labels = marketData.map((d) => d.name);
+                        const values = marketData.map((d) => d.price);
+                        const colors = marketData.map((d) => (d.owner === "ettaki" ? ETTAKI_ACCENT : COMPETITOR_BAR));
+                        return {
+                          type: "bar",
+                          data: {
+                            labels,
+                            datasets: [
+                              {
+                                data: values,
+                                backgroundColor: colors,
+                                borderWidth: 0,
+                                borderRadius: 5,
+                                barPercentage: 0.9,
+                                categoryPercentage: 0.9,
+                              },
+                            ],
+                          },
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: {
+                                callbacks: {
+                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                },
+                              },
+                            },
+                            scales: {
+                              x: {
+                                ticks: { color: T.textMuted, maxRotation: 45, minRotation: 45, font: { size: 9 } },
+                                grid: { display: false },
+                              },
+                              y: {
+                                ticks: { color: T.textMuted, callback: euroTick },
+                                grid: { color: `${T.border2}` },
+                              },
+                            },
+                          },
+                          plugins: [makeAverageLinePlugin({ average: marketAverage, color: AVG_LINE, label: `Gem. €${marketAverage}` })],
+                        };
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Chart 4 */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Abonnementsvormen — EttakiGym vs. marktgemiddelde</div>
+                    <CustomLegend
+                      items={[
+                        { label: "EttakiGym", color: ETTAKI_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "Marktgemiddelde", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
+                      ]}
+                    />
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <ChartCanvas
+                      canvasId="ettakiTypeChart"
+                      height={190}
+                      makeConfig={() => {
+                        return {
+                          type: "bar",
+                          data: {
+                            labels: ettakiTypeLabels,
+                            datasets: [
+                              { label: "EttakiGym", data: ettakiValues, backgroundColor: ETTAKI_ACCENT, borderRadius: 5 },
+                              { label: "Marktgemiddelde", data: marketValues, backgroundColor: COMPETITOR_BAR, borderRadius: 5 },
+                            ],
+                          },
+                          options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: {
+                                callbacks: {
+                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                },
+                              },
+                            },
+                            scales: {
+                              x: { ticks: { color: T.textMuted, font: { size: 10 } }, grid: { display: false } },
+                              y: { ticks: { color: T.textMuted, callback: euroTick }, grid: { color: `${T.border2}` } },
+                            },
+                          },
+                        };
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Insight box */}
+                <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ width: 3, background: ETTAKI_ACCENT }} />
+                    <div style={{ padding: "12px 14px", color: T.textSub, fontSize: 12, fontWeight: 650, lineHeight: 1.45 }}>
+                      💡 EttakiGym zit strategisch net onder het marktgemiddelde (−8%). Het jeugdabonnement en de 2×/week optie zijn sterke extra's — veel concurrenten bieden dit niet aan. Goede positie voor gezinnen en beginnende sporters.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FOOTER */}
+              <div style={{ marginTop: 2, paddingTop: 10, borderTop: `1px solid ${T.border2}`, color: T.textMuted, fontSize: 10, fontWeight: 700 }}>
+                Data: 34 Amsterdamse vechtsportgyms — 32 met bekende maandprijzen.
+              </div>
+            </div>
           </div>
         </div>
       )}

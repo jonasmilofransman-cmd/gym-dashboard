@@ -1,10 +1,54 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Component, useEffect, useMemo, useRef, useState } from "react";
 import {
   CATEGORIES,
   DayPicker,
   GymDayLessonCard,
   findGymScheduleByName,
 } from "./ScheduleDashboard.jsx";
+import { PRICE_OR_MASTER_LABEL_TO_CSV_NAAM, labelToCsvNaamLower } from "./gymSidebarCsvMap.js";
+import GymDataKostenSection from "./GymDataKostenSection.jsx";
+import {
+  ATC_RED,
+  ETTAKI_YELLOW,
+  getGymAccentColor,
+  getGymNameColor,
+  isEttakiName,
+} from "./gymColors.js";
+
+class GymDataKostenErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { err: null };
+  }
+
+  static getDerivedStateFromError(err) {
+    return { err };
+  }
+
+  render() {
+    const { T } = this.props;
+    if (this.state.err) {
+      return (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: 16,
+            borderRadius: 10,
+            border: `1px solid ${T?.border2 ?? "#333"}`,
+            background: T?.surface ?? "#0d0d18",
+            color: "#e24b4a",
+            fontSize: 13,
+            lineHeight: 1.45,
+          }}
+        >
+          <div style={{ fontWeight: 800, marginBottom: 8 }}>Gym Data — Kosten</div>
+          <div>{String(this.state.err?.message ?? this.state.err)}</div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // ─── THEME (match ScheduleDashboard) ─────────────────────────────────────────
 const DARK_THEME = {
@@ -32,13 +76,7 @@ const LIGHT_THEME = {
 
 const ALL_CATEGORY_KEYS = CATEGORIES.map((c) => c.key);
 
-const ATC_RED = "#E63946";
-const ETTAKI_YELLOW = "#ffb703";
-const isEttakiName = (name) => String(name || "").toLowerCase().replace(/\s/g, "") === "ettakigym";
-
 // ─── PRIJSANALYSE DATA (hardcoded, los van CSV) ───────────────────────────────
-const ATC_ACCENT = "#EF9F27";
-const ETTAKI_ACCENT = "#5DCAA5";
 const COMPETITOR_BAR = "#378ADD";
 const AVG_LINE = "#E24B4A";
 
@@ -82,42 +120,7 @@ const marketData = [
 
 const marketAverage = 75; // pre-calculated average of 32 gyms with known prices
 
-// Koppel vaste marketData-namen aan exacte `Naam` in gym-data.csv (anders geen km-match bij filters)
-const PRICE_ANALYSIS_NAME_TO_CSV_NAAM = {
-  kimekai: "Kimekai Gym",
-  mousid: "MOUSID GYM",
-  "sport city": "Sport City",
-  maca: "Martial Arts Center Amsterdam",
-  "royal gym": "Royal Gym Amsterdam",
-  airlines: "Amsterdam Airlines",
-  southpaw: "Gym Southpaw",
-  "kops gym": "Kops Gym",
-  "grappling ac.": "Amsterdam Grappling Academy",
-  tribe: "Tribe Grappling",
-  "arena gym": "Arena Gym",
-  ettakigym: "EttakiGym",
-  "fight iq": "Fight IQ",
-  "amst. bjj": "Amsterdam BJJ",
-  "gym royale": "Gym Royale",
-  boogieland: "Boogieland",
-  "dodo jj": "DODO Jiu Jitsu",
-  "patrick's": "Patrick's Gym",
-  "vos gym": "Vos Gym",
-  "mike's": "Mike's Gym",
-  "elite tc": "Elite Training Center",
-  eastbound: "Eastbound Gym",
-  "dojo doorje": "Dojo Doorjé",
-  "vondel z": "Vondel Gym Zuid",
-  "vondel o": "Vondel Gym Oost",
-  "vondel w": "Vondel Gym West",
-  "focus jj": "Focus Jiujitsu",
-  ndsm: "NDSM Fightclub",
-  "10th planet": "10th Planet Jiu-Jitsu Amsterdam",
-  "team ramzi": "Team Ramzi",
-  carlson: "Carlson Gracie Amsterdam",
-  "sin city": "Sin City Boxing",
-  "fight district": "FIGHT DISTRICT",
-};
+const PRICE_ANALYSIS_NAME_TO_CSV_NAAM = PRICE_OR_MASTER_LABEL_TO_CSV_NAAM;
 
 function getKmForMarketName(marketName, csvKmByLower, kind) {
   const lower = String(marketName || "").toLowerCase().trim();
@@ -132,6 +135,18 @@ function getKmForMarketName(marketName, csvKmByLower, kind) {
     if (Number.isFinite(km)) return km;
   }
   return null;
+}
+
+const VONDEL_GYM_CSV_LOWERS = ["vondel gym zuid", "vondel gym oost", "vondel gym west"];
+
+/** True if this hardcoded Prijsanalyse row should show given sidebar selection (CSV gym names, lowercase). */
+function marketItemAllowedByVisibleGyms(item, visibleSet) {
+  if (visibleSet == null) return true;
+  const label = String(item?.name || "").toLowerCase().trim();
+  if (label === "vondel") {
+    return VONDEL_GYM_CSV_LOWERS.some((n) => visibleSet.has(n));
+  }
+  return visibleSet.has(labelToCsvNaamLower(item?.name));
 }
 
 const dropInData = [
@@ -399,12 +414,6 @@ function normalizeUrl(url) {
   return `https://${s}`;
 }
 
-// ─── CONCURRENTIE DATA (fallback palette) ────────────────────────────────────
-const PALETTE = [
-  "#3a86ff", "#06d6a0", "#ffb703", "#8338ec", "#fb5607",
-  "#2ec4b6", "#f77f00", "#4cc9f0", "#80b918", "#9d4edd",
-];
-
 function GymBadge({ name }) {
   const n = String(name || "");
   const lower = n.trim().toLowerCase();
@@ -439,7 +448,14 @@ function GymBadge({ name }) {
 }
 
 // ─── CONCURRENTIE VIEW ────────────────────────────────────────────────────────
-export default function ConcurrentieView({ dark = true, visibleGymNames, priceAnalysisFilters }) {
+export default function ConcurrentieView({
+  dark = true,
+  visibleGymNames,
+  priceAnalysisFilters,
+  activeScheduleCats = ALL_CATEGORY_KEYS,
+  /** When set from parent (e.g. App), hides internal Overzicht/Kosten tabs and shows only this section. */
+  section: sectionProp,
+}) {
   const T = dark ? DARK_THEME : LIGHT_THEME;
   // Optional filtering from outer sidebar
   // visibleGymNames: array of gym names to show
@@ -449,6 +465,9 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
 
   const [subTab, setSubTab] = useState("overzicht");
   const [sortBy, setSortBy] = useState("prijs");
+
+  const controlledSection = sectionProp === "overzicht" || sectionProp === "kosten";
+  const activeSection = controlledSection ? sectionProp : subTab;
 
   useEffect(() => {
     let cancelled = false;
@@ -598,8 +617,11 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
     return sorted.filter((g) => set.has(String(g.naam).toLowerCase()));
   }, [sorted, visibleGymNames]);
 
-  // Prijsanalyse gebruikt vaste marktnamen (marketData) die niet 1-op-1 matchen met CSV-namen
-  // (bijv. "Airlines" vs "Amsterdam Airlines"). Daarom geen subset-filter op sidebar-gyms hier.
+  /** Sidebar gym filter for Prijsanalyse (same CSV names as kaarten); null = toon alles. */
+  const visibleGymFilterSet = useMemo(() => {
+    if (!Array.isArray(visibleGymNames)) return null;
+    return new Set(visibleGymNames.map((n) => String(n).toLowerCase().trim()));
+  }, [visibleGymNames]);
 
   const priceAnalysisKmByGymLower = useMemo(() => {
     const map = new Map();
@@ -618,6 +640,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
     const ownedKey = "atc";
     const out = [];
     for (const item of marketData) {
+      if (visibleGymFilterSet != null && !marketItemAllowedByVisibleGyms(item, visibleGymFilterSet)) continue;
       const lower = String(item.name || "").toLowerCase();
       const isOwned = lower === ownedKey;
       if (!isOwned) {
@@ -628,18 +651,20 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
       }
       out.push(item);
     }
-    // ensure ATC always present even if not in marketData for some reason
     if (!out.some((x) => String(x.name).toLowerCase() === ownedKey)) {
       const atc = marketData.find((x) => String(x.name).toLowerCase() === ownedKey);
-      if (atc) out.push(atc);
+      if (atc && (visibleGymFilterSet == null || marketItemAllowedByVisibleGyms(atc, visibleGymFilterSet))) {
+        out.push(atc);
+      }
     }
     return out;
-  }, [priceAnalysisKmByGymLower, rangeAtcKm]);
+  }, [priceAnalysisKmByGymLower, rangeAtcKm, visibleGymFilterSet]);
 
   const ettakiMonthlyFiltered = useMemo(() => {
     const ownedKey = "ettakigym";
     const out = [];
     for (const item of marketData) {
+      if (visibleGymFilterSet != null && !marketItemAllowedByVisibleGyms(item, visibleGymFilterSet)) continue;
       const lower = String(item.name || "").toLowerCase();
       const isOwned = lower === ownedKey;
       if (!isOwned) {
@@ -652,13 +677,17 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
     }
     if (!out.some((x) => String(x.name).toLowerCase() === ownedKey)) {
       const et = marketData.find((x) => String(x.name).toLowerCase() === ownedKey);
-      if (et) out.push(et);
+      if (et && (visibleGymFilterSet == null || marketItemAllowedByVisibleGyms(et, visibleGymFilterSet))) {
+        out.push(et);
+      }
     }
     return out;
-  }, [priceAnalysisKmByGymLower, rangeEttakiKm]);
+  }, [priceAnalysisKmByGymLower, rangeEttakiKm, visibleGymFilterSet]);
 
-  const atcCompetitorCount = Math.max(0, atcMonthlyFiltered.filter((d) => String(d.owner || "") !== "atc" && String(d.name).toLowerCase() !== "atc").length);
-  const ettakiCompetitorCount = Math.max(0, ettakiMonthlyFiltered.filter((d) => String(d.owner || "") !== "ettaki" && String(d.name).toLowerCase() !== "ettakigym").length);
+  const dropInFiltered = useMemo(() => {
+    if (visibleGymFilterSet == null) return dropInData;
+    return dropInData.filter((d) => marketItemAllowedByVisibleGyms(d, visibleGymFilterSet));
+  }, [visibleGymFilterSet]);
 
   const atcMonthlyAvgLine = useMemo(() => {
     if (rangeAtcKm == null) {
@@ -731,7 +760,8 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
           Geen gyms gevonden in <code style={{ background: T.bg, padding: "2px 6px", borderRadius: 6, border: `1px solid ${T.border2}` }}>/gym-data.csv</code>.
         </div>
       )}
-      {/* Sub-tab nav */}
+      {/* Sub-tab nav (hidden when parent passes section=overzicht|kosten) */}
+      {!controlledSection && (
       <div style={{ display: "flex", gap: 2, background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 9, padding: 3, width: "fit-content" }}>
         {subTabs.map(({ key, label }) => (
           <button key={key} onClick={() => setSubTab(key)} style={{
@@ -742,9 +772,10 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
           }}>{label}</button>
         ))}
       </div>
+      )}
 
       {/* ── OVERZICHT ── */}
-      {subTab === "overzicht" && (
+      {activeSection === "overzicht" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {/* Sorteren */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -766,8 +797,8 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
 
           {/* Gym kaarten */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 10 }}>
-            {visible.map((gym, i) => {
-              const accentColor = gym.isAtc ? ATC_RED : (isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length]);
+            {visible.map((gym) => {
+              const accentColor = getGymAccentColor({ name: gym.naam, isAtc: gym.isAtc });
               const websiteUrl = normalizeUrl(gym.website);
               return (
                 <div key={gym.naam} style={{
@@ -779,7 +810,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                     <div style={{ width: 3, height: 40, borderRadius: 2, background: accentColor, flexShrink: 0, marginTop: 2 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
-                        <span style={{ fontSize: 13, fontWeight: 800, color: gym.isAtc ? "#E63946" : T.textSub }}>{gym.naam}</span>
+                        <span style={{ fontSize: 13, fontWeight: 800, color: getGymNameColor({ name: gym.naam, isAtc: gym.isAtc }, T.textSub) }}>{gym.naam}</span>
                         <GymBadge name={gym.naam} />
                       </div>
                       <div style={{ fontSize: 10, color: T.textMuted }}>{gym.locatie}</div>
@@ -818,7 +849,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
       )}
 
       {/* ── KOSTEN TAB ── */}
-      {subTab === "kosten" && (
+      {activeSection === "kosten" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
             <div style={{ overflowX: "auto" }}>
@@ -848,9 +879,9 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 </thead>
                 <tbody>
                   {[...visible]
-                    .sort((a, b) => (a.kosten.onbeperkt || 999) - (b.kosten.onbeperkt || 999))
-                    .map((gym, i) => {
-                      const col = gym.isAtc ? ATC_RED : isEttakiName(gym.naam) ? ETTAKI_YELLOW : PALETTE[i % PALETTE.length];
+                    .sort((a, b) => (a.kosten?.onbeperkt ?? 999) - (b.kosten?.onbeperkt ?? 999))
+                    .map((gym) => {
+                      const col = getGymAccentColor({ name: gym.naam, isAtc: gym.isAtc });
                       const fmt = (v) => (v ? `€${v}` : <span style={{ color: T.textMuted }}>—</span>);
                       return (
                         <tr
@@ -866,12 +897,18 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                             <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                               <div style={{ width: 3, height: 20, borderRadius: 2, background: col, flexShrink: 0 }} />
                               <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-                                <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: gym.isAtc ? ATC_RED : T.textSub }}>{gym.naam}</span>
+                                <span style={{ fontSize: 11, fontWeight: gym.isAtc ? 800 : 600, color: getGymNameColor({ name: gym.naam, isAtc: gym.isAtc }, T.textSub) }}>{gym.naam}</span>
                                 <GymBadge name={gym.naam} />
                               </span>
                             </div>
                           </td>
-                          {[gym.kosten.onbeperkt, gym.kosten.week1, gym.kosten.week2, gym.kosten.losses, gym.kosten.extra].map((v, j) => (
+                          {[
+                            gym.kosten?.onbeperkt,
+                            gym.kosten?.week1,
+                            gym.kosten?.week2,
+                            gym.kosten?.losses,
+                            gym.kosten?.extra,
+                          ].map((v, j) => (
                             <td
                               key={j}
                               style={{
@@ -891,14 +928,14 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                                 fontSize: 10,
                                 fontWeight: 600,
                                 color:
-                                  gym.kosten.contract === "maandelijks" || gym.kosten.contract === "Maandelijks"
+                                  gym.kosten?.contract === "maandelijks" || gym.kosten?.contract === "Maandelijks"
                                     ? "#06d6a0"
-                                    : gym.kosten.contract === "Jaarlijks"
+                                    : gym.kosten?.contract === "Jaarlijks"
                                       ? "#E63946"
                                       : T.textMuted,
                               }}
                             >
-                              {gym.kosten.contract || "—"}
+                              {gym.kosten?.contract || "—"}
                             </span>
                           </td>
                           <td
@@ -906,11 +943,11 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                               padding: "9px 12px",
                               textAlign: "center",
                               fontSize: 12,
-                              fontWeight: gym.kosten.jeugd ? 700 : 400,
-                              color: gym.kosten.jeugd ? "#3a86ff" : T.textMuted,
+                              fontWeight: gym.kosten?.jeugd ? 700 : 400,
+                              color: gym.kosten?.jeugd ? "#3a86ff" : T.textMuted,
                             }}
                           >
-                            {fmt(gym.kosten.jeugd)}
+                            {fmt(gym.kosten?.jeugd)}
                           </td>
                         </tr>
                       );
@@ -957,7 +994,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                       <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>
                         {m.label}
                       </div>
-                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ATC_ACCENT }}>
+                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ATC_RED }}>
                         {m.value}
                       </div>
                       <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>
@@ -971,7 +1008,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 <div style={{ display: "grid", gridTemplateColumns: "minmax(280px,1fr) minmax(220px,0.8fr)", gap: 12, alignItems: "start" }}>
                   <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
                     <div style={{ display: "flex" }}>
-                      <div style={{ width: 3, background: ATC_ACCENT }} />
+                      <div style={{ width: 3, background: ATC_RED }} />
                       <div style={{ padding: "12px 14px 10px", flex: 1 }}>
                         <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub, marginBottom: 10 }}>Prijsoverzicht ATC</div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr auto", rowGap: 8, columnGap: 10, alignItems: "center" }}>
@@ -980,20 +1017,20 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                               k: "Onbeperkt/maand",
                               v: (
                                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€60</span>
+                                  <span style={{ fontWeight: 900, color: ATC_RED }}>€60</span>
                                   <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#06d6a018", border: "1px solid #06d6a030", color: "#06d6a0" }}>
                                     −20%
                                   </span>
                                 </span>
                               ),
                             },
-                            { k: "1× per week", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€45</span> },
-                            { k: "2× per week", v: <span style={{ fontWeight: 800, color: "#ffb703" }}>€55</span> },
+                            { k: "1× per week", v: <span style={{ fontWeight: 800, color: ATC_RED }}>€45</span> },
+                            { k: "2× per week", v: <span style={{ fontWeight: 800, color: ATC_RED }}>€55</span> },
                             {
                               k: "Losse les",
                               v: (
                                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                                  <span style={{ fontWeight: 900, color: "#ffb703" }}>€10</span>
+                                  <span style={{ fontWeight: 900, color: ATC_RED }}>€10</span>
                                   <span style={{ fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 99, background: "#06d6a018", border: "1px solid #06d6a030", color: "#06d6a0" }}>
                                     laagste markt
                                   </span>
@@ -1033,20 +1070,20 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
                     <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>
-                      Maandabonnement onbeperkt — selectie ({atcCompetitorCount + 1} gyms)
+                      Maandabonnement onbeperkt — selectie ({atcMonthlyFiltered.length} gyms)
                     </div>
                     <CustomLegend
                       items={[
-                        { label: "ATC", color: ATC_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "ATC", color: ATC_RED, type: "bar", textColor: T.textMuted },
                         { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
                         { label: atcMonthlyAvgLine.legend, color: AVG_LINE, type: "line", textColor: T.textMuted },
                       ]}
                     />
                   </div>
                   <div style={{ marginTop: 10 }}>
-                    {atcCompetitorCount === 0 ? (
+                    {atcMonthlyFiltered.length === 0 ? (
                       <div style={{ height: 320, display: "flex", alignItems: "center", justifyContent: "center", color: T.textMuted, fontSize: 12, fontWeight: 700 }}>
-                        Geen concurrenten binnen deze selectie/afstand (ATC wordt altijd getoond).
+                        Geen gyms in deze selectie voor deze grafiek (kies gyms in de zijbalk).
                       </div>
                     ) : (
                       <ChartCanvas
@@ -1055,7 +1092,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                         makeConfig={() => {
                           const labels = atcMonthlyFiltered.map((d) => d.name);
                           const values = atcMonthlyFiltered.map((d) => d.price);
-                          const colors = atcMonthlyFiltered.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
+                          const colors = atcMonthlyFiltered.map((d) => (d.owner === "atc" ? ATC_RED : COMPETITOR_BAR));
                           return {
                             type: "bar",
                             data: {
@@ -1113,51 +1150,57 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                     <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Losse les — ATC vs. concurrenten</div>
                     <CustomLegend
                       items={[
-                        { label: "ATC", color: ATC_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "ATC", color: ATC_RED, type: "bar", textColor: T.textMuted },
                         { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
                       ]}
                     />
                   </div>
                   <div style={{ marginTop: 10 }}>
-                    <ChartCanvas
-                      canvasId="atcDropInChart"
-                      height={170}
-                      makeConfig={() => {
-                        const labels = dropInData.map((d) => d.name);
-                        const values = dropInData.map((d) => d.price);
-                        const colors = dropInData.map((d) => (d.owner === "atc" ? ATC_ACCENT : COMPETITOR_BAR));
-                        return {
-                          type: "bar",
-                          data: {
-                            labels,
-                            datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 5 }],
-                          },
-                          options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                              legend: { display: false },
-                              tooltip: {
-                                callbacks: {
-                                  label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                    {dropInFiltered.length === 0 ? (
+                      <div style={{ height: 170, display: "flex", alignItems: "center", justifyContent: "center", color: T.textMuted, fontSize: 12, fontWeight: 700 }}>
+                        Geen gyms geselecteerd voor losse-les vergelijking (pas de gym-filter toe).
+                      </div>
+                    ) : (
+                      <ChartCanvas
+                        canvasId="atcDropInChart"
+                        height={170}
+                        makeConfig={() => {
+                          const labels = dropInFiltered.map((d) => d.name);
+                          const values = dropInFiltered.map((d) => d.price);
+                          const colors = dropInFiltered.map((d) => (d.owner === "atc" ? ATC_RED : COMPETITOR_BAR));
+                          return {
+                            type: "bar",
+                            data: {
+                              labels,
+                              datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, borderRadius: 5 }],
+                            },
+                            options: {
+                              responsive: true,
+                              maintainAspectRatio: false,
+                              plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                  callbacks: {
+                                    label: (ctx) => `€${Number(ctx.raw).toFixed(2)}`,
+                                  },
                                 },
                               },
+                              scales: {
+                                x: { ticks: { color: T.textMuted, font: { size: 9 } }, grid: { display: false } },
+                                y: { ticks: { color: T.textMuted, callback: euroTick }, grid: { color: `${T.border2}` } },
+                              },
                             },
-                            scales: {
-                              x: { ticks: { color: T.textMuted, font: { size: 9 } }, grid: { display: false } },
-                              y: { ticks: { color: T.textMuted, callback: euroTick }, grid: { color: `${T.border2}` } },
-                            },
-                          },
-                        };
-                      }}
-                    />
+                          };
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
                 {/* Insight box */}
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
                   <div style={{ display: "flex" }}>
-                    <div style={{ width: 3, background: ATC_ACCENT }} />
+                    <div style={{ width: 3, background: ATC_RED }} />
                     <div style={{ padding: "12px 14px", color: T.textSub, fontSize: 12, fontWeight: 650, lineHeight: 1.45 }}>
                       💡 ATC zit 20% onder het marktgemiddelde en heeft de laagste losse les (€10). Sterke instapstrategie voor de nieuwe locatie — er is ruimte voor een kleine prijsverhoging richting €65–€70 zonder de concurrentiepositie te verliezen.
                     </div>
@@ -1196,7 +1239,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                       <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: T.textMuted }}>
                         {m.label}
                       </div>
-                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ETTAKI_ACCENT }}>
+                      <div style={{ marginTop: 6, fontSize: 18, fontWeight: 900, color: ETTAKI_YELLOW }}>
                         {m.value}
                       </div>
                       <div style={{ marginTop: 3, fontSize: 10, fontWeight: 700, color: T.textMuted }}>
@@ -1210,7 +1253,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 <div style={{ display: "grid", gridTemplateColumns: "minmax(280px,1fr) minmax(220px,0.8fr)", gap: 12, alignItems: "start" }}>
                   <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, overflow: "hidden" }}>
                     <div style={{ display: "flex" }}>
-                      <div style={{ width: 3, background: ETTAKI_ACCENT }} />
+                      <div style={{ width: 3, background: ETTAKI_YELLOW }} />
                       <div style={{ padding: "12px 14px 10px", flex: 1 }}>
                         <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub, marginBottom: 10 }}>Prijsoverzicht EttakiGym</div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr auto", rowGap: 8, columnGap: 10, alignItems: "center" }}>
@@ -1272,20 +1315,20 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, padding: "12px 14px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
                     <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>
-                      Maandabonnement onbeperkt — selectie ({ettakiCompetitorCount + 1} gyms)
+                      Maandabonnement onbeperkt — selectie ({ettakiMonthlyFiltered.length} gyms)
                     </div>
                     <CustomLegend
                       items={[
-                        { label: "EttakiGym", color: ETTAKI_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "EttakiGym", color: ETTAKI_YELLOW, type: "bar", textColor: T.textMuted },
                         { label: "Concurrenten", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
                         { label: ettakiMonthlyAvgLine.legend, color: AVG_LINE, type: "line", textColor: T.textMuted },
                       ]}
                     />
                   </div>
                   <div style={{ marginTop: 10 }}>
-                    {ettakiCompetitorCount === 0 ? (
+                    {ettakiMonthlyFiltered.length === 0 ? (
                       <div style={{ height: 320, display: "flex", alignItems: "center", justifyContent: "center", color: T.textMuted, fontSize: 12, fontWeight: 700 }}>
-                        Geen concurrenten binnen deze selectie/afstand (EttakiGym wordt altijd getoond).
+                        Geen gyms in deze selectie voor deze grafiek (kies gyms in de zijbalk).
                       </div>
                     ) : (
                       <ChartCanvas
@@ -1294,7 +1337,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                         makeConfig={() => {
                           const labels = ettakiMonthlyFiltered.map((d) => d.name);
                           const values = ettakiMonthlyFiltered.map((d) => d.price);
-                          const colors = ettakiMonthlyFiltered.map((d) => (d.owner === "ettaki" ? ETTAKI_ACCENT : COMPETITOR_BAR));
+                          const colors = ettakiMonthlyFiltered.map((d) => (d.owner === "ettaki" ? ETTAKI_YELLOW : COMPETITOR_BAR));
                           return {
                             type: "bar",
                             data: {
@@ -1352,7 +1395,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                     <div style={{ fontSize: 11, fontWeight: 900, color: T.textSub }}>Abonnementsvormen — EttakiGym vs. marktgemiddelde</div>
                     <CustomLegend
                       items={[
-                        { label: "EttakiGym", color: ETTAKI_ACCENT, type: "bar", textColor: T.textMuted },
+                        { label: "EttakiGym", color: ETTAKI_YELLOW, type: "bar", textColor: T.textMuted },
                         { label: "Marktgemiddelde", color: COMPETITOR_BAR, type: "bar", textColor: T.textMuted },
                       ]}
                     />
@@ -1367,7 +1410,7 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                           data: {
                             labels: ettakiTypeLabels,
                             datasets: [
-                              { label: "EttakiGym", data: ettakiValues, backgroundColor: ETTAKI_ACCENT, borderRadius: 5 },
+                              { label: "EttakiGym", data: ettakiValues, backgroundColor: ETTAKI_YELLOW, borderRadius: 5 },
                               { label: "Marktgemiddelde", data: marketValues, backgroundColor: COMPETITOR_BAR, borderRadius: 5 },
                             ],
                           },
@@ -1396,19 +1439,27 @@ export default function ConcurrentieView({ dark = true, visibleGymNames, priceAn
                 {/* Insight box */}
                 <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
                   <div style={{ display: "flex" }}>
-                    <div style={{ width: 3, background: ETTAKI_ACCENT }} />
+                    <div style={{ width: 3, background: ETTAKI_YELLOW }} />
                     <div style={{ padding: "12px 14px", color: T.textSub, fontSize: 12, fontWeight: 650, lineHeight: 1.45 }}>
                       💡 EttakiGym zit strategisch net onder het marktgemiddelde (−8%). Het jeugdabonnement en de 2×/week optie zijn sterke extra's — veel concurrenten bieden dit niet aan. Goede positie voor gezinnen en beginnende sporters.
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* FOOTER */}
-              <div style={{ marginTop: 2, paddingTop: 10, borderTop: `1px solid ${T.border2}`, color: T.textMuted, fontSize: 10, fontWeight: 700 }}>
-                Data: 34 Amsterdamse vechtsportgyms — 32 met bekende maandprijzen.
-              </div>
             </div>
+          </div>
+
+          <GymDataKostenErrorBoundary T={T}>
+            <GymDataKostenSection
+              T={T}
+              dark={dark}
+              activeScheduleCats={activeScheduleCats}
+              visibleGymNames={visibleGymNames}
+            />
+          </GymDataKostenErrorBoundary>
+
+          <div style={{ marginTop: 8, paddingTop: 10, borderTop: `1px solid ${T.border2}`, color: T.textMuted, fontSize: 10, fontWeight: 700 }}>
+            Data: 34 Amsterdamse vechtsportgyms — 32 met bekende maandprijzen.
           </div>
         </div>
       )}

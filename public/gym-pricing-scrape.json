@@ -1,0 +1,1838 @@
+{
+  "version": 3,
+  "scrapedAt": "2026-04-22T11:00:50.541Z",
+  "disclaimer": "Versie 3: classificatie op venster rond elk bedrag, /mo en / MAAND in de prijs-match, frequentie uit het juiste blok, minder dubbele regels (DOM wint). Nog steeds heuristisch; SPA’s zonder prijs in HTML blijven leeg zonder headless browser.",
+  "sourceCsv": "/Users/jonas/Downloads/Gym schema/gym-dashboard/public/gym-data.csv",
+  "gyms": [
+    {
+      "gym": "10th Planet Jiu-Jitsu Amsterdam",
+      "url": "https://www.10thplanetjj.amsterdam/",
+      "finalUrl": "https://www.10thplanetjj.amsterdam/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Amsterdam Airlines",
+      "url": "https://www.amsairlines.com/index.html",
+      "finalUrl": "https://www.amsairlines.com/index.html",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€20",
+          "context": "tling Grappling Catch Wrestling MMA BJJ No-Gi Judo Wrestling Grappling Catch Wrestling MMA BJJ Weekly Training Schedule €20 Drop-In → All MON TUE WED THU FRI Monday 2 classes 13:30–15:00Ne-WazaAmsterdam Training Center 18:00–19:00Tachi-WazaFigh",
+          "suggestedProductType": "losse_les"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Amsterdam BJJ",
+      "url": "https://www.amsterdambjj.nl/",
+      "finalUrl": "https://www.amsterdambjj.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Amsterdam Grappling Academy",
+      "url": "https://gracieamsterdam.com/",
+      "finalUrl": "https://gracieamsterdam.com/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Arena Gym",
+      "url": "https://arenagym.nl/",
+      "finalUrl": "https://arenagym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€25",
+          "context": "9 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contract (+€10 / 4 weken) Maandelijks opzegbaar (+€25 / weken) Voornaam Achternaam E-mailadres Telefoonnummer Akkoord Persoonsgegevens Ik ga akkoord dat mijn gegevens worden",
+          "suggestedProductType": "deal_lang_contract"
+        },
+        {
+          "source": "html-text",
+          "price": "€69/4weken",
+          "context": "ct met een coach Abonnementsvorm Ik weet het nog niet Bronz (v.a. €29 / 4 weken) Silver (v.a. €44 / 4 weken) Gold (v.a. €69 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contract (+€10 / 4 weken) Maandelijks opzegbaar (+€25 / weken",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€29/4weken",
+          "context": "de stap Inschrijfformulier Meld je aan en kom in contact met een coach Abonnementsvorm Ik weet het nog niet Bronz (v.a. €29 / 4 weken) Silver (v.a. €44 / 4 weken) Gold (v.a. €69 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contrac",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€69/MAAND",
+          "context": "ef: Onbeperkt open gym Onbeperkt fitness Onbeperkt boksen & kickboksen Inschrijven * Wij bieden 100% resultaat garantie € 69 / MAAND Gold Opzegbaar na 24 maanden Inclusief: Onbeperkt open gym Onbeperkt fitness Onbeperkt boksen & kickboksen Onbeperkt Cr",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€44/4weken",
+          "context": "eld je aan en kom in contact met een coach Abonnementsvorm Ik weet het nog niet Bronz (v.a. €29 / 4 weken) Silver (v.a. €44 / 4 weken) Gold (v.a. €69 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contract (+€10 / 4 weken) Maandelij",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€29/MAAND",
+          "context": "kboksen (recreatief) 18:00 - 19:00 Leandro Kickboksen (Advanced) 19:00 - 20:00 Leandro Memberships Bekijk onze tarieven € 29 / MAAND Bronz Opzegbaar na 24 maanden Inclusief: Onbeperkt open gym Onbeperkt fitness Inschrijven * Wij bieden 100% resultaat g",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€10/4weken",
+          "context": "lver (v.a. €44 / 4 weken) Gold (v.a. €69 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contract (+€10 / 4 weken) Maandelijks opzegbaar (+€25 / weken) Voornaam Achternaam E-mailadres Telefoonnummer Akkoord Persoonsgegevens Ik ga akk",
+          "suggestedProductType": "deal_lang_contract"
+        },
+        {
+          "source": "html-text",
+          "price": "€44/MAAND",
+          "context": "pzegbaar na 24 maanden Inclusief: Onbeperkt open gym Onbeperkt fitness Inschrijven * Wij bieden 100% resultaat garantie € 44 / MAAND Silver Opzegbaar na 24 maanden Inclusief: Onbeperkt open gym Onbeperkt fitness Onbeperkt boksen & kickboksen Inschrijve",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€29/4weken",
+          "context": "tsvorm Ik weet het nog niet Bronz (v.a. €29 / 4 weken) Silver (v.a. €44 / 4 weken) Gold (v.a. €69 / 4 weken) Kids (v.a. €29 / 4 weken) Termijn 2 jaar contract 1 jaar contract (+€10 / 4 weken) Maandelijks opzegbaar (+€25 / weken) Voornaam Achternaam E-ma",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-flat",
+          "price": "€69/MAAND",
+          "context": "Onbeperkt open gym Onbeperkt fitness Onbeperkt boksen &amp; kickboksen Inschrijven * Wij bieden 100% resultaat garantie € 69 / MAAND Gold Opzegbaar na 24 maanden Inclusief: Onbeperkt open gym Onbeperkt fitness Onbeperkt boksen &amp; kickboksen Onbeperk",
+          "suggestedProductType": "onbeperkt"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "ATC",
+      "url": "https://amsterdamtrainingcenter.nl/",
+      "finalUrl": "https://amsterdamtrainingcenter.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Bensy Gym",
+      "url": "https://bensy-gym.nl/",
+      "finalUrl": "https://bensy-gym.nl/",
+      "ok": false,
+      "status": "ERR",
+      "error": "fetch failed",
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Boogieland",
+      "url": "https://boogieland.nl/",
+      "finalUrl": "https://boogieland.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "gieland. Dui…Lees Meer Beginnen MET BOKSENbegin gelijk goed met één van de onderstaande trainingen LIDMAATSCHAPPENVANAF €51,50 PER MAAND Meer Info TRIAL WEEK7 DAGEN ONBEPERKT VOOR €22,50 Meer Info DE MEEST GESTELDE VRAGEN Kan ik een keertje komen",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€22,50",
+          "context": "met één van de onderstaande trainingen LIDMAATSCHAPPENVANAF €51,50 PER MAAND Meer Info TRIAL WEEK7 DAGEN ONBEPERKT VOOR €22,50 Meer Info DE MEEST GESTELDE VRAGEN Kan ik een keertje komen boksen bij jullie?Ja dat kan zeker, wees welkom! Als je wein",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-flat",
+          "price": "€51,50",
+          "context": "Dui&#8230; Lees Meer Beginnen MET BOKSEN begin gelijk goed met één van de onderstaande trainingen LIDMAATSCHAPPEN VANAF €51,50 PER MAAND Meer Info TRIAL WEEK 7 DAGEN ONBEPERKT VOOR €22,50 Meer Info DE MEEST GESTELDE VRAGEN Kan ik een keertje komen",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€22,50",
+          "context": "t één van de onderstaande trainingen LIDMAATSCHAPPEN VANAF €51,50 PER MAAND Meer Info TRIAL WEEK 7 DAGEN ONBEPERKT VOOR €22,50 Meer Info DE MEEST GESTELDE VRAGEN Kan ik een keertje komen boksen bij jullie? Ja dat kan zeker, wees welkom! Als je wei",
+          "suggestedProductType": "proefles"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Carlson Gracie Amsterdam",
+      "url": "Burgemeester de Vlugtlaan 125. 1063 BJ Amsterdam",
+      "ok": false,
+      "skipped": true,
+      "skipReason": "Geen http(s)-URL in CSV",
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "DODO Jiu Jitsu",
+      "url": "https://www.dodojiujitsu.nl/",
+      "finalUrl": "https://www.dodojiujitsu.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€75/mo",
+          "context": "€125,- Recurring subscription Monthly recurring membership with a 12-month commitment. Unlimited access to all classes €75/month Our team Meet our instructors All our instructors have experience in Gi and No-gi Jiu Jitsu Thijmen Gomperts Head In",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€20",
+          "context": "88 1072 RD Amsterdam Start your BJJ journey today! Our memberships Drop-in One-time access without an active membership €20,- 10-lesson card Access to 10 lessons of your choice, without an expiration date €125,- Recurring subscription Monthly",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€125",
+          "context": "ccess without an active membership €20,- 10-lesson card Access to 10 lessons of your choice, without an expiration date €125,- Recurring subscription Monthly recurring membership with a 12-month commitment. Unlimited access to all classes €75/m",
+          "suggestedProductType": "abonnement"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Dojo Doorjé",
+      "url": "https://dojodoorje.com/",
+      "finalUrl": "https://dojodoorje.com/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€72.50/mo",
+          "context": "ckboksen Jeugd 2x per week€60/mo2x per week groepslesMaandelijks opzegbaarInschrijvenMeest GekozenKickboksen Volwassenen€72.50/mo5x per week groepslesMaandelijks opzegbaarInschrijvenKickboksen Studenten(prijs is voor studenten t/m 21 jaar)€66/mo5x p",
+          "suggestedProductType": "freq_week_5"
+        },
+        {
+          "source": "html-text",
+          "price": "€12,50",
+          "context": "ct via WhatsAppLOSSE LES / PROEFLESProefles Volwassenen€15Eenmalige lesErvaar de sfeerContact via WhatsAppProefles Jeugd€12,50Eenmalige lesGeldig voor alle jeugdlessenContact via WhatsAppPERSONAL & SMALL GROUP TRAININGPersonal Training & Small Gr",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-text",
+          "price": "€50/mo",
+          "context": "eer PRIJZENKies het plan dat bij jou past. Transparant, flexibel en zonder verborgen kosten.Kickboksen Jeugd 1x per week€50/mo1x per week groepslesMaandelijks opzegbaarInschrijvenKickboksen Jeugd 2x per week€60/mo2x per week groepslesMaandelijks",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€30/mo",
+          "context": "ijs is voor studenten t/m 21 jaar)€66/mo5x per week groepslesMaandelijks opzegbaarInschrijvenBrazilian Jiu Jitsu - Jeugd€30/mo1x per week groepslesMaandelijks opzegbaarContact via WhatsAppBrazilian Jiu Jitsu - Volwassenen€66/mo7x per week groepsl",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "Kickboksen groepslessenBJJ groepslessenMaandelijks opzegbaarContact via WhatsAppLOSSE LES / PROEFLESProefles Volwassenen€15Eenmalige lesErvaar de sfeerContact via WhatsAppProefles Jeugd€12,50Eenmalige lesGeldig voor alle jeugdlessenContact via",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-text",
+          "price": "€66/mo",
+          "context": "n Jiu Jitsu - Jeugd€30/mo1x per week groepslesMaandelijks opzegbaarContact via WhatsAppBrazilian Jiu Jitsu - Volwassenen€66/mo7x per week groepslessenMaandelijks opzegbaarContact via WhatsAppBrazilian Jiu Jitsu - Studenten(prijs is voor studenten",
+          "suggestedProductType": "freq_week_7"
+        },
+        {
+          "source": "html-text",
+          "price": "€66/mo",
+          "context": "n€72.50/mo5x per week groepslesMaandelijks opzegbaarInschrijvenKickboksen Studenten(prijs is voor studenten t/m 21 jaar)€66/mo5x per week groepslesMaandelijks opzegbaarInschrijvenBrazilian Jiu Jitsu - Jeugd€30/mo1x per week groepslesMaandelijks o",
+          "suggestedProductType": "freq_week_5"
+        },
+        {
+          "source": "html-text",
+          "price": "€78/mo",
+          "context": "pslessenMaandelijks opzegbaarContact via WhatsAppCombi BJJ & Kickboksen - Studenten(prijs is voor studenten t/m 21 jaar)€78/moKickboksen groepslessenBJJ groepslessenMaandelijks opzegbaarContact via WhatsAppLOSSE LES / PROEFLESProefles Volwassenen",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€35/mo",
+          "context": "roepslessenMaandelijks opzegbaarContact via WhatsAppBrazilian Jiu Jitsu - Studenten(prijs is voor studenten t/m 21 jaar)€35/mo7x per week groepslessenMaandelijks opzegbaarContact via WhatsAppCombi BJJ & Kickboksen€88/moKickboksen groepslessenBJJ",
+          "suggestedProductType": "freq_week_7"
+        },
+        {
+          "source": "html-text",
+          "price": "€60/mo",
+          "context": "sten.Kickboksen Jeugd 1x per week€50/mo1x per week groepslesMaandelijks opzegbaarInschrijvenKickboksen Jeugd 2x per week€60/mo2x per week groepslesMaandelijks opzegbaarInschrijvenMeest GekozenKickboksen Volwassenen€72.50/mo5x per week groepslesMa",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€88/mo",
+          "context": "voor studenten t/m 21 jaar)€35/mo7x per week groepslessenMaandelijks opzegbaarContact via WhatsAppCombi BJJ & Kickboksen€88/moKickboksen groepslessenBJJ groepslessenMaandelijks opzegbaarContact via WhatsAppCombi BJJ & Kickboksen - Studenten(prijs",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€66/mo",
+          "context": "/mo 5x per week groepsles Maandelijks opzegbaar Inschrijven Kickboksen Studenten (prijs is voor studenten t/m 21 jaar) €66 /mo 5x per week groepsles Maandelijks opzegbaar Inschrijven Brazilian Jiu Jitsu - Jeugd €30 /mo 1x per week groepsles Maand",
+          "suggestedProductType": "freq_week_5"
+        },
+        {
+          "source": "html-flat",
+          "price": "€60/mo",
+          "context": "ckboksen Jeugd 1x per week €50 /mo 1x per week groepsles Maandelijks opzegbaar Inschrijven Kickboksen Jeugd 2x per week €60 /mo 2x per week groepsles Maandelijks opzegbaar Inschrijven Meest Gekozen Kickboksen Volwassenen €72.50 /mo 5x per week gro",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-flat",
+          "price": "€12,50",
+          "context": "hatsApp LOSSE LES / PROEFLES Proefles Volwassenen €15 Eenmalige les Ervaar de sfeer Contact via WhatsApp Proefles Jeugd €12,50 Eenmalige les Geldig voor alle jeugdlessen Contact via WhatsApp PERSONAL &amp; SMALL GROUP TRAINING Personal Training &a",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-flat",
+          "price": "€66/mo",
+          "context": "itsu - Jeugd €30 /mo 1x per week groepsles Maandelijks opzegbaar Contact via WhatsApp Brazilian Jiu Jitsu - Volwassenen €66 /mo 7x per week groepslessen Maandelijks opzegbaar Contact via WhatsApp Brazilian Jiu Jitsu - Studenten (prijs is voor stud",
+          "suggestedProductType": "freq_week_7"
+        },
+        {
+          "source": "html-flat",
+          "price": "€72.50/mo",
+          "context": "Jeugd 2x per week €60 /mo 2x per week groepsles Maandelijks opzegbaar Inschrijven Meest Gekozen Kickboksen Volwassenen €72.50 /mo 5x per week groepsles Maandelijks opzegbaar Inschrijven Kickboksen Studenten (prijs is voor studenten t/m 21 jaar) €66",
+          "suggestedProductType": "freq_week_5"
+        },
+        {
+          "source": "html-flat",
+          "price": "€15",
+          "context": "ksen groepslessen BJJ groepslessen Maandelijks opzegbaar Contact via WhatsApp LOSSE LES / PROEFLES Proefles Volwassenen €15 Eenmalige les Ervaar de sfeer Contact via WhatsApp Proefles Jeugd €12,50 Eenmalige les Geldig voor alle jeugdlessen Cont",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-flat",
+          "price": "€35/mo",
+          "context": "lessen Maandelijks opzegbaar Contact via WhatsApp Brazilian Jiu Jitsu - Studenten (prijs is voor studenten t/m 21 jaar) €35 /mo 7x per week groepslessen Maandelijks opzegbaar Contact via WhatsApp Combi BJJ &amp; Kickboksen €88 /mo Kickboksen groep",
+          "suggestedProductType": "freq_week_7"
+        },
+        {
+          "source": "html-flat",
+          "price": "€78/mo",
+          "context": "Maandelijks opzegbaar Contact via WhatsApp Combi BJJ &amp; Kickboksen - Studenten (prijs is voor studenten t/m 21 jaar) €78 /mo Kickboksen groepslessen BJJ groepslessen Maandelijks opzegbaar Contact via WhatsApp LOSSE LES / PROEFLES Proefles Volwa",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€50/mo",
+          "context": "PRIJZEN Kies het plan dat bij jou past. Transparant, flexibel en zonder verborgen kosten. Kickboksen Jeugd 1x per week €50 /mo 1x per week groepsles Maandelijks opzegbaar Inschrijven Kickboksen Jeugd 2x per week €60 /mo 2x per week groepsles Maan",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-flat",
+          "price": "€88/mo",
+          "context": "ten t/m 21 jaar) €35 /mo 7x per week groepslessen Maandelijks opzegbaar Contact via WhatsApp Combi BJJ &amp; Kickboksen €88 /mo Kickboksen groepslessen BJJ groepslessen Maandelijks opzegbaar Contact via WhatsApp Combi BJJ &amp; Kickboksen - Studen",
+          "suggestedProductType": "freq_week_7"
+        },
+        {
+          "source": "html-flat",
+          "price": "€30/mo",
+          "context": "voor studenten t/m 21 jaar) €66 /mo 5x per week groepsles Maandelijks opzegbaar Inschrijven Brazilian Jiu Jitsu - Jeugd €30 /mo 1x per week groepsles Maandelijks opzegbaar Contact via WhatsApp Brazilian Jiu Jitsu - Volwassenen €66 /mo 7x per week",
+          "suggestedProductType": "freq_week_1"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Eastbound Gym",
+      "url": "https://eastboundgym.nl/",
+      "finalUrl": "https://eastboundgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€84,50/maand",
+          "context": "lessenToegang tot onze sportschool om zelf te trainenMeest gekozen12 maandenALL ACCESS€74,50/ maandWord lid3 maandenFLEX€84,50/ maandWord lidBEKIJK WAT HET BESTE BIJ JOU PASTGroepslessenOnbeperkt toegangKidsEnkele lessenPersonal trainingOngelimiteerde g",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€74,50/maand",
+          "context": "onal trainingOngelimiteerde groesplessenToegang tot onze sportschool om zelf te trainenMeest gekozen12 maandenALL ACCESS€74,50/ maandWord lid3 maandenFLEX€84,50/ maandWord lidBEKIJK WAT HET BESTE BIJ JOU PASTGroepslessenOnbeperkt toegangKidsEnkele lesse",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€74,50/maand",
+          "context": "ng Ongelimiteerde groesplessen Toegang tot onze sportschool om zelf te&nbsp;trainen Meest gekozen 12 maanden ALL ACCESS €74,50 / maand Word lid 3 maanden FLEX €84,50 / maand Word lid BEKIJK WAT HET BESTE BIJ JOU PAST Groepslessen Onbeperkt toegang Kids E",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-flat",
+          "price": "€84,50/maand",
+          "context": "tot onze sportschool om zelf te&nbsp;trainen Meest gekozen 12 maanden ALL ACCESS €74,50 / maand Word lid 3 maanden FLEX €84,50 / maand Word lid BEKIJK WAT HET BESTE BIJ JOU PAST Groepslessen Onbeperkt toegang Kids Enkele lessen Personal training Ongelimi",
+          "suggestedProductType": "onbeperkt"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "El Otmani Gym",
+      "url": "http://www.elotmanigym.nl/",
+      "finalUrl": "https://elotmanigym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€25",
+          "context": "1961 wat bieden wij? Kickboks (Kick)Bokszaktraining Brazilian Jiu Jitsu (BJJ) Fitness Lees Meer al vanaf €25/m Al vanaf €25 per maand kun je bij ons trainen. Neem contact met ons op via onderstaand button en vraag gratis & vrijblijvend informat",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€25",
+          "context": "m Bel: 020 737 1961 wat bieden wij? Kickboks (Kick)Bokszaktraining Brazilian Jiu Jitsu (BJJ) Fitness Lees Meer al vanaf €25/m Al vanaf €25 per maand kun je bij ons trainen. Neem contact met ons op via onderstaand button en vraag gratis & vrijb",
+          "suggestedProductType": "abonnement"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Elite Training Center",
+      "url": "https://www.elitetrainingcenter.nl/",
+      "finalUrl": "https://elitetrainingcenter.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€49,95",
+          "context": ",00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIESONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- A",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€29,95",
+          "context": "/MND AANMELDEN LADIESONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- AANMELDEN LOSSE LES NU VOOR € 15,- AANMEL",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€10",
+          "context": "€ 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- AANMELDEN LOSSE LES NU VOOR € 15,- AANMELDEN #EEN IMPRESSIE VAN ONZE ACTIVITEITEN Lichaamsbeweging is een universele",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€32,95",
+          "context": "39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN +ZAK & CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN +ZAK & CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PE",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€39,95",
+          "context": "49,95 P/MND AANMELDEN JEUGD KICKBOKSEN +ZAK & CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN +ZAK & CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANME",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€39,95",
+          "context": "EK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN +ZAK & CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDSKICK & FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€49,95",
+          "context": "EK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN +ZAK & CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDSKICK & FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEE",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€75,00",
+          "context": "ELDEN KIDSKICK & FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIESONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€49,95",
+          "context": "iden. Behou de ambitie. AANMELDEN VOOR ONZE LESSEN BOKSENREGULIER 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN +ZAK & CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€29,95",
+          "context": "IE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDSKICK & FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€39,95",
+          "context": "n proeftraining. Laat je niet afleiden. Behou de ambitie. AANMELDEN VOOR ONZE LESSEN BOKSENREGULIER 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN +ZAK & CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€39,95",
+          "context": "NEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIESONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND A",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€120,00",
+          "context": "RAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIESONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-text",
+          "price": "€69,95",
+          "context": "RAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- AANMELDEN LOSSE LES NU VOOR € 15,- AANMELDEN #EEN IMPRESSIE VAN ONZE ACTIVITEITE",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- AANMELDEN LOSSE LES NU VOOR € 15,- AANMELDEN #EEN IMPRESSIE VAN ONZE ACTIVITEITEN Lichaamsbeweging is een universele manier om jouw gezondheid te redden",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,95",
+          "context": "+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDS KICK &amp; FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-flat",
+          "price": "€32,95",
+          "context": "5 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN + ZAK &amp; CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN + ZAK &amp; CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-flat",
+          "price": "€39,95",
+          "context": "5 P/MND AANMELDEN JEUGD KICKBOKSEN + ZAK &amp; CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN + ZAK &amp; CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-flat",
+          "price": "€39,95",
+          "context": "AINEN € 32,95 P/MND 2X PER WEEK TRAINEN € 39,95 P/MND AANMELDEN KICKBOKSEN + ZAK &amp; CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDS KICK &amp; FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-flat",
+          "price": "€49,95",
+          "context": "AINEN € 39,95 P/MND AANMELDEN KICKBOKSEN + ZAK &amp; CONDITIE 15+ 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN KIDS KICK &amp; FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PE",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-flat",
+          "price": "€49,95",
+          "context": "den. Behou de ambitie. AANMELDEN VOOR ONZE LESSEN BOKSEN REGULIER 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN + ZAK &amp; CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN € 32,95 P/MND 2X PER WEEK TRAINEN €",
+          "suggestedProductType": "freq_week_1"
+        },
+        {
+          "source": "html-flat",
+          "price": "€39,95",
+          "context": "EN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIES ONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND A",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-flat",
+          "price": "€75,00",
+          "context": "KIDS KICK &amp; FUN 1X PER WEEK TRAINEN € 29,95 P/MND AANMELDEN SMALL GROUP MAX. 10 PERSONEN P/LES 1X PER WEEK TRAINEN € 75,00 P/MND 2X PER WEEK TRAINEN € 120,00 P/MND AANMELDEN LADIES ONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 4",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,95",
+          "context": "MND AANMELDEN LADIES ONLY 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN FITNESS NU VOOR € 29,95 P/MND AANMELDEN ALL-IN NU VOOR € 69,95 P/MND AANMELDEN PROEFLES NU VOOR € 10,- AANMELDEN LOSSE LES NU VOOR € 15,- AANMEL",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-flat",
+          "price": "€39,95",
+          "context": "proeftraining. Laat je niet afleiden. Behou de ambitie. AANMELDEN VOOR ONZE LESSEN BOKSEN REGULIER 1X PER WEEK TRAINEN € 39,95 P/MND 2X PER WEEK TRAINEN € 49,95 P/MND AANMELDEN JEUGD KICKBOKSEN + ZAK &amp; CONDITIE 8-14 JAAR 1X PER WEEK TRAINEN €",
+          "suggestedProductType": "freq_week_2"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "EttakiGym",
+      "url": "http://www.ettakigym.nl/",
+      "finalUrl": "https://www.ettakigym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "FIGHT DISTRICT",
+      "url": "https://fightdistrict.nl/",
+      "finalUrl": "https://fightdistrict.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Fight IQ",
+      "url": "https://fightiq.nl/",
+      "finalUrl": "https://fightiq.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Focus Jiujitsu",
+      "url": "https://www.focusjjamsterdam.com/",
+      "finalUrl": "https://www.focusjjamsterdam.com/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Gym Royale",
+      "url": "http://www.gymroyale.nl/",
+      "finalUrl": "https://gymroyale.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Gym Southpaw",
+      "url": "http://www.gymsouthpaw.nl/",
+      "finalUrl": "https://www.gymsouthpaw.com/nl",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Kimekai Gym",
+      "url": "https://www.kimekaigym.nl/",
+      "finalUrl": "https://www.kimekaigym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€35",
+          "context": "d vanaf 10 t/m 12 jaar Contributie voor jongeren tot 18 jaar is € 25,- per maand, vanaf 18 jaar bedraagt de contributie € 35,- Kimekai Gym hanteert geen inschrijfgeld en het lidmaatschap is maandelijks opzegbaar. De contributie kan maandelijks",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-text",
+          "price": "€25",
+          "context": "Volwassenen techniek training Vrijdag 18:00 – 19:00 Jeugd vanaf 10 t/m 12 jaar Contributie voor jongeren tot 18 jaar is € 25,- per maand, vanaf 18 jaar bedraagt de contributie € 35,- Kimekai Gym hanteert geen inschrijfgeld en het lidmaatschap i",
+          "suggestedProductType": "jeugd"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Kops Gym",
+      "url": "https://kopsgym.nl/",
+      "finalUrl": "https://kopsgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€35",
+          "context": ":30 Prijzen Per 1 Juli 2024 Abonnement (onbeperkt trainen) € 60,- per maand Abonnement jeugd (tot 16 jaar, 2x per week) € 35,- per maand Abonnement jeugd (tot 16 jaar, 3x per week) € 40,- per maand Losse training € 14,- Losse training (Jeugd) €",
+          "suggestedProductType": "freq_week_3"
+        },
+        {
+          "source": "html-text",
+          "price": "€14",
+          "context": "(tot 16 jaar, 2x per week) € 35,- per maand Abonnement jeugd (tot 16 jaar, 3x per week) € 40,- per maand Losse training € 14,- Losse training (Jeugd) € 8,- Een kaart voor 12 trainingen (6 maanden geldig) € 140,- Een kaart voor 12 trainingen (Je",
+          "suggestedProductType": "freq_week_3"
+        },
+        {
+          "source": "html-text",
+          "price": "€60",
+          "context": "19:00 - 20:00 20:00 - 21:30 Zaterdag:Boksconditie 13:30 - 14:30 Prijzen Per 1 Juli 2024 Abonnement (onbeperkt trainen) € 60,- per maand Abonnement jeugd (tot 16 jaar, 2x per week) € 35,- per maand Abonnement jeugd (tot 16 jaar, 3x per week) €",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€8",
+          "context": "5,- per maand Abonnement jeugd (tot 16 jaar, 3x per week) € 40,- per maand Losse training € 14,- Losse training (Jeugd) € 8,- Een kaart voor 12 trainingen (6 maanden geldig) € 140,- Een kaart voor 12 trainingen (Jeugd) € 80,- Inschrijfgeld (ee",
+          "suggestedProductType": "freq_week_3"
+        },
+        {
+          "source": "html-text",
+          "price": "€40",
+          "context": "60,- per maand Abonnement jeugd (tot 16 jaar, 2x per week) € 35,- per maand Abonnement jeugd (tot 16 jaar, 3x per week) € 40,- per maand Losse training € 14,- Losse training (Jeugd) € 8,- Een kaart voor 12 trainingen (6 maanden geldig) € 140,-",
+          "suggestedProductType": "freq_week_3"
+        },
+        {
+          "source": "html-text",
+          "price": "€10",
+          "context": "aart voor 12 trainingen (6 maanden geldig) € 140,- Een kaart voor 12 trainingen (Jeugd) € 80,- Inschrijfgeld (eenmalig) € 10,- Bij vakantie moet de verschuldigde maandelijkse contributie gewoon door worden betaald. Bij hernieuwd inschrijven is",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-text",
+          "price": "€140",
+          "context": "ek) € 40,- per maand Losse training € 14,- Losse training (Jeugd) € 8,- Een kaart voor 12 trainingen (6 maanden geldig) € 140,- Een kaart voor 12 trainingen (Jeugd) € 80,- Inschrijfgeld (eenmalig) € 10,- Bij vakantie moet de verschuldigde maande",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-text",
+          "price": "€80",
+          "context": "sse training (Jeugd) € 8,- Een kaart voor 12 trainingen (6 maanden geldig) € 140,- Een kaart voor 12 trainingen (Jeugd) € 80,- Inschrijfgeld (eenmalig) € 10,- Bij vakantie moet de verschuldigde maandelijkse contributie gewoon door worden betaal",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-text",
+          "price": "€7",
+          "context": "tot 16 jaar) Deze lessen zijn op woensdag van 17.00 tot 18.00 uur en op vrijdag van 18.00 tot 19.00. Prijzen: Losse les €7 Maandabonnement (2x per week) €30,-...Read More Wisselend succes in Zürich , Melvin van Suijdam wint…! 24 October 2017 B",
+          "suggestedProductType": "freq_week_2"
+        },
+        {
+          "source": "html-text",
+          "price": "€30",
+          "context": "woensdag van 17.00 tot 18.00 uur en op vrijdag van 18.00 tot 19.00. Prijzen: Losse les €7 Maandabonnement (2x per week) €30,-...Read More Wisselend succes in Zürich , Melvin van Suijdam wint…! 24 October 2017 By admin In Geen categorie No Comm",
+          "suggestedProductType": "freq_week_2"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Martial Arts Center Amsterdam",
+      "url": "https://martialartscenter.amsterdam/lestijden/",
+      "finalUrl": "https://martialartscenter.amsterdam/lestijden/",
+      "ok": false,
+      "status": "ERR",
+      "error": "fetch failed",
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Monster Gym",
+      "url": "https://www.instagram.com/monstergym020/?hl=nl",
+      "finalUrl": null,
+      "ok": false,
+      "skipped": true,
+      "skipReason": "Social media — geen scrape",
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "MOUSID GYM",
+      "url": "http://mousidgym.nl/",
+      "finalUrl": "https://mousidgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "NDSM Fightclub",
+      "url": "https://ndsmfightclub.nl/",
+      "finalUrl": "https://www.ndsmsportclub.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€29,99",
+          "context": "enLEES MEERLEES MEERWORD LIDWORD LIDProeflesProeflesJEUGDVOLWASSENACTIVITEITENKom proberen!Start met 3 proeflessen voor €29,99Start vandaag nogNAVIGEERHomeHomeRoosterRoosterAanbodAanbodTarievenTarievenOVEROver onsOver onsContactContactWord lidWor",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€69",
+          "context": "JaarabonnementBetaal €69,- per 4 weken voor een jaar.bekijkde dealBekijk de dealDe toegankelijke gymvoor jong & oud in A’dam150+ Google-reviewsD",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€29,99",
+          "context": "lidWord lidWord lidWORD LIDWORD LIDProeflesProeflesJEUGDVOLWASSENACTIVITEITENKom proberen!Start met 3 proeflessen voor €29,99Start vandaag nogNAVIGEERHomeHomeRoosterRoosterAanbodAanbodTarievenTarievenOVEROver onsOver onsContactContactWord lidWor",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,99",
+          "context": "> WORD LID WORD LID Proefles Proefles JEUGD ')\"> ')\"> VOLWASSEN ACTIVITEITEN Kom proberen! Start met 3 proeflessen voor €29,99 Start vandaag nog ')\"> ')\"> NAVIGEER Home Home Rooster Rooster Aanbod Aanbod Tarieven Tarieven OVER Over ons Over ons Co",
+          "suggestedProductType": "jeugd"
+        },
+        {
+          "source": "html-flat",
+          "price": "€69",
+          "context": "gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-JGSFNWVESM'); Jaarabonnement Betaal €69,- per 4 weken voor een jaar. bekijk de deal Bekijk de deal De toegankelijke gym voor jong &amp; oud in A’dam NDSM SPORT",
+          "suggestedProductType": null
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Patrick's Gym",
+      "url": "https://www.patricksgym.com/",
+      "finalUrl": "https://www.patricksgym.com/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€55",
+          "context": "ar Memberships OPEN GYM €45 p.m.  TRAINING SCHEDULE  UNLIMITED 24/7 FITNESS ACCESS  NO GROUPCLASSES GET IT SOMETIMES €55 p.m  4 GROUP CLASSES PER MONTH  UNLIMITED 24/7 FITNESS ACCESS GET IT MORE OFTEN €65 p.m  8 GROUP CLASSES PER MONTH ",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€45",
+          "context": "expert guidance on their journey to a healthy and active lifestyle.” BOOK A TRIAL Our Most Popular Memberships OPEN GYM €45 p.m.  TRAINING SCHEDULE  UNLIMITED 24/7 FITNESS ACCESS  NO GROUPCLASSES GET IT SOMETIMES €55 p.m  4 GROUP CLASSES PE",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€65",
+          "context": "NO GROUPCLASSES GET IT SOMETIMES €55 p.m  4 GROUP CLASSES PER MONTH  UNLIMITED 24/7 FITNESS ACCESS GET IT MORE OFTEN €65 p.m  8 GROUP CLASSES PER MONTH  UNLIMITED 24/7 FITNESS ACCESS GET IT Train Hard. Anytime. Your Way. At Patrick’s Gym w",
+          "suggestedProductType": "onbeperkt"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Royal Gym Amsterdam",
+      "url": "http://www.royalgymamsterdam.nl/",
+      "finalUrl": "http://www.royalgymamsterdam.nl/",
+      "ok": false,
+      "status": 403,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Sin City Boxing",
+      "url": "http://www.sincityboxing.nl/",
+      "finalUrl": "https://sincityboxing.com/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€125",
+          "context": "ebshop Jobs Contact become a member become a member DISCIPLINE LOOKS GOOD ON YOU 4 WEEKS OF UNLIMITED GROUP CLASSES now €125 cancellable every 4 weeks CLAIM YOUR DEAL SinCity Boxing About The Gym About The Gym Train at Sin City Boxing, where eli",
+          "suggestedProductType": "onbeperkt"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Sport City",
+      "url": "https://www.sportcity.nl/",
+      "finalUrl": "https://www.sportcity.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€29,99",
+          "context": "74 leden beoordeeldWat is het verschil?Scholier of student?Als scholier of student sport je bij ons voordelig: al vanaf €29,99 per 4 weken. Dus kom lekker in beweging, maak je hoofd leeg of laad je bij ons op voor je volgende toets. Klaslokaal uit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€29,99",
+          "context": "de vragenClubsLidmaatschapGroepslessenStudenten & ScholierenMeerLid wordenVoor die gymlachVoor die gymlachSporten vanaf € 29,99 per 4 wekenSnel naar: Amsterdam, Den Haag, Leiden, Rotterdam, UtrechtGebruik mijn locatieLid wordenBekijk lidmaatschappe",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€29,99",
+          "context": "maanden, 1 jaar of 2 jaarBepaal zelf je startdatum14 dagen bedenktijdSport samen: neem 5 keer per maand iemand meeVanaf€ 29,99per 4 wekenKies City OneCity PlusSporten in meerdere clubsInclusief alle live groepslessenGa voor een lidmaatschap van 1",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€30,99",
+          "context": "maanden, 1 jaar of 2 jaarBepaal zelf je startdatum14 dagen bedenktijdSport samen: neem 5 keer per maand iemand meeVanaf€ 30,99per 4 wekenKies City PlusMeestgekozen8,4 door 228.874 leden beoordeeldWat is het verschil?Scholier of student?Als scholi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€400.183",
+          "context": "r een mentaal en fysiek gezonde toekomst.Meer over MIND UsSpin for LifeSpin for Life 2026 heeft een prachtig bedrag van €400.183 opgehaald voor baanbrekend kankeronderzoek. Het evenement, een initiatief van Stichting Fight cancer in samenwerking met",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,99",
+          "context": "},\\\"label\\\":\\\"Bekijk lidmaatschappen\\\",\\\"variant\\\":\\\"outlined\\\",\\\"component\\\":\\\"button\\\"}],\\\"subtitle\\\":\\\"Sporten vanaf € 29,99 per 4 weken\\\",\\\"component\\\":\\\"pageheaderFullScreen\\\",\\\"mobileMedia\\\":{\\\"id\\\":111265908477601,\\\"alt\\\":\\\"\\\",\\\"name\\\":\\\"\\\",",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,99",
+          "context": "\\\",\\\"attrs\\\":{\\\"textAlign\\\":null},\\\"content\\\":[{\\\"text\\\":\\\"Als scholier of student sport je bij ons voordelig: al vanaf €29,99 per 4 weken. Dus kom lekker in beweging, maak je hoofd leeg of laad je bij ons op voor je volgende toets. Klaslokaal uit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,99",
+          "context": "bs Lidmaatschap Groepslessen Studenten &amp; Scholieren Meer Lid worden Voor die gymlach Voor die gymlach Sporten vanaf € 29,99 per 4 weken Snel naar: Amsterdam , Den Haag , Leiden , Rotterdam , Utrecht Gebruik mijn locatie Lid worden Bekijk lidmaa",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€29",
+          "context": "den, 1 jaar of 2 jaar Bepaal zelf je startdatum 14 dagen bedenktijd Sport samen: neem 5 keer per maand iemand mee Vanaf € 29 , 99 per 4 weken Kies City One City Plus Sporten in meerdere clubs Inclusief alle live groepslessen Ga voor een lidmaats",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€30",
+          "context": "den, 1 jaar of 2 jaar Bepaal zelf je startdatum 14 dagen bedenktijd Sport samen: neem 5 keer per maand iemand mee Vanaf € 30 , 99 per 4 weken Kies City Plus Meest gekozen 8,4 door 228.874 leden beoordeeld Wat is het verschil? Scholier of student",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€29,99",
+          "context": "leden beoordeeld Wat is het verschil? Scholier of student? Als scholier of student sport je bij ons voordelig: al vanaf €29,99 per 4 weken. Dus kom lekker in beweging, maak je hoofd leeg of laad je bij ons op voor je volgende toets. Klaslokaal uit",
+          "suggestedProductType": null
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Team Ramzi",
+      "url": "https://www.teamramzi.nl/",
+      "finalUrl": "https://www.teamramzi.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Tribe Grappling",
+      "url": "https://www.tribegrappling.com/",
+      "finalUrl": "https://www.tribegrappling.com/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€75",
+          "context": "4 trial classes. Course starts every month. Limited spots! Enjoy this discount rate for 6 months - but cancel any time! €75* * billed every 4 week, discounted rate for 6 billing cycles Kids Class Looking for a fun way for your kids to build co",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€25",
+          "context": "ription you can get 2 classes in the Gi (kimono) with this special add-on. Sign up for a trial at AGA BJJ on MAAT here. €25 /4 weeksSubscribe JOIN A TRIAL CLASS? Book a trial class by joining our gym on the MAAT app (Android + iPhone). Pick any",
+          "suggestedProductType": "proefles"
+        },
+        {
+          "source": "html-text",
+          "price": "€48/mo",
+          "context": "rown and black belts A crisp, well-equipped facility including showers and weights area Free parking!! (save an average €48/month in parking fee) TimetableMembershipsMEMBERSHIPS All memberships have a 1 week trial period. Sign up easily through S",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€49",
+          "context": "us and respect, all while making new friends and staying active. Join us and watch your child grow, on and off the mat! €49 /4 weeksSubscribe Gi Jiu jitsu Tribe gym also hosts classes by Amsterdam Grappling Academy. With a Tribe subscription yo",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€65",
+          "context": "y through Stripe. Unlimited Training Get the basics covered at a comfortable pace. Show up whenever you feel like it 💪 €65 /4 weeksSubscribe Beginner's course 4 weeks of all the basics, 3 hours a week, No-gi and Gi!! Up to 4 trial classes. Cou",
+          "suggestedProductType": null
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Vos Gym",
+      "url": "https://vosgymamsterdam.com/",
+      "finalUrl": "https://vosgymamsterdam.com/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Mike's Gym",
+      "url": "https://mikesgym.com/",
+      "finalUrl": "https://mikesgym.com/",
+      "ok": true,
+      "status": 200,
+      "items": [],
+      "jsonLd": []
+    },
+    {
+      "gym": "Vondel Gym Zuid",
+      "url": "https://www.vondelgym.nl/",
+      "finalUrl": "https://www.vondelgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€100,00",
+          "context": "+ 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankop",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€105,00",
+          "context": "+ 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "aatschap hier aankopen: link‍Running abonnement:Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale stud",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "ainen op één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten hiervan starten bij €84,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "an maandag t/m vrijdag trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan bedragen €51,50 per 4 weken. Hiermee kan je enkel gebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits b",
+          "suggestedProductType": "fitness_addon"
+        },
+        {
+          "source": "html-text",
+          "price": "€77,00",
+          "context": "Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per d",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "der CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies.Mag ik filmen bij Vondelgym?Als je je training vast wi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€61,50",
+          "context": "één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten van dit abonnement bedragen €61,50 per 4 weken. Hiermee kan je enkelgebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits bi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "eiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze k",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€82,00",
+          "context": "ekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: lin",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€798",
+          "context": "en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar)Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offic",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€90,00",
+          "context": "ende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "htsonder op deze website. Uiteraard kun je ook altijd één van onze gyms binnenlopen en bij de balie een dagpas kopen.De €19,50,- krijg je terug in de vorm van barkrediet, wanneer je binnen 24 uur na het gebruik van de dagpas besluit een abonnemen",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelne",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX p",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "je kiest bij het aanmaken van een abonnement. Mocht je bij alle locaties willen trainen? Dan kan dat via een add-on van €15,- per 4 weken. Hiervoor stuur je een mail naar office@vondelgym.nl. Wat is de minimale looptijd van een abonnement?De m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€48,50",
+          "context": "k (maandag t/m vrijdag) van 9:00 tot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ less",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€1.014",
+          "context": "korting (dus je betaalt 12 periodes, in plaats van 13).Jaarabonnement (regulier en alles behalve CrossFit en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€72,00",
+          "context": "lgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per w",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "m vrijdag is geldig trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan starten bij €66,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "nder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "onnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreve",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "ot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ lessen volgen per week.•⁠ ⁠Deelname",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€95,00",
+          "context": "r + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€62",
+          "context": "r mogelijkheden. Het kan zijn dat we dit niet toestaan.Verkopen jullie week of maandpassen?Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit less",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€10",
+          "context": "rtner al bij ons traint (met een regulier abonnement) kan je deze aanvragen via de mail; office@vondelgym.nl. Je krijgt €10 korting op het reguliere abonnement (met uitzondering van Fitness Only en de jaarabonnementen). Stuur ons een bewijs van",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "sonal training. Mail je verzoek of vraag naar pt@vondelgym.nl.Bieden jullie korting voor studenten aan?Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "t?De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij een",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€87,00",
+          "context": "wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "ze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€138",
+          "context": "? De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij e",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€95,00",
+          "context": "+ 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 weken Regulier + 2 credits voor CrossFi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "al training. Mail je verzoek of vraag naar pt@vondelgym.nl . Bieden jullie korting voor studenten aan? Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€77,00",
+          "context": "aluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€90,00",
+          "context": "de opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€84,50",
+          "context": "e er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "e link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€82,00",
+          "context": "en Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: l",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€72,00",
+          "context": "ende opties: Daluren zonder CrossFit / HYROX is €66,50 per 4 weken Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€19,50",
+          "context": "er CrossFit lessen) en €165,- inclusief CrossFit lessen. Verkopen jullie dagpassen? Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€87,00",
+          "context": "ken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: link Wil je upgraden naar meer CrossFit lessen? Stuur dan even een m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€62",
+          "context": "mogelijkheden. Het kan zijn dat we dit niet toestaan. Verkopen jullie week of maandpassen? Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft. ‍ We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit le",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€798",
+          "context": "n HYROX) is €1.014 per jaar (niet maandelijks opzegbaar) Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar) Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€15",
+          "context": "r CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies. Mag ik filmen bij Vondelgym? Als je je training vast",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€51,50",
+          "context": "schap hier aankopen: link ‍ Running abonnement: Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale stu",
+          "suggestedProductType": "abonnement"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Vondel Gym Oost",
+      "url": "https://www.vondelgym.nl/",
+      "finalUrl": "https://www.vondelgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€100,00",
+          "context": "+ 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankop",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€105,00",
+          "context": "+ 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "aatschap hier aankopen: link‍Running abonnement:Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale stud",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "ainen op één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten hiervan starten bij €84,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "an maandag t/m vrijdag trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan bedragen €51,50 per 4 weken. Hiermee kan je enkel gebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits b",
+          "suggestedProductType": "fitness_addon"
+        },
+        {
+          "source": "html-text",
+          "price": "€77,00",
+          "context": "Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per d",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "der CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies.Mag ik filmen bij Vondelgym?Als je je training vast wi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€61,50",
+          "context": "één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten van dit abonnement bedragen €61,50 per 4 weken. Hiermee kan je enkelgebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits bi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "eiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze k",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€82,00",
+          "context": "ekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: lin",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€798",
+          "context": "en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar)Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offic",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€90,00",
+          "context": "ende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "htsonder op deze website. Uiteraard kun je ook altijd één van onze gyms binnenlopen en bij de balie een dagpas kopen.De €19,50,- krijg je terug in de vorm van barkrediet, wanneer je binnen 24 uur na het gebruik van de dagpas besluit een abonnemen",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelne",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX p",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "je kiest bij het aanmaken van een abonnement. Mocht je bij alle locaties willen trainen? Dan kan dat via een add-on van €15,- per 4 weken. Hiervoor stuur je een mail naar office@vondelgym.nl. Wat is de minimale looptijd van een abonnement?De m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€48,50",
+          "context": "k (maandag t/m vrijdag) van 9:00 tot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ less",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€1.014",
+          "context": "korting (dus je betaalt 12 periodes, in plaats van 13).Jaarabonnement (regulier en alles behalve CrossFit en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€72,00",
+          "context": "lgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per w",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "m vrijdag is geldig trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan starten bij €66,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "nder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "onnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreve",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "ot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ lessen volgen per week.•⁠ ⁠Deelname",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€95,00",
+          "context": "r + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€62",
+          "context": "r mogelijkheden. Het kan zijn dat we dit niet toestaan.Verkopen jullie week of maandpassen?Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit less",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€10",
+          "context": "rtner al bij ons traint (met een regulier abonnement) kan je deze aanvragen via de mail; office@vondelgym.nl. Je krijgt €10 korting op het reguliere abonnement (met uitzondering van Fitness Only en de jaarabonnementen). Stuur ons een bewijs van",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "sonal training. Mail je verzoek of vraag naar pt@vondelgym.nl.Bieden jullie korting voor studenten aan?Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "t?De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij een",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€87,00",
+          "context": "wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "ze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€138",
+          "context": "? De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij e",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€95,00",
+          "context": "+ 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 weken Regulier + 2 credits voor CrossFi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "al training. Mail je verzoek of vraag naar pt@vondelgym.nl . Bieden jullie korting voor studenten aan? Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€77,00",
+          "context": "aluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€90,00",
+          "context": "de opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€84,50",
+          "context": "e er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "e link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€82,00",
+          "context": "en Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: l",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€72,00",
+          "context": "ende opties: Daluren zonder CrossFit / HYROX is €66,50 per 4 weken Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€19,50",
+          "context": "er CrossFit lessen) en €165,- inclusief CrossFit lessen. Verkopen jullie dagpassen? Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€87,00",
+          "context": "ken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: link Wil je upgraden naar meer CrossFit lessen? Stuur dan even een m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€62",
+          "context": "mogelijkheden. Het kan zijn dat we dit niet toestaan. Verkopen jullie week of maandpassen? Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft. ‍ We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit le",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€798",
+          "context": "n HYROX) is €1.014 per jaar (niet maandelijks opzegbaar) Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar) Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€15",
+          "context": "r CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies. Mag ik filmen bij Vondelgym? Als je je training vast",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€51,50",
+          "context": "schap hier aankopen: link ‍ Running abonnement: Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale stu",
+          "suggestedProductType": "abonnement"
+        }
+      ],
+      "jsonLd": []
+    },
+    {
+      "gym": "Vondel Gym West",
+      "url": "https://www.vondelgym.nl/",
+      "finalUrl": "https://www.vondelgym.nl/",
+      "ok": true,
+      "status": 200,
+      "items": [
+        {
+          "source": "html-text",
+          "price": "€100,00",
+          "context": "+ 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankop",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€105,00",
+          "context": "+ 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per dag is €105,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "aatschap hier aankopen: link‍Running abonnement:Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale stud",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "ainen op één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten hiervan starten bij €84,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€51,50",
+          "context": "an maandag t/m vrijdag trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan bedragen €51,50 per 4 weken. Hiermee kan je enkel gebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits b",
+          "suggestedProductType": "fitness_addon"
+        },
+        {
+          "source": "html-text",
+          "price": "€77,00",
+          "context": "Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per d",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "der CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies.Mag ik filmen bij Vondelgym?Als je je training vast wi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€61,50",
+          "context": "één van onze locaties in Oost, West en Zuid. In Rotterdam is dat vanaf 6:00 uur. De kosten van dit abonnement bedragen €61,50 per 4 weken. Hiermee kan je enkelgebruik maken van de Open Gym en geen lessen boeken. Hierbij kan je ook geen credits bi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "eiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze k",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€82,00",
+          "context": "ekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: lin",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€798",
+          "context": "en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar)Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offic",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€90,00",
+          "context": "ende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "htsonder op deze website. Uiteraard kun je ook altijd één van onze gyms binnenlopen en bij de balie een dagpas kopen.De €19,50,- krijg je terug in de vorm van barkrediet, wanneer je binnen 24 uur na het gebruik van de dagpas besluit een abonnemen",
+          "suggestedProductType": "losse_les"
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelne",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX p",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€84,50",
+          "context": "je er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties:Regulier zonder CrossFit / HYROX is €84,50 per 4 wekenRegulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit /",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "je kiest bij het aanmaken van een abonnement. Mocht je bij alle locaties willen trainen? Dan kan dat via een add-on van €15,- per 4 weken. Hiervoor stuur je een mail naar office@vondelgym.nl. Wat is de minimale looptijd van een abonnement?De m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€48,50",
+          "context": "k (maandag t/m vrijdag) van 9:00 tot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ less",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€1.014",
+          "context": "korting (dus je betaalt 12 periodes, in plaats van 13).Jaarabonnement (regulier en alles behalve CrossFit en HYROX) is €1.014 per jaar (niet maandelijks opzegbaar)Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€72,00",
+          "context": "lgende opties:Daluren zonder CrossFit / HYROX is €66,50 per 4 wekenDaluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 wekenDaluren + 3 credits CrossFit / HYROX per w",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€66,50",
+          "context": "m vrijdag is geldig trainen van 8:45 tot 17:00 en in het weekend van 12:00 tot 20:00 uur. De kosten hiervan starten bij €66,50 per 4 weken. Je kunt alle lessen volgen behalve CrossFit en HYROX. Wil je er ook CrossFit en/of HYROX bij volgen? Dan ku",
+          "suggestedProductType": "onbeperkt"
+        },
+        {
+          "source": "html-text",
+          "price": "€19,50",
+          "context": "nder CrossFit lessen) en €165,- inclusief CrossFit lessen.Verkopen jullie dagpassen?Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€165",
+          "context": "onnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreve",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€15",
+          "context": "ot 17:00. In het weekend heb je toegang tot de gym van 11:00 tot 20:00. Het tarief is €48,50,- per 4 weken met eenmalig €15,- inschrijfkosten.Les/trainings aanbod: •⁠ ⁠Je kan met dit abonnement 2 Krachtig60+ lessen volgen per week.•⁠ ⁠Deelname",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€95,00",
+          "context": "r + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 wekenRegulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 wekenRegulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 wekenRegulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€62",
+          "context": "r mogelijkheden. Het kan zijn dat we dit niet toestaan.Verkopen jullie week of maandpassen?Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft.‍We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit less",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€10",
+          "context": "rtner al bij ons traint (met een regulier abonnement) kan je deze aanvragen via de mail; office@vondelgym.nl. Je krijgt €10 korting op het reguliere abonnement (met uitzondering van Fitness Only en de jaarabonnementen). Stuur ons een bewijs van",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "sonal training. Mail je verzoek of vraag naar pt@vondelgym.nl.Bieden jullie korting voor studenten aan?Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-text",
+          "price": "€138",
+          "context": "t?De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen).Zijn er inschrijfkosten?Per nieuwe inschrijving rekenen wij een",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€87,00",
+          "context": "wekenDaluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 wekenDaluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 wekenJe kunt het lidmaatschap hier aankopen: linkWil je upgraden naar meer CrossFit lessen? Stuur dan even een mai",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-text",
+          "price": "€46,50",
+          "context": "ze link opgeven voor dit lidmaatschap: linkStudent abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€138",
+          "context": "? De minimale looptijd van een abonnement is 2 x 4 weken. Wil je één maandje komen trainen? Kies dan voor een maandpas (€138,- zonder CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij e",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€95,00",
+          "context": "+ 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit / HYROX per week is €100,00 per 4 weken Regulier + 2 credits voor CrossFi",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "al training. Mail je verzoek of vraag naar pt@vondelgym.nl . Bieden jullie korting voor studenten aan? Zeker! Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€77,00",
+          "context": "aluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€90,00",
+          "context": "de opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit / HYROX per week is €95,00 per 4 weken Regulier + 3 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€84,50",
+          "context": "e er ook CrossFit en/of HYROX bij volgen? Dan kun je kiezen uit de volgende opties: Regulier zonder CrossFit / HYROX is €84,50 per 4 weken Regulier + 1 credit voor CrossFit / HYROX per week is €90,00 per 4 weken Regulier + 2 credits voor CrossFit",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€46,50",
+          "context": "e link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale studentenabonnementen aan. Deze kost €46,50,- per 4 weken. Je kunt dan trainen in de daluren (maandag t/m vrijdag van 9:00 tot 17:00 en in het weekend van 12:00 to",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€82,00",
+          "context": "en Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: l",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€72,00",
+          "context": "ende opties: Daluren zonder CrossFit / HYROX is €66,50 per 4 weken Daluren + 1 credit voor CrossFit / HYROX per week is €72,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per week is €77,00 per 4 weken Daluren + 3 credits CrossFit / HYROX per",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€19,50",
+          "context": "er CrossFit lessen) en €165,- inclusief CrossFit lessen. Verkopen jullie dagpassen? Wij verkopen dagpassen, deze kosten €19,50. Je kan daarmee deelnemen aan een les of zelf trainen. Als je mee wilt doen aan een les kun je deze reserveren via de s",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€87,00",
+          "context": "ken Daluren + 3 credits CrossFit / HYROX per week is €82,00 per 4 weken Daluren + 2 credits CrossFit / HYROX per dag is €87,00 per 4 weken Je kunt het lidmaatschap hier aankopen: link Wil je upgraden naar meer CrossFit lessen? Stuur dan even een m",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€62",
+          "context": "mogelijkheden. Het kan zijn dat we dit niet toestaan. Verkopen jullie week of maandpassen? Ja, beiden! Een weekpas kost €62 en gaat in vanaf het moment dat je deze aanschaft. ‍ We verkopen ook maandpassen, deze kosten €138,- (zonder CrossFit le",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€798",
+          "context": "n HYROX) is €1.014 per jaar (niet maandelijks opzegbaar) Jaarabonnement (daluren en alles behalve CrossFit en HYROX) is €798 per jaar (niet maandelijks opzegbaar) Wil je hier ook nog CrossFit of HYROX bij volgen? Laat het ons even weten via offi",
+          "suggestedProductType": "abonnement"
+        },
+        {
+          "source": "html-flat",
+          "price": "€15",
+          "context": "r CrossFit lessen en €165,- met CrossFit lessen). Zijn er inschrijfkosten? Per nieuwe inschrijving rekenen wij eenmalig €15, dan ben je ingeschreven en krijg je een welkomsttas met goodies. Mag ik filmen bij Vondelgym? Als je je training vast",
+          "suggestedProductType": null
+        },
+        {
+          "source": "html-flat",
+          "price": "€51,50",
+          "context": "schap hier aankopen: link ‍ Running abonnement: Dit abonnement is alleen voor de hardlooplessen. De kosten hiervan zijn €51,50,- per 4 weken. Je kunt je via deze link opgeven voor dit lidmaatschap: link Student abonnement: wij bieden speciale stu",
+          "suggestedProductType": "abonnement"
+        }
+      ],
+      "jsonLd": []
+    }
+  ]
+}

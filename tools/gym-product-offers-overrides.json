@@ -1,0 +1,190 @@
+{
+  "gyms": {
+    "Vondel Gym Zuid": [
+      {
+        "productId": "vg_regulier_basis",
+        "category": "Abonnement",
+        "product": "Regulier — zonder CrossFit / HYROX",
+        "price": "€ 84,50 per 4 weken",
+        "description": "Trainen op één hoofdlocatie (Zuid/Oost/West); alle lessen behalve CrossFit en HYROX. Bron: vondelgym.nl.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_reg_cf_1",
+        "category": "Abonnement",
+        "product": "Regulier + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 90,00 per 4 weken",
+        "description": "Zelfde als regulier + één CF/HYROX-slot per week.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_reg_cf_2",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 95,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_reg_cf_3",
+        "category": "Abonnement",
+        "product": "Regulier + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 100,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_reg_cf_dag",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 105,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_daluur_basis",
+        "category": "Abonnement",
+        "product": "Daluren — zonder CrossFit / HYROX",
+        "price": "€ 66,50 per 4 weken",
+        "description": "Ma–vr 8:45–17:00, weekend 12:00–20:00 op gekozen hoofdlocatie.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_dal_cf_1",
+        "category": "Abonnement",
+        "product": "Daluren + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 72,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_dal_cf_2",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 77,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_dal_cf_3",
+        "category": "Abonnement",
+        "product": "Daluren + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 82,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_dal_cf_dag",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 87,00 per 4 weken",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_jaar_reg",
+        "category": "Abonnement",
+        "product": "Jaarabonnement regulier (zonder CF/HYROX)",
+        "price": "€ 1.014 per jaar",
+        "description": "12 periodes i.p.v. 13; niet maandelijks opzegbaar.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_jaar_dal",
+        "category": "Abonnement",
+        "product": "Jaarabonnement daluren (zonder CF/HYROX)",
+        "price": "€ 798 per jaar",
+        "description": "Zelfde voorwaarden als jaar regulier daluur-pakket.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_fit_only_reg",
+        "category": "Abonnement",
+        "product": "Fitness only — regulier",
+        "price": "€ 61,50 per 4 weken",
+        "description": "Alleen Open Gym, geen lesboekingen, geen credits bijboeken.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_fit_only_dal",
+        "category": "Abonnement",
+        "product": "Fitness only — daluren",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen Open Gym binnen dalurenvensters.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_running",
+        "category": "Abonnement",
+        "product": "Running-abonnement",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen hardlooptrainingen.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_student",
+        "category": "Abonnement",
+        "product": "Studentenabonnement (daluren)",
+        "price": "€ 46,50 per 4 weken",
+        "description": "Ma–vr 9:00–17:00, weekend 12:00–20:00; alle lessen behalve CF/HYROX; meerprijs CF/HYROX mogelijk via mail.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_inschrijf",
+        "category": "Losse verkoop",
+        "product": "Eenmalige inschrijfkosten",
+        "price": "€ 15,00",
+        "description": "Welkomsttas inbegrepen.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_multiloc",
+        "category": "Add-on",
+        "product": "Trainen op alle locaties (add-on)",
+        "price": "€ 15,00 per 4 weken",
+        "description": "Aanvraag via office@vondelgym.nl.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_dagpas",
+        "category": "Losse verkoop",
+        "product": "Dagpas",
+        "price": "€ 19,50",
+        "description": "Les of vrij trainen; bij abonnement binnen 24 uur wordt bedrag als barkrediet verrekend.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_weekpas",
+        "category": "Losse verkoop",
+        "product": "Weekpas",
+        "price": "€ 62,00",
+        "description": "Vanaf aankoopdatum.",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_maandpas_zcf",
+        "category": "Losse verkoop",
+        "product": "Maandpas zonder CrossFit-lessen",
+        "price": "€ 138,00",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_maandpas_mcf",
+        "category": "Losse verkoop",
+        "product": "Maandpas met CrossFit-lessen",
+        "price": "€ 165,00",
+        "description": "",
+        "source": "manual"
+      },
+      {
+        "productId": "vg_contract",
+        "category": "Voorwaarden",
+        "product": "Minimale looptijd / opzeggen",
+        "price": "—",
+        "description": "Minimaal 2× 4 weken; opzegtermijn één volledige 4-wekenperiode na lopende periode. Zie vondelgym.nl voor incassodata.",
+        "source": "manual"
+      }
+    ]
+  }
+}

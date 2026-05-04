@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import ScheduleDashboard from "./ScheduleDashboard.jsx";
 import ConcurrentieView from "./ConcurrentieView.jsx";
-import { BASE_GYMS as SCHEDULE_BASE_GYMS, CATEGORIES as SCHEDULE_CATEGORIES, DAY_PART_SLOTS, getCat as scheduleGetCat, isOpenGym as scheduleIsOpenGym, tdur as scheduleTdur, tmin as scheduleTmin } from "./ScheduleDashboard.jsx";
+import { CATEGORIES as SCHEDULE_CATEGORIES } from "./ScheduleDashboard.jsx";
+import { getGymAccentColor, getGymNameColor } from "./gymColors.js";
 
 const DASHBOARD_TABS = [
   ["schedule", "Rooster"],
@@ -86,28 +87,44 @@ function parseCoord(value, kind) {
   return n;
 }
 
-function fmtTimeFromMinutes(mins) {
-  if (!Number.isFinite(mins)) return "—";
-  const h = Math.floor(mins / 60);
-  const m = Math.round(mins % 60);
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-}
-
 export default function App() {
   const [dashboardTab, setDashboardTab] = useState("schedule");
   const [dark, setDark] = useState(true);
   const T = dark ? DARK_THEME : LIGHT_THEME;
 
-  const [csvGyms, setCsvGyms] = useState([]); // { name, locatie, website, coords }
-  const [gymDataTab, setGymDataTab] = useState("concurrentie"); // concurrentie | lessen
+  const [csvGyms, setCsvGyms] = useState([]); // { name, locatie, website, coords, pricing }
+  const [gymDataTab, setGymDataTab] = useState("concurrentie"); // concurrentie | kosten
   const [gymDataActive, setGymDataActive] = useState([]); // array of names
+  const [gymDataLastUpdated, setGymDataLastUpdated] = useState(null); // string
+  const [priceAnalysisRangeAtcKm, setPriceAnalysisRangeAtcKm] = useState(null); // null = Alles
+  const [priceAnalysisRangeEttakiKm, setPriceAnalysisRangeEttakiKm] = useState(null); // null = Alles
+  const [scheduleCategoryKeys, setScheduleCategoryKeys] = useState(() => SCHEDULE_CATEGORIES.map((c) => c.key));
+
+  const toggleScheduleCategoryKey = (key) =>
+    setScheduleCategoryKeys((p) => (p.includes(key) ? p.filter((x) => x !== key) : [...p, key]));
 
   useEffect(() => {
     let cancelled = false;
     fetch("/gym-data.csv")
-      .then((r) => (r.ok ? r.text() : Promise.reject(new Error("not found"))))
-      .then((text) => {
+      .then((r) => (r.ok ? r : Promise.reject(new Error("not found"))))
+      .then(async (r) => {
         if (cancelled) return;
+        const lm = r.headers?.get?.("last-modified");
+        if (lm) {
+          const d = new Date(lm);
+          if (!Number.isNaN(d.getTime())) {
+            setGymDataLastUpdated(
+              d.toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" })
+            );
+          } else {
+            setGymDataLastUpdated(lm);
+          }
+        } else {
+          setGymDataLastUpdated(
+            new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" })
+          );
+        }
+        const text = await r.text();
         const clean = text.replace(/^\uFEFF/, "");
         const rows = parseDelimited(clean, ";");
         const headerRowIndex = rows.findIndex((rr) => String(rr?.[0] ?? "").trim() === "Naam");
@@ -118,6 +135,7 @@ export default function App() {
         const idx = (name) => headers.indexOf(name);
         const LAT_I = idx("Breedtegraad");
         const LON_I = idx("Lengtegraad");
+        const skipPricingHeader = new Set(["Naam", "Locatie", "Website", "Breedtegraad", "Lengtegraad"]);
 
         const mapped = dataRows
           .map((row) => {
@@ -129,7 +147,13 @@ export default function App() {
             const lat = LAT_I >= 0 ? parseCoord(r[LAT_I], "lat") : null;
             const lon = LON_I >= 0 ? parseCoord(r[LON_I], "lon") : null;
             const coords = lat != null && lon != null ? { lat, lon } : null;
-            return { name, locatie, website, coords };
+            const pricing = {};
+            headers.forEach((h, i) => {
+              const key = String(h ?? "").trim();
+              if (!key || skipPricingHeader.has(key)) return;
+              pricing[key] = String(r[i] ?? "").trim();
+            });
+            return { name, locatie, website, coords, pricing };
           })
           .filter(Boolean);
 
@@ -138,6 +162,7 @@ export default function App() {
       .catch(() => {
         if (cancelled) return;
         setCsvGyms([]);
+        setGymDataLastUpdated(null);
       });
     return () => {
       cancelled = true;
@@ -152,50 +177,37 @@ export default function App() {
   const gymDataTabLabels = useMemo(
     () => [
       ["concurrentie", "Concurrentie"],
-      ["lessen", "Lessen data"],
+      ["kosten", "Kosten"],
     ],
     []
   );
-
-  const lessonStatsByCategory = useMemo(() => {
-    const selected = new Set(gymDataActive.map((n) => n.toLowerCase()));
-    const gyms = SCHEDULE_BASE_GYMS.filter((g) => selected.has(String(g.name).toLowerCase()));
-
-    const emptyParts = () =>
-      Object.fromEntries(DAY_PART_SLOTS.map((slot) => [slot.key, { count: 0, sumStart: 0 }]));
-
-    const byCat = new Map();
-    for (const cat of SCHEDULE_CATEGORIES) {
-      byCat.set(cat.key, { cat, count: 0, sumDur: 0, minDur: Infinity, maxDur: -Infinity, parts: emptyParts() });
-    }
-
-    for (const gym of gyms) {
-      for (const s of gym.schedule || []) {
-        if (scheduleIsOpenGym(s.cls)) continue;
-        const cat = scheduleGetCat(s.cls);
-        const start = scheduleTmin(s.time);
-        const dur = scheduleTdur(s.time, s.end);
-        const agg = byCat.get(cat.key) || byCat.get("overig");
-        agg.count += 1;
-        agg.sumDur += dur;
-        if (dur < agg.minDur) agg.minDur = dur;
-        if (dur > agg.maxDur) agg.maxDur = dur;
-        const slot = DAY_PART_SLOTS.find((p) => start >= p.from && start < p.to);
-        if (slot) {
-          const p = agg.parts[slot.key];
-          p.count += 1;
-          p.sumStart += start;
-        }
-      }
-    }
-
-    return [...byCat.values()].filter((x) => x.count > 0).sort((a, b) => b.count - a.count);
-  }, [gymDataActive]);
 
   const toggleGymData = (name) =>
     setGymDataActive((prev) =>
       prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
     );
+
+  const RangeChip = ({ label, active, onClick }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: "1px",
+        textTransform: "uppercase",
+        padding: "4px 8px",
+        borderRadius: 7,
+        border: `1px solid ${active ? "#3a86ff55" : T.border2}`,
+        background: active ? (dark ? "#0d1525" : "#eaf1ff") : "transparent",
+        color: active ? "#3a86ff" : T.textMuted,
+        cursor: "pointer",
+        transition: "all .15s",
+      }}
+    >
+      {label}
+    </button>
+  );
 
   return (
     <div style={{ fontFamily: "'DM Sans',system-ui,sans-serif", background: T.bg, minHeight: "100vh", width: "100%", color: T.text }}>
@@ -232,6 +244,14 @@ export default function App() {
         <span style={{ fontSize: 12, color: T.textMuted, fontWeight: 500 }}>
           Rooster Analyse · Amsterdam
         </span>
+        {gymDataLastUpdated && (
+          <>
+            <span style={{ color: T.textMuted }}>|</span>
+            <span style={{ fontSize: 11, color: T.textMuted, fontWeight: 600 }}>
+              Data: {gymDataLastUpdated}
+            </span>
+          </>
+        )}
         <div style={{ display: "flex", gap: 2, background: T.border2, borderRadius: 9, padding: 3, marginLeft: 20 }}>
           {DASHBOARD_TABS.map(([k, label]) => (
             <button
@@ -291,6 +311,8 @@ export default function App() {
           dark={dark}
           setDark={setDark}
           extraGymNames={csvGyms.map((g) => g.name)}
+          activeCats={scheduleCategoryKeys}
+          setActiveCats={setScheduleCategoryKeys}
         />
       )}
       {dashboardTab === "gymdata" && (
@@ -376,9 +398,11 @@ export default function App() {
                     </button>
                   </div>
                 </div>
-                {csvGyms.map((g, i) => {
+                {csvGyms.map((g) => {
                   const active = gymDataActive.includes(g.name);
-                  const col = g.name.toLowerCase() === "atc" ? "#E63946" : ["#3a86ff", "#06d6a0", "#ffb703", "#8338ec", "#fb5607"][i % 5];
+                  const isAtc = g.name.toLowerCase().trim() === "atc";
+                  const col = getGymAccentColor({ name: g.name, isAtc });
+                  const labelColor = getGymNameColor({ name: g.name, isAtc }, T.text);
                   return (
                     <button
                       key={g.name}
@@ -400,7 +424,7 @@ export default function App() {
                       }}
                     >
                       <div style={{ width: 3, height: 30, borderRadius: 2, background: col, flexShrink: 0 }} />
-                      <div style={{ fontSize: 11, fontWeight: g.name.toLowerCase() === "atc" ? 800 : 600, color: T.text }}>
+                      <div style={{ fontSize: 11, fontWeight: isAtc ? 800 : 600, color: labelColor }}>
                         {g.name}
                       </div>
                     </button>
@@ -408,6 +432,134 @@ export default function App() {
                 })}
               </div>
             </details>
+
+            <div style={{ height: 1, background: T.border, margin: "16px 0" }} />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+              <div
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "1.8px",
+                  textTransform: "uppercase",
+                  color: T.textMuted,
+                }}
+              >
+                Categorieën
+              </div>
+              <div style={{ display: "flex", gap: 4 }}>
+                <button
+                  type="button"
+                  onClick={() => setScheduleCategoryKeys(SCHEDULE_CATEGORIES.map((c) => c.key))}
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    padding: "3px 7px",
+                    borderRadius: 5,
+                    border: `1px solid ${T.border2}`,
+                    color: T.textMuted,
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  Alles aan
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setScheduleCategoryKeys([])}
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    padding: "3px 7px",
+                    borderRadius: 5,
+                    border: `1px solid ${T.border2}`,
+                    color: T.textMuted,
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                >
+                  Alles uit
+                </button>
+              </div>
+            </div>
+            {SCHEDULE_CATEGORIES.map((cat) => {
+              const active = scheduleCategoryKeys.includes(cat.key);
+              return (
+                <button
+                  key={cat.key}
+                  type="button"
+                  onClick={() => toggleScheduleCategoryKey(cat.key)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    width: "100%",
+                    padding: "6px 8px",
+                    borderRadius: 8,
+                    marginBottom: 3,
+                    background: active ? (dark ? "#0d0d18" : "#ffffff") : "transparent",
+                    border: `1px solid ${active ? `${cat.color}40` : "transparent"}`,
+                    opacity: active ? 1 : 0.3,
+                    transition: "all .15s",
+                    textAlign: "left",
+                  }}
+                >
+                  <div style={{ width: 7, height: 7, borderRadius: 2, background: cat.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 10, fontWeight: 700, color: active ? cat.color : T.textMuted }}>{cat.label}</span>
+                </button>
+              );
+            })}
+
+            {/* Prijsanalyse filters (alleen charts) */}
+            <div style={{ marginTop: 12, background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 10, padding: "10px 10px" }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: T.textMuted, marginBottom: 10 }}>
+                Prijsanalyse filters
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: T.textSub, marginBottom: 6 }}>
+                    Afstand ATC (ATC sectie)
+                  </div>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {[
+                      { label: "Alles", v: null },
+                      { label: "≤1km", v: 1 },
+                      { label: "≤3km", v: 3 },
+                      { label: "≤5km", v: 5 },
+                      { label: "≤10km", v: 10 },
+                    ].map((r) => (
+                      <RangeChip key={String(r.v)} label={r.label} active={priceAnalysisRangeAtcKm === r.v} onClick={() => setPriceAnalysisRangeAtcKm(r.v)} />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: T.textSub, marginBottom: 6 }}>
+                    Afstand Ettaki (Ettaki sectie)
+                  </div>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {[
+                      { label: "Alles", v: null },
+                      { label: "≤1km", v: 1 },
+                      { label: "≤3km", v: 3 },
+                      { label: "≤5km", v: 5 },
+                      { label: "≤10km", v: 10 },
+                    ].map((r) => (
+                      <RangeChip
+                        key={String(r.v)}
+                        label={r.label}
+                        active={priceAnalysisRangeEttakiKm === r.v}
+                        onClick={() => setPriceAnalysisRangeEttakiKm(r.v)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </aside>
 
           {/* Main */}
@@ -434,149 +586,17 @@ export default function App() {
               ))}
             </div>
 
-            {gymDataTab === "concurrentie" && (
-              <ConcurrentieView dark={dark} visibleGymNames={gymDataActive} />
-            )}
-
-            {gymDataTab === "lessen" && (
-              <div style={{ background: dark ? "#0d0d18" : "#ffffff", border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
-                <div style={{ padding: "16px 20px 12px", borderBottom: `1px solid ${T.border}` }}>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: T.textMuted }}>
-                    Gemiddelden per categorie
-                  </div>
-                </div>
-                <div style={{ overflowX: "auto" }}>
-                  <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 880 }}>
-                    <thead>
-                      <tr>
-                        <th
-                          rowSpan={2}
-                          style={{
-                            padding: "10px 12px",
-                            textAlign: "left",
-                            verticalAlign: "bottom",
-                            fontSize: 9,
-                            fontWeight: 700,
-                            letterSpacing: "1px",
-                            textTransform: "uppercase",
-                            color: T.textMuted,
-                            borderBottom: `1px solid ${T.border2}`,
-                            background: T.bg,
-                          }}
-                        >
-                          Categorie
-                        </th>
-                        <th
-                          rowSpan={2}
-                          style={{
-                            padding: "10px 12px",
-                            textAlign: "center",
-                            verticalAlign: "bottom",
-                            fontSize: 9,
-                            fontWeight: 700,
-                            letterSpacing: "1px",
-                            textTransform: "uppercase",
-                            color: T.textMuted,
-                            borderBottom: `1px solid ${T.border2}`,
-                            background: T.bg,
-                          }}
-                        >
-                          Lessen
-                        </th>
-                        {DAY_PART_SLOTS.map((slot) => (
-                          <th
-                            key={slot.key}
-                            style={{
-                              padding: "8px 10px 2px",
-                              textAlign: "center",
-                              fontSize: 10,
-                              fontWeight: 800,
-                              letterSpacing: "0.4px",
-                              color: slot.color,
-                              borderBottom: "none",
-                              background: T.bg,
-                            }}
-                          >
-                            {slot.label}
-                          </th>
-                        ))}
-                        {["Gem. duur", "Min. tijd", "Max. tijd"].map((label) => (
-                          <th
-                            key={label}
-                            rowSpan={2}
-                            style={{
-                              padding: "10px 12px",
-                              textAlign: "center",
-                              verticalAlign: "bottom",
-                              fontSize: 9,
-                              fontWeight: 700,
-                              letterSpacing: "1px",
-                              textTransform: "uppercase",
-                              color: T.textMuted,
-                              borderBottom: `1px solid ${T.border2}`,
-                              background: T.bg,
-                            }}
-                          >
-                            {label}
-                          </th>
-                        ))}
-                      </tr>
-                      <tr>
-                        {DAY_PART_SLOTS.map((slot) => (
-                          <th
-                            key={`${slot.key}-sub`}
-                            style={{
-                              padding: "2px 10px 10px",
-                              textAlign: "center",
-                              fontSize: 9,
-                              fontWeight: 700,
-                              letterSpacing: "1px",
-                              textTransform: "uppercase",
-                              color: T.textMuted,
-                              borderBottom: `1px solid ${T.border2}`,
-                              background: T.bg,
-                            }}
-                          >
-                            GEM. START
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lessonStatsByCategory.map(({ cat, count, sumDur, minDur, maxDur, parts }) => {
-                        const avgDur = sumDur / count;
-                        return (
-                          <tr key={cat.key} style={{ borderBottom: `1px solid ${T.border}` }}>
-                            <td style={{ padding: "10px 12px", whiteSpace: "nowrap" }}>
-                              <span style={{ fontSize: 12, fontWeight: 700, color: cat.color }}>{cat.label}</span>
-                            </td>
-                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{count}</td>
-                            {DAY_PART_SLOTS.map((slot) => {
-                              const p = parts[slot.key];
-                              const cell = p.count > 0 ? fmtTimeFromMinutes(p.sumStart / p.count) : "—";
-                              return (
-                                <td key={slot.key} style={{ padding: "10px 10px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>
-                                  {cell}
-                                </td>
-                              );
-                            })}
-                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(avgDur)}m</td>
-                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(minDur)}m</td>
-                            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(maxDur)}m</td>
-                          </tr>
-                        );
-                      })}
-                      {lessonStatsByCategory.length === 0 && (
-                        <tr>
-                          <td colSpan={2 + DAY_PART_SLOTS.length + 3} style={{ padding: "16px 12px", textAlign: "center", color: T.textMuted }}>
-                            Geen rooster-data gevonden voor de geselecteerde gyms (of gyms hebben geen lessen).
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            {(gymDataTab === "concurrentie" || gymDataTab === "kosten") && (
+              <ConcurrentieView
+                dark={dark}
+                visibleGymNames={gymDataActive}
+                activeScheduleCats={scheduleCategoryKeys}
+                priceAnalysisFilters={{
+                  rangeAtcKm: priceAnalysisRangeAtcKm,
+                  rangeEttakiKm: priceAnalysisRangeEttakiKm,
+                }}
+                section={gymDataTab === "concurrentie" ? "overzicht" : "kosten"}
+              />
             )}
           </main>
         </div>

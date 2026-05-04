@@ -1,4 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
+import {
+  ATC_RED,
+  ETTAKI_YELLOW,
+  getGymAccentColor as getGymColor,
+  getGymNameColor as gymNameColor,
+  isEttakiName,
+} from "./gymColors.js";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -12,7 +19,7 @@ export const CATEGORIES = [
   { key:"bokszak",    label:"Bokszaktraining",    keywords:["bokszaktraining","bokszak","Bagtraining","Heavybag","zak","bag"],  color:"#8ac926" },
   { key:"kickboks",   label:"Kickboksen",         keywords:["kickboks","kickbox","muay thai","HIIT"],             color:"#ffb703" },
   { key:"boksen",     label:"Boksen",             keywords:["boksen","boxing","Boksconditie"],                                        color:"#fb5607" },
-  { key:"openmat",    label:"Open Mat",           keywords:["open mat","sparring","sparren","Zelftraining"],                                                       color:"#8338ec" },
+  { key:"openmat",    label:"Open Mat",           keywords:["open mat","sparring","sparren","Zelftraining","Spartraining"],                                                       color:"#8338ec" },
   { key:"hyrox",      label:"Hyrox / Cardio",     keywords:["hyrox"],                                                          color:"#4cc9f0" },
   { key:"strength",   label:"Strength",           keywords:["strength","krachttraining","powerlifting","body strength"],       color:"#f77f00" },
   { key:"overig",     label:"Overig",              keywords:["Personal Training"],                                                                  color:"#505068" },
@@ -24,16 +31,6 @@ export const DAY_PART_SLOTS = [
   { key:"avond",   label:"Avond",   from:17*60, to:24*60, color:"#8338ec" },
 ];
 const SLOTS = DAY_PART_SLOTS;
-
-// Extended palette for gym colors (ATC and Ettaki have fixed colors below)
-const PALETTE = [
-  "#E63946","#3a86ff","#06d6a0","#8338ec","#fb5607",
-  "#2ec4b6","#f77f00","#4cc9f0","#80b918","#9d4edd",
-  "#f72585","#023e8a","#b5179e","#264653","#e76f51",
-  "#2d6a4f","#7209b7","#3c096c","#ff006e","#8ac926",
-  "#1982c4","#6a4c93","#f4a261","#06ffa5","#7b2cbf",
-  "#ee9b00","#2a9d8f","#e07a5f","#3d5a80","#bc4749",
-];
 
 export const BASE_GYMS = [
   { id: 4, name: "10th Planet Jiu-Jitsu Amsterdam", isAtc: false,
@@ -1590,52 +1587,7 @@ export function findGymScheduleByName(rawName) {
   return { id: -1, name: s, isAtc: lower === "atc", schedule: [] };
 }
 
-// ATC = always red, Ettaki = always yellow (roster + gym data)
-const ATC_RED = "#E63946";
-const ETTaki_YELLOW = "#ffb703";
-const isEttaki = (gym) => gym?.name?.toLowerCase().replace(/\s/g, "") === "ettakigym";
-// Name-based colors so every gym has a fixed color in both roster and open gym views
-const GYM_COLORS_BY_NAME = {
-  "ATC": ATC_RED,
-  "EttakiGym": ETTaki_YELLOW,
-  "Boogieland": "#f97316",
-  "Bensy Gym": "#3a86ff",
-  "Dojo Doorjé": "#2a9d8f",
-  "Eastbound Gym": "#06d6a0",
-  "El Otmani Gym": "#8338ec",
-  "Focus Jiujitsu": "#457b9d",
-  "Elite Training Center": "#fb5607",
-  "FIGHT DISTRICT": "#2ec4b6",
-  "Fight IQ": "#f77f00",
-  "Gym Royale": "#4cc9f0",
-  "Gym Southpaw": "#80b918",
-  "Kimekai Gym": "#bc6c25",
-  "Kops Gym": "#9d4edd",
-  "Martial Arts Center Amsterdam": "#f72585",
-  "MOUSID GYM": "#023e8a",
-  "Patrick's Gym": "#b5179e",
-  "Royal Gym Amsterdam": "#264653",
-  "Sin City Boxing": "#e76f51",
-  "Sport City": "#2d6a4f",
-  "Carlson Gracie Amsterdam": "#c1121f",
-  "DODO Jiu Jitsu": "#588157",
-  "Mike's Gym": "#6c757d",
-  "NDSM Fightclub": "#0077b6",
-  "Team Ramzi": "#7209b7",
-  "Tribe Grappling": "#1d3557",
-  "Vos Gym": "#d4a373",
-  "10th Planet Jiu-Jitsu Amsterdam": "#5c4d7d",
-};
-const hashName = (s) => { let h = 0; for (let i = 0; i < (s||"").length; i++) h = ((h << 5) - h) + s.charCodeAt(i) | 0; return Math.abs(h); };
-const getGymColor = (gym) => {
-  if (gym?.isAtc) return ATC_RED;
-  if (isEttaki(gym)) return ETTaki_YELLOW;
-  const name = gym?.name;
-  if (name && GYM_COLORS_BY_NAME[name] !== undefined) return GYM_COLORS_BY_NAME[name];
-  return PALETTE[hashName(name || "") % PALETTE.length] || "#888";
-};
-const gymAccent = (gym, _fallback) => getGymColor(gym);
-const gymNameColor = (gym, fallback) => (gym?.isAtc ? ATC_RED : (isEttaki(gym) ? ETTaki_YELLOW : (fallback ?? getGymColor(gym))));
+const isEttaki = (gym) => isEttakiName(gym?.name);
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
@@ -1646,8 +1598,11 @@ const fmtH = mins => {
   return m === 0 ? `${h}u` : `${h}u${m}m`;
 };
 export const getCat = cls => {
-  const low = cls.toLowerCase();
-  return CATEGORIES.find(c => c.keywords.some(k => low.includes(k))) || CATEGORIES[CATEGORIES.length-1];
+  const low = String(cls ?? "").toLowerCase();
+  return (
+    CATEGORIES.find((c) => c.keywords.some((k) => low.includes(String(k).toLowerCase()))) ||
+    CATEGORIES[CATEGORIES.length - 1]
+  );
 };
 export const isOpenGym = cls => cls.toLowerCase().includes("open gym");
 
@@ -1659,7 +1614,39 @@ const getTH = (T) => ({ ...TH_BASE, background: T.bg, color: T.textMuted, border
 const getCard = (T) => ({ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 12 });
 
 function GymTag({ gym }) {
-  return <>{gym.name}</>;
+  const isAtc = !!gym?.isAtc;
+  const ettaki = isEttaki(gym);
+  const showBadge = isAtc || ettaki;
+  const badgeText = isAtc ? "ATC" : (ettaki ? "ETTAKI" : "");
+  const badgeBg = isAtc ? ATC_RED : (ettaki ? ETTAKI_YELLOW : "#999");
+  const badgeFg = ettaki ? "#1a1a1a" : "#ffffff";
+
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+      <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        {gym.name}
+      </span>
+      {showBadge && (
+        <span
+          style={{
+            fontSize: 9,
+            fontWeight: 800,
+            letterSpacing: 1.1,
+            textTransform: "uppercase",
+            padding: "2px 7px",
+            borderRadius: 999,
+            background: badgeBg,
+            color: badgeFg,
+            border: `1px solid ${badgeFg}20`,
+            lineHeight: 1.1,
+            flexShrink: 0,
+          }}
+        >
+          {badgeText}
+        </span>
+      )}
+    </span>
+  );
 }
 
 export function DayPicker({ day, setDay, theme, rowStyle }) {
@@ -1984,7 +1971,9 @@ function WeekView({ visibleGyms, activeCats, theme }) {
             <div key={gym.id} style={{ display:"flex",alignItems:"center",gap:10,marginBottom:6 }}>
               <div style={{ width:150,fontSize:10,fontWeight:gym.isAtc?700:500,
                 color:gymNameColor(gym, T.textMuted),textAlign:"right",flexShrink:0,
-                overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{gym.name}</div>
+                overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>
+                <GymTag gym={gym} />
+              </div>
               <div style={{ flex:1,height:22,background:T.row,borderRadius:4,overflow:"hidden" }}>
                 <div style={{ width:`${pct}%`,height:"100%",background:col,borderRadius:4,
                   display:"flex",alignItems:"center",paddingLeft:8,minWidth:4,transition:"width .4s" }}>
@@ -2109,7 +2098,7 @@ function LijstView({ visibleGyms, activeCats, theme }) {
                           <div style={{ minWidth:0 }}>
                             <div style={{ fontSize:12, fontWeight:gym.isAtc?800:600, color:nameCol,
                               whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
-                              {gym.name}
+                              <GymTag gym={gym} />
                             </div>
                             <div style={{ fontSize:9, color:T.textMuted, marginTop:2 }}>
                               {items.length ? `${items.length} les${items.length!==1?"sen":""}` : "Geen lessen"}
@@ -2176,6 +2165,191 @@ function LijstView({ visibleGyms, activeCats, theme }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function fmtTimeFromMinutes(mins) {
+  if (!Number.isFinite(mins)) return "—";
+  const h = Math.floor(mins / 60);
+  const m = Math.round(mins % 60);
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+function LessenDataView({ visibleGyms, activeCats, theme }) {
+  const T = theme || DARK_THEME;
+
+  const lessonStatsByCategory = useMemo(() => {
+    const emptyParts = () =>
+      Object.fromEntries(DAY_PART_SLOTS.map((slot) => [slot.key, { count: 0, sumStart: 0 }]));
+
+    const byCat = new Map();
+    for (const cat of CATEGORIES) {
+      byCat.set(cat.key, { cat, count: 0, sumDur: 0, minDur: Infinity, maxDur: -Infinity, parts: emptyParts() });
+    }
+
+    for (const gym of visibleGyms) {
+      for (const s of gym.schedule || []) {
+        if (isOpenGym(s.cls)) continue;
+        if (!activeCats.includes(getCat(s.cls).key)) continue;
+        const cat = getCat(s.cls);
+        const start = tmin(s.time);
+        const dur = tdur(s.time, s.end);
+        const agg = byCat.get(cat.key) || byCat.get("overig");
+        agg.count += 1;
+        agg.sumDur += dur;
+        if (dur < agg.minDur) agg.minDur = dur;
+        if (dur > agg.maxDur) agg.maxDur = dur;
+        const slot = DAY_PART_SLOTS.find((p) => start >= p.from && start < p.to);
+        if (slot) {
+          const p = agg.parts[slot.key];
+          p.count += 1;
+          p.sumStart += start;
+        }
+      }
+    }
+
+    return [...byCat.values()].filter((x) => x.count > 0).sort((a, b) => b.count - a.count);
+  }, [visibleGyms, activeCats]);
+
+  return (
+    <div style={{ background: T.surface, border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
+      <div style={{ padding: "16px 20px 12px", borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: T.textMuted }}>
+          Gemiddelden per categorie
+        </div>
+      </div>
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 880 }}>
+          <thead>
+            <tr>
+              <th
+                rowSpan={2}
+                style={{
+                  padding: "10px 12px",
+                  textAlign: "left",
+                  verticalAlign: "bottom",
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: T.textMuted,
+                  borderBottom: `1px solid ${T.border2}`,
+                  background: T.bg,
+                }}
+              >
+                Categorie
+              </th>
+              <th
+                rowSpan={2}
+                style={{
+                  padding: "10px 12px",
+                  textAlign: "center",
+                  verticalAlign: "bottom",
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: T.textMuted,
+                  borderBottom: `1px solid ${T.border2}`,
+                  background: T.bg,
+                }}
+              >
+                Lessen
+              </th>
+              {DAY_PART_SLOTS.map((slot) => (
+                <th
+                  key={slot.key}
+                  style={{
+                    padding: "8px 10px 2px",
+                    textAlign: "center",
+                    fontSize: 10,
+                    fontWeight: 800,
+                    letterSpacing: "0.4px",
+                    color: slot.color,
+                    borderBottom: "none",
+                    background: T.bg,
+                  }}
+                >
+                  {slot.label}
+                </th>
+              ))}
+              {["Gem. duur", "Min. tijd", "Max. tijd"].map((label) => (
+                <th
+                  key={label}
+                  rowSpan={2}
+                  style={{
+                    padding: "10px 12px",
+                    textAlign: "center",
+                    verticalAlign: "bottom",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    color: T.textMuted,
+                    borderBottom: `1px solid ${T.border2}`,
+                    background: T.bg,
+                  }}
+                >
+                  {label}
+                </th>
+              ))}
+            </tr>
+            <tr>
+              {DAY_PART_SLOTS.map((slot) => (
+                <th
+                  key={`${slot.key}-sub`}
+                  style={{
+                    padding: "2px 10px 10px",
+                    textAlign: "center",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    textTransform: "uppercase",
+                    color: T.textMuted,
+                    borderBottom: `1px solid ${T.border2}`,
+                    background: T.bg,
+                  }}
+                >
+                  GEM. START
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {lessonStatsByCategory.map(({ cat, count, sumDur, minDur, maxDur, parts }) => {
+              const avgDur = sumDur / count;
+              return (
+                <tr key={cat.key} style={{ borderBottom: `1px solid ${T.border}` }}>
+                  <td style={{ padding: "10px 12px", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: cat.color }}>{cat.label}</span>
+                  </td>
+                  <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{count}</td>
+                  {DAY_PART_SLOTS.map((slot) => {
+                    const p = parts[slot.key];
+                    const cell = p.count > 0 ? fmtTimeFromMinutes(p.sumStart / p.count) : "—";
+                    return (
+                      <td key={slot.key} style={{ padding: "10px 10px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>
+                        {cell}
+                      </td>
+                    );
+                  })}
+                  <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(avgDur)}m</td>
+                  <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(minDur)}m</td>
+                  <td style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 700, color: T.textSub }}>{Math.round(maxDur)}m</td>
+                </tr>
+              );
+            })}
+            {lessonStatsByCategory.length === 0 && (
+              <tr>
+                <td colSpan={2 + DAY_PART_SLOTS.length + 3} style={{ padding: "16px 12px", textAlign: "center", color: T.textMuted }}>
+                  Geen rooster-data gevonden voor de geselecteerde gyms (of gyms hebben geen lessen).
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -2374,7 +2548,7 @@ function OpenGymView({ theme }) {
         {openGymDataSorted.map((g,i) => (
           <div key={g.id} style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:T.textSub }}>
             <div style={{ width:14, height:10, borderRadius:2, background:getGymColor(g), opacity:0.85 }}/>
-            {g.name}
+            <GymTag gym={g} />
           </div>
         ))}
         <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:11, color:"#ef4444" }}>
@@ -2455,7 +2629,7 @@ function OpenGymView({ theme }) {
                       <div style={{ position:"absolute", inset:0,
                         display:"flex", alignItems:"center", paddingLeft:6 }}>
                         <span style={{ fontSize:10, color:T.textMuted, fontWeight:600 }}>
-                          {gym.name}
+                          <GymTag gym={gym} />
                         </span>
                       </div>
                       {/* Openingstijden blokken */}
@@ -2499,8 +2673,7 @@ function OpenGymView({ theme }) {
 const TABS = [
   ["week",    "Weekoverzicht"],
   ["lijst",   "Lijst per dag"],
-  ["gaten",   "Gaten in markt"],
-  ["opengym", "Open Gym"],
+  ["lessen",  "Lessen data"],
 ];
 const DARK_THEME = {
   bg:       "#08080f",
@@ -2526,14 +2699,24 @@ const LIGHT_THEME = {
   btnBgA:   "#e8e8f8",
   btnBorder:"#c0c0d8",
 };
-export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: setDarkProp, extraGymNames = [] }) {
+export default function ScheduleDashboard({
+  noHeader,
+  dark: darkProp,
+  setDark: setDarkProp,
+  extraGymNames = [],
+  activeCats: activeCatsProp,
+  setActiveCats: setActiveCatsProp,
+}) {
   const [internalDark, setInternalDark] = useState(true);
   const dark = darkProp !== undefined ? darkProp : internalDark;
   const setDark = setDarkProp !== undefined ? setDarkProp : setInternalDark;
 
   const [tab,        setTab]        = useState("week");
   const [activeGyms, setActiveGyms] = useState(gymsSorted.map(g=>g.id));
-  const [activeCats, setActiveCats] = useState(CATEGORIES.map(c=>c.key));
+  const [internalActiveCats, setInternalActiveCats] = useState(CATEGORIES.map((c) => c.key));
+  const isCatsControlled = Array.isArray(activeCatsProp) && typeof setActiveCatsProp === "function";
+  const activeCats = isCatsControlled ? activeCatsProp : internalActiveCats;
+  const setActiveCats = isCatsControlled ? setActiveCatsProp : setInternalActiveCats;
 
   const allGymsSorted = useMemo(() => {
     const base = gymsSorted;
@@ -2732,8 +2915,7 @@ export default function ScheduleDashboard({ noHeader, dark: darkProp, setDark: s
 
           {tab==="week"    && <WeekView    visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
           {tab==="lijst"   && <LijstView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
-          {tab==="gaten"   && <GatenView   visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
-          {tab==="opengym" && <OpenGymView theme={T}/>}
+          {tab==="lessen"  && <LessenDataView visibleGyms={visibleGyms} activeCats={activeCats} theme={T}/>}
         </main>
       </div>
     </div>

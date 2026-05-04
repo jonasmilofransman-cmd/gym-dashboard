@@ -1,0 +1,3537 @@
+{
+  "version": 3,
+  "generatedAt": "2026-04-21T12:09:16.185Z",
+  "sourceCsv": "/Users/jonas/Downloads/Gym schema/gym-dashboard/public/gym-data.csv",
+  "gyms": {
+    "10th Planet Jiu-Jitsu Amsterdam": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 90,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 60,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 30,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Amsterdam Airlines": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 60,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "€ 40,00",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 30,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Amsterdam BJJ": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 70,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 60,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 40,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Amsterdam Grappling Academy": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 65,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Geen info",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks (4 weken)",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Arena Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 69,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "24 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "ATC": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 60,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "€ 45,00",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 55,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 10,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Geen info",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 30,00",
+        "description": "Volledige regel: € 30,00",
+        "source": "csv"
+      }
+    ],
+    "Bensy Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "Geen info",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Geen info",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Geen info",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Boogieland": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 75,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 15,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "3 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Carlson Gracie Amsterdam": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 99,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 25,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "3 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "DODO Jiu Jitsu": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 75,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 20,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Dojo Doorjé": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 80,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 15,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 50,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Eastbound Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "79.5",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "16.5",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 40,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "3 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "84.5",
+        "description": "84.5",
+        "source": "csv"
+      }
+    ],
+    "El Otmani Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "Geen info",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "€ 30,00",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Geen info",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Geen info",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Elite Training Center": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "77.95",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "49.95",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "54.95",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 15,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "37.95",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "3 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "EttakiGym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 69,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 54,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 44,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 39,00",
+        "description": "Volledige regel: € 39,00",
+        "source": "csv"
+      }
+    ],
+    "FIGHT DISTRICT": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "149.95",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 70,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 65,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "57.5",
+        "description": "57.5",
+        "source": "csv"
+      }
+    ],
+    "Fight IQ": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "69.95",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 30,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Jaarlijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "7.5",
+        "description": "7.5",
+        "source": "csv"
+      }
+    ],
+    "Focus Jiujitsu": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 89,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "€ 59,00",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 39,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Gym Royale": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "74.5",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 15,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 40,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Gym Southpaw": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 60,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 35,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Kimekai Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 35,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 25,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Kops Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 60,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 14,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 35,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 10,00",
+        "description": "Volledige regel: € 10,00",
+        "source": "csv"
+      }
+    ],
+    "Martial Arts Center Amsterdam": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 40,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 30,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Monster Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "—",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "—",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "—",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "—",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "—",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "—",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "MOUSID GYM": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "37.5",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "29.16",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Jaarlijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "NDSM Fightclub": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 89,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 59,99",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks (4 weken)",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Patrick's Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 75,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "€ 55,00",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 65,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 20,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 45,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Jaarlijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 45,00",
+        "description": "Volledige regel: € 45,00",
+        "source": "csv"
+      }
+    ],
+    "Royal Gym Amsterdam": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 55,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 15,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 25,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "Jaarlijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Sin City Boxing": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 125,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 20,00",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 100,00",
+        "description": "Volledige regel: € 100,00",
+        "source": "csv"
+      }
+    ],
+    "Sport City": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "37.99",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Niet mogenlijk",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Niet mogenlijk",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "Niet mogenlijk",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      },
+      {
+        "productType": "extra",
+        "productId": "extra_detail_0",
+        "category": "Extra (detail)",
+        "product": "Extra product",
+        "price": "€ 2,00",
+        "description": "Volledige regel: € 2,00",
+        "source": "csv"
+      }
+    ],
+    "Team Ramzi": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 95,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "€ 75,00",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "€ 16,99",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 50,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "6 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Tribe Grappling": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 65,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 49,00",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks (4 weken)",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Vos Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 75,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 42,50",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "6 maanden",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Mike's Gym": [
+      {
+        "productType": "onbeperkt",
+        "productId": "onbeperkt_maand",
+        "category": "Abonnement",
+        "product": "Onbeperkt — alle groepslessen (volgens gym)",
+        "price": "€ 75,00",
+        "description": "Je mag naar elke les binnen je abonnement (exact aanbod op de site van de gym).",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_1",
+        "productId": "freq_week_1",
+        "category": "Abonnement",
+        "product": "1× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"1x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_2",
+        "productId": "freq_week_2",
+        "category": "Abonnement",
+        "product": "2× per week (maandprijs)",
+        "price": "Geen info",
+        "description": "Uit kolom \"2x per week abonnement (Prijs per maand)\" in gym-data.csv.",
+        "source": "csv"
+      },
+      {
+        "productType": "freq_week_3",
+        "productId": "freq_week_3",
+        "category": "Abonnement",
+        "product": "3× per week (maandprijs)",
+        "price": "—",
+        "description": "Geen aparte kolom in gym-data.csv — vul `Nx per week abonnement (Prijs per maand)` toe of zet tarief in overrides.",
+        "source": "csv"
+      },
+      {
+        "productType": "fitness_addon",
+        "productId": "fitness_addon_leeg",
+        "category": "Add-on",
+        "product": "Fitness / sportschool-apparatuur add-on",
+        "price": "—",
+        "description": "Geen aparte prijs in CSV. Staat soms in Extra/add-on — check gesplitste regels hieronder.",
+        "source": "csv"
+      },
+      {
+        "productType": "proefles",
+        "productId": "proefles_leeg",
+        "category": "Losse verkoop",
+        "product": "Proefles",
+        "price": "—",
+        "description": "Geen kolom Proefles in CSV en niet herkend in Extra — handmatig in overrides toevoegen kan.",
+        "source": "csv"
+      },
+      {
+        "productType": "losse_les",
+        "productId": "losse_les",
+        "category": "Losse verkoop",
+        "product": "Losse les / drop-in / dagpas",
+        "price": "Geen info",
+        "description": "Eenmalige les of los tarief (geen lopend abonnement).",
+        "source": "csv"
+      },
+      {
+        "productType": "jeugd",
+        "productId": "jeugd",
+        "category": "Jeugd",
+        "product": "Jeugdabonnement",
+        "price": "€ 52,50",
+        "description": "Alle jeugd-tarieven die in deze kolom passen; meerdere jeugdproducten kun je in overrides splitsen.",
+        "source": "csv"
+      },
+      {
+        "productType": "voorwaarden_contract",
+        "productId": "voorwaarden_contract",
+        "category": "Voorwaarden",
+        "product": "Contractduur / minimale looptijd",
+        "price": "maandelijks",
+        "description": "Minimale looptijd, opzegtermijn of facturatie-eenheid (geen productprijs).",
+        "source": "csv"
+      }
+    ],
+    "Vondel Gym Zuid": [
+      {
+        "productId": "vg_regulier_basis",
+        "category": "Abonnement",
+        "product": "Regulier — zonder CrossFit / HYROX",
+        "price": "€ 84,50 per 4 weken",
+        "description": "Trainen op één hoofdlocatie (Zuid/Oost/West); alle lessen behalve CrossFit en HYROX. Bron: vondelgym.nl.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_1",
+        "category": "Abonnement",
+        "product": "Regulier + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 90,00 per 4 weken",
+        "description": "Zelfde als regulier + één CF/HYROX-slot per week.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_2",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 95,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_3",
+        "category": "Abonnement",
+        "product": "Regulier + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 100,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_dag",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 105,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_daluur_basis",
+        "category": "Abonnement",
+        "product": "Daluren — zonder CrossFit / HYROX",
+        "price": "€ 66,50 per 4 weken",
+        "description": "Ma–vr 8:45–17:00, weekend 12:00–20:00 op gekozen hoofdlocatie.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_1",
+        "category": "Abonnement",
+        "product": "Daluren + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 72,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_2",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 77,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_3",
+        "category": "Abonnement",
+        "product": "Daluren + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 82,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_dag",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 87,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_jaar_reg",
+        "category": "Abonnement",
+        "product": "Jaarabonnement regulier (zonder CF/HYROX)",
+        "price": "€ 1.014 per jaar",
+        "description": "12 periodes i.p.v. 13; niet maandelijks opzegbaar.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_jaar_dal",
+        "category": "Abonnement",
+        "product": "Jaarabonnement daluren (zonder CF/HYROX)",
+        "price": "€ 798 per jaar",
+        "description": "Zelfde voorwaarden als jaar regulier daluur-pakket.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_fit_only_reg",
+        "category": "Abonnement",
+        "product": "Fitness only — regulier",
+        "price": "€ 61,50 per 4 weken",
+        "description": "Alleen Open Gym, geen lesboekingen, geen credits bijboeken.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_fit_only_dal",
+        "category": "Abonnement",
+        "product": "Fitness only — daluren",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen Open Gym binnen dalurenvensters.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_running",
+        "category": "Abonnement",
+        "product": "Running-abonnement",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen hardlooptrainingen.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_student",
+        "category": "Abonnement",
+        "product": "Studentenabonnement (daluren)",
+        "price": "€ 46,50 per 4 weken",
+        "description": "Ma–vr 9:00–17:00, weekend 12:00–20:00; alle lessen behalve CF/HYROX; meerprijs CF/HYROX mogelijk via mail.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_inschrijf",
+        "category": "Losse verkoop",
+        "product": "Eenmalige inschrijfkosten",
+        "price": "€ 15,00",
+        "description": "Welkomsttas inbegrepen.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_multiloc",
+        "category": "Add-on",
+        "product": "Trainen op alle locaties (add-on)",
+        "price": "€ 15,00 per 4 weken",
+        "description": "Aanvraag via office@vondelgym.nl.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_dagpas",
+        "category": "Losse verkoop",
+        "product": "Dagpas",
+        "price": "€ 19,50",
+        "description": "Les of vrij trainen; bij abonnement binnen 24 uur wordt bedrag als barkrediet verrekend.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_weekpas",
+        "category": "Losse verkoop",
+        "product": "Weekpas",
+        "price": "€ 62,00",
+        "description": "Vanaf aankoopdatum.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_zcf",
+        "category": "Losse verkoop",
+        "product": "Maandpas zonder CrossFit-lessen",
+        "price": "€ 138,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_mcf",
+        "category": "Losse verkoop",
+        "product": "Maandpas met CrossFit-lessen",
+        "price": "€ 165,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_contract",
+        "category": "Voorwaarden",
+        "product": "Minimale looptijd / opzeggen",
+        "price": "—",
+        "description": "Minimaal 2× 4 weken; opzegtermijn één volledige 4-wekenperiode na lopende periode. Zie vondelgym.nl voor incassodata.",
+        "source": "manual",
+        "productType": "voorwaarden_contract"
+      }
+    ],
+    "Vondel Gym Oost": [
+      {
+        "productId": "vg_regulier_basis_oost",
+        "category": "Abonnement",
+        "product": "Regulier — zonder CrossFit / HYROX",
+        "price": "€ 84,50 per 4 weken",
+        "description": "Trainen op één hoofdlocatie (Zuid/Oost/West); alle lessen behalve CrossFit en HYROX. Bron: vondelgym.nl.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_1_oost",
+        "category": "Abonnement",
+        "product": "Regulier + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 90,00 per 4 weken",
+        "description": "Zelfde als regulier + één CF/HYROX-slot per week.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_2_oost",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 95,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_3_oost",
+        "category": "Abonnement",
+        "product": "Regulier + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 100,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_dag_oost",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 105,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_daluur_basis_oost",
+        "category": "Abonnement",
+        "product": "Daluren — zonder CrossFit / HYROX",
+        "price": "€ 66,50 per 4 weken",
+        "description": "Ma–vr 8:45–17:00, weekend 12:00–20:00 op gekozen hoofdlocatie.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_1_oost",
+        "category": "Abonnement",
+        "product": "Daluren + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 72,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_2_oost",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 77,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_3_oost",
+        "category": "Abonnement",
+        "product": "Daluren + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 82,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_dag_oost",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 87,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_jaar_reg_oost",
+        "category": "Abonnement",
+        "product": "Jaarabonnement regulier (zonder CF/HYROX)",
+        "price": "€ 1.014 per jaar",
+        "description": "12 periodes i.p.v. 13; niet maandelijks opzegbaar.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_jaar_dal_oost",
+        "category": "Abonnement",
+        "product": "Jaarabonnement daluren (zonder CF/HYROX)",
+        "price": "€ 798 per jaar",
+        "description": "Zelfde voorwaarden als jaar regulier daluur-pakket.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_fit_only_reg_oost",
+        "category": "Abonnement",
+        "product": "Fitness only — regulier",
+        "price": "€ 61,50 per 4 weken",
+        "description": "Alleen Open Gym, geen lesboekingen, geen credits bijboeken.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_fit_only_dal_oost",
+        "category": "Abonnement",
+        "product": "Fitness only — daluren",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen Open Gym binnen dalurenvensters.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_running_oost",
+        "category": "Abonnement",
+        "product": "Running-abonnement",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen hardlooptrainingen.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_student_oost",
+        "category": "Abonnement",
+        "product": "Studentenabonnement (daluren)",
+        "price": "€ 46,50 per 4 weken",
+        "description": "Ma–vr 9:00–17:00, weekend 12:00–20:00; alle lessen behalve CF/HYROX; meerprijs CF/HYROX mogelijk via mail.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_inschrijf_oost",
+        "category": "Losse verkoop",
+        "product": "Eenmalige inschrijfkosten",
+        "price": "€ 15,00",
+        "description": "Welkomsttas inbegrepen.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_multiloc_oost",
+        "category": "Add-on",
+        "product": "Trainen op alle locaties (add-on)",
+        "price": "€ 15,00 per 4 weken",
+        "description": "Aanvraag via office@vondelgym.nl.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_dagpas_oost",
+        "category": "Losse verkoop",
+        "product": "Dagpas",
+        "price": "€ 19,50",
+        "description": "Les of vrij trainen; bij abonnement binnen 24 uur wordt bedrag als barkrediet verrekend.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_weekpas_oost",
+        "category": "Losse verkoop",
+        "product": "Weekpas",
+        "price": "€ 62,00",
+        "description": "Vanaf aankoopdatum.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_zcf_oost",
+        "category": "Losse verkoop",
+        "product": "Maandpas zonder CrossFit-lessen",
+        "price": "€ 138,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_mcf_oost",
+        "category": "Losse verkoop",
+        "product": "Maandpas met CrossFit-lessen",
+        "price": "€ 165,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_contract_oost",
+        "category": "Voorwaarden",
+        "product": "Minimale looptijd / opzeggen",
+        "price": "—",
+        "description": "Minimaal 2× 4 weken; opzegtermijn één volledige 4-wekenperiode na lopende periode. Zie vondelgym.nl voor incassodata.",
+        "source": "manual",
+        "productType": "voorwaarden_contract"
+      }
+    ],
+    "Vondel Gym West": [
+      {
+        "productId": "vg_regulier_basis_west",
+        "category": "Abonnement",
+        "product": "Regulier — zonder CrossFit / HYROX",
+        "price": "€ 84,50 per 4 weken",
+        "description": "Trainen op één hoofdlocatie (Zuid/Oost/West); alle lessen behalve CrossFit en HYROX. Bron: vondelgym.nl.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_1_west",
+        "category": "Abonnement",
+        "product": "Regulier + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 90,00 per 4 weken",
+        "description": "Zelfde als regulier + één CF/HYROX-slot per week.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_2_west",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 95,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_3_west",
+        "category": "Abonnement",
+        "product": "Regulier + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 100,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_reg_cf_dag_west",
+        "category": "Abonnement",
+        "product": "Regulier + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 105,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_daluur_basis_west",
+        "category": "Abonnement",
+        "product": "Daluren — zonder CrossFit / HYROX",
+        "price": "€ 66,50 per 4 weken",
+        "description": "Ma–vr 8:45–17:00, weekend 12:00–20:00 op gekozen hoofdlocatie.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_1_west",
+        "category": "Abonnement",
+        "product": "Daluren + 1 CrossFit/HYROX-credit per week",
+        "price": "€ 72,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_2_west",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per week",
+        "price": "€ 77,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_3_west",
+        "category": "Abonnement",
+        "product": "Daluren + 3 CrossFit/HYROX-credits per week",
+        "price": "€ 82,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_dal_cf_dag_west",
+        "category": "Abonnement",
+        "product": "Daluren + 2 CrossFit/HYROX-credits per dag",
+        "price": "€ 87,00 per 4 weken",
+        "description": "",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_jaar_reg_west",
+        "category": "Abonnement",
+        "product": "Jaarabonnement regulier (zonder CF/HYROX)",
+        "price": "€ 1.014 per jaar",
+        "description": "12 periodes i.p.v. 13; niet maandelijks opzegbaar.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_jaar_dal_west",
+        "category": "Abonnement",
+        "product": "Jaarabonnement daluren (zonder CF/HYROX)",
+        "price": "€ 798 per jaar",
+        "description": "Zelfde voorwaarden als jaar regulier daluur-pakket.",
+        "source": "manual",
+        "productType": "deal_lang_contract"
+      },
+      {
+        "productId": "vg_fit_only_reg_west",
+        "category": "Abonnement",
+        "product": "Fitness only — regulier",
+        "price": "€ 61,50 per 4 weken",
+        "description": "Alleen Open Gym, geen lesboekingen, geen credits bijboeken.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_fit_only_dal_west",
+        "category": "Abonnement",
+        "product": "Fitness only — daluren",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen Open Gym binnen dalurenvensters.",
+        "source": "manual",
+        "productType": "fitness_addon"
+      },
+      {
+        "productId": "vg_running_west",
+        "category": "Abonnement",
+        "product": "Running-abonnement",
+        "price": "€ 51,50 per 4 weken",
+        "description": "Alleen hardlooptrainingen.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_student_west",
+        "category": "Abonnement",
+        "product": "Studentenabonnement (daluren)",
+        "price": "€ 46,50 per 4 weken",
+        "description": "Ma–vr 9:00–17:00, weekend 12:00–20:00; alle lessen behalve CF/HYROX; meerprijs CF/HYROX mogelijk via mail.",
+        "source": "manual",
+        "productType": "abonnement_variant"
+      },
+      {
+        "productId": "vg_inschrijf_west",
+        "category": "Losse verkoop",
+        "product": "Eenmalige inschrijfkosten",
+        "price": "€ 15,00",
+        "description": "Welkomsttas inbegrepen.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_multiloc_west",
+        "category": "Add-on",
+        "product": "Trainen op alle locaties (add-on)",
+        "price": "€ 15,00 per 4 weken",
+        "description": "Aanvraag via office@vondelgym.nl.",
+        "source": "manual",
+        "productType": "extra"
+      },
+      {
+        "productId": "vg_dagpas_west",
+        "category": "Losse verkoop",
+        "product": "Dagpas",
+        "price": "€ 19,50",
+        "description": "Les of vrij trainen; bij abonnement binnen 24 uur wordt bedrag als barkrediet verrekend.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_weekpas_west",
+        "category": "Losse verkoop",
+        "product": "Weekpas",
+        "price": "€ 62,00",
+        "description": "Vanaf aankoopdatum.",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_zcf_west",
+        "category": "Losse verkoop",
+        "product": "Maandpas zonder CrossFit-lessen",
+        "price": "€ 138,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_maandpas_mcf_west",
+        "category": "Losse verkoop",
+        "product": "Maandpas met CrossFit-lessen",
+        "price": "€ 165,00",
+        "description": "",
+        "source": "manual",
+        "productType": "losse_les"
+      },
+      {
+        "productId": "vg_contract_west",
+        "category": "Voorwaarden",
+        "product": "Minimale looptijd / opzeggen",
+        "price": "—",
+        "description": "Minimaal 2× 4 weken; opzegtermijn één volledige 4-wekenperiode na lopende periode. Zie vondelgym.nl voor incassodata.",
+        "source": "manual",
+        "productType": "voorwaarden_contract"
+      }
+    ]
+  }
+}
